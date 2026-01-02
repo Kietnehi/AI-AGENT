@@ -91,7 +91,15 @@ function DataAnalysisFeature() {
     setChartResult('');
 
     try {
-      const response = await dataAPI.analyzeData('create_chart', chartConfig);
+      // Map 'type' to 'chart_type' for backend
+      const requestData = {
+        chart_type: chartConfig.type,
+        x_col: chartConfig.x_col,
+        y_col: chartConfig.y_col,
+        title: chartConfig.title
+      };
+      
+      const response = await dataAPI.analyzeData('create_chart', requestData);
       setChartResult(response.result);
       
       // Extract chart filename from result and add timestamp to prevent caching

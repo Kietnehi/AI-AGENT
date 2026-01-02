@@ -15,6 +15,14 @@
 
 # 🤖 AI Agent - Trợ Lý Thông Minh Đa Năng
 
+## 📌 Giới Thiệu
+
+> **⚠️ Lưu ý:** Repo này được tạo ra để **test và xài thử các API** đồng thời **thử vibe coding một con AI Agent đơn giản**.
+> 
+> Trong tương lai sẽ sử dụng thêm nhiều API để test và build trong lúc thời gian rảnh rỗi, nên đừng quá khắt khe nhé! 😊
+> 
+> **⭐ Nếu thấy hay thì hãy ủng hộ bằng cách cho repo một Star nhé!**
+
 AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học, và phân tích dữ liệu, sử dụng Gemini API làm LLM chính.
 
 <div align="center">
@@ -24,6 +32,19 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
 </div>
 
 ## ✨ Tính Năng
+
+### 🌟 Smart Chat AI (Real-time)
+- **Chat thông minh** với AI tự động quyết định khi nào cần tìm kiếm
+- **Phân tích câu hỏi** và tự động search thông tin real-time nếu cần
+- **Tổng hợp & tư vấn** dựa trên kết quả tìm kiếm
+- **Trò chuyện tự nhiên** bằng tiếng Việt
+
+<div align="center">
+
+![Smart Chat AI](./image/smartchat.png)
+*Giao diện Smart Chat AI với khả năng tự động tìm kiếm real-time*
+
+</div>
 
 ### 1. 🔍 Tìm Kiếm Web
 - **DuckDuckGo**: Tìm kiếm miễn phí, bảo mật

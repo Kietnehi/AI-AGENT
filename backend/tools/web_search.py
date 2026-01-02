@@ -17,7 +17,7 @@ class WebSearchTool:
         """
         self.search_engine = search_engine or Config.SEARCH_ENGINE
         
-    def search(self, query: str, max_results: int = 5) -> List[Dict]:
+    def search(self, query: str, max_results: int = 10) -> List[Dict]:
         """
         Search the web using configured search engine
         
@@ -34,24 +34,84 @@ class WebSearchTool:
             return self._search_duckduckgo(query, max_results)
     
     def _search_duckduckgo(self, query: str, max_results: int) -> List[Dict]:
-        try:
-            results = []
-            with DDGS() as ddgs:
-                for result in ddgs.text(
-                    query,
-                    max_results=max_results,
-                    region="vn-vi",
-                    safesearch="moderate"
-                ):
-                    results.append({
-                        "title": result.get("title", ""),
-                        "link": result.get("href") or result.get("url", ""),
-                        "snippet": result.get("body", "")
-                    })
-            return results
-        except Exception as e:
-            print(f"DuckDuckGo search error: {e}")
-            return []
+        import time
+        max_retries = 2
+        
+        print(f"\n{'='*60}")
+        print(f"🔍 [DuckDuckGo] Bắt đầu tìm kiếm...")
+        print(f"📝 Query: '{query}'")
+        print(f"🎯 Max results: {max_results}")
+        print(f"{'='*60}\n")
+        
+        for attempt in range(max_retries):
+            print(f"🔄 Lần thử: {attempt + 1}/{max_retries}")
+            
+            try:
+                results = []
+                print(f"⚙️  Khởi tạo DDGS với backend='api', timelimit='y'")
+                
+                with DDGS() as ddgs:
+                    # Try with timelimit to avoid hanging
+                    print(f"🚀 Đang gửi request đến DuckDuckGo...")
+                    search_results = ddgs.text(
+                        query,
+                        max_results=max_results,
+                        region="vn-vi",  # Vietnam region for better Vietnamese results
+                        safesearch="moderate",
+                        timelimit="y",  # Results from last year
+                        backend="api"  # Use API backend for better reliability
+                    )
+                    
+                    print(f"📥 Đã nhận response từ DuckDuckGo")
+                    print(f"🔄 Đang parse kết quả...")
+                    
+                    result_count = 0
+                    for result in search_results:
+                        result_count += 1
+                        print(f"  ✓ Kết quả #{result_count}:")
+                        print(f"    - Title: {result.get('title', 'N/A')[:80]}...")
+                        print(f"    - Link: {result.get('href') or result.get('url', 'N/A')}")
+                        print(f"    - Snippet: {result.get('body', 'N/A')[:100]}...")
+                        
+                        results.append({
+                            "title": result.get("title", ""),
+                            "link": result.get("href") or result.get("url", ""),
+                            "snippet": result.get("body", "")
+                        })
+                        
+                        if len(results) >= max_results:
+                            break
+                
+                print(f"\n✅ Tổng số kết quả tìm được: {len(results)}")
+                
+                if results:
+                    print(f"🎉 Tìm kiếm thành công!")
+                    print(f"{'='*60}\n")
+                    return results
+                else:
+                    print(f"⚠️  Không có kết quả nào được trả về")
+                    
+                # If no results, try again with different parameters
+                if attempt < max_retries - 1:
+                    print(f"⏳ Chờ 1 giây trước khi thử lại...\n")
+                    time.sleep(1)
+                    continue
+                    
+            except Exception as e:
+                print(f"❌ Lỗi DuckDuckGo (lần thử {attempt + 1}): {type(e).__name__}")
+                print(f"📄 Chi tiết lỗi: {str(e)}")
+                
+                if attempt < max_retries - 1:
+                    print(f"⏳ Chờ 2 giây trước khi thử lại...\n")
+                    time.sleep(2)
+                else:
+                    print(f"💔 Đã hết số lần thử. Trả về danh sách rỗng.")
+                    print(f"{'='*60}\n")
+                    return []
+        
+        print(f"⚠️  Kết thúc tìm kiếm với 0 kết quả")
+        print(f"{'='*60}\n")
+        return []
     
     def _search_serpapi(self, query: str, max_results: int) -> List[Dict]:
         """Search using SerpAPI"""
@@ -89,14 +149,20 @@ class WebSearchTool:
     def format_results(self, results: List[Dict]) -> str:
         """Format search results as readable text"""
         if not results:
-            return "Không tìm thấy kết quả nào."
+            engine_name = Config.get_search_engine_display()
+            return f"⚠️ Không tìm thấy kết quả từ {engine_name}.\n\n" + \
+                   "Có thể do:\n" + \
+                   "- Truy vấn quá cụ thể hoặc phức tạp\n" + \
+                   "- Rate limit tạm thời\n" + \
+                   "- Vấn đề kết nối mạng\n\n" + \
+                   "💡 Gợi ý: Thử rephrase câu hỏi hoặc sử dụng SerpAPI (nếu đã cấu hình)."
         
-        formatted = f"Kết quả tìm kiếm (sử dụng {Config.get_search_engine_display()}):\n\n"
+        formatted = f"📊 Kết quả tìm kiếm (sử dụng {Config.get_search_engine_display()}):\n\n"
         
         for i, result in enumerate(results, 1):
-            formatted += f"{i}. {result['title']}\n"
-            formatted += f"   Link: {result['link']}\n"
-            formatted += f"   Mô tả: {result['snippet']}\n\n"
+            formatted += f"**{i}. {result['title']}**\n"
+            formatted += f"🔗 {result['link']}\n"
+            formatted += f"📝 {result['snippet']}\n\n"
         
         return formatted
 

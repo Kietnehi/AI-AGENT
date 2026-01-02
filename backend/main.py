@@ -9,6 +9,7 @@ import shutil
 from pathlib import Path
 
 from google import genai
+from google.genai import types
 from tools.web_search import search_web
 from tools.wolfram_tool import wolfram_compute
 from tools.data_analysis import DataAnalysisTool
@@ -72,6 +73,18 @@ class DataAnalysisRequest(BaseModel):
     prompt: Optional[str] = None  # For AI analysis
 
 
+class SmartChatRequest(BaseModel):
+    message: str
+    search_engine: str = "google"  # "duckduckgo", "serpapi", "google"
+
+
+class SmartChatResponse(BaseModel):
+    response: str
+    status: str
+    search_performed: bool
+    search_engine: Optional[str] = None
+
+
 @app.get("/")
 async def root():
     """Root endpoint"""
@@ -98,30 +111,15 @@ async def chat(request: ChatRequest):
     """Main chat endpoint that routes to different features"""
     try:
         if request.feature == "search":
-            # Web search
+            # Web search - trả về kết quả thuần túy không qua Gemini
             results = search_web(
                 request.message,
                 search_engine=request.search_engine,
                 max_results=5
             )
             
-            # Use Gemini to summarize and answer
-            prompt = f"""Dựa trên kết quả tìm kiếm sau, hãy trả lời câu hỏi của người dùng một cách ngắn gọn và chính xác.
-
-Câu hỏi: {request.message}
-
-Kết quả tìm kiếm:
-{results}
-
-Trả lời bằng tiếng Việt:"""
-            
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=prompt
-            )
-            
             return ChatResponse(
-                response=response.text,
+                response=results,
                 status="success"
             )
         
@@ -159,6 +157,157 @@ Giải thích bằng tiếng Việt:"""
                 status="success"
             )
     
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/smart-chat", response_model=SmartChatResponse)
+async def smart_chat(request: SmartChatRequest):
+    """
+    Smart chat endpoint that automatically decides when to search for information
+    AI will analyze the query and determine if web search is needed
+    """
+    try:
+        # First, ask AI if search is needed
+        decision_prompt = f"""Phân tích câu hỏi sau và quyết định xem có cần tìm kiếm thông tin trên web không.
+
+Câu hỏi: {request.message}
+
+Trả lời CHÍNH XÁC theo format JSON sau (không thêm text nào khác):
+{{"need_search": true/false, "reason": "lý do ngắn gọn"}}
+
+Cần tìm kiếm (need_search: true) khi:
+- Câu hỏi về tin tức, sự kiện hiện tại, giá cả thị trường
+- Thông tin cập nhật (thời tiết, giá vàng, giá bitcoin, chứng khoán)
+- Sự kiện, tin tức mới, xu hướng
+- Thông tin cụ thể về sản phẩm, địa điểm, người nổi tiếng
+
+KHÔNG cần tìm kiếm (need_search: false) khi:
+- Câu hỏi về kiến thức chung, định nghĩa
+- Tính toán toán học
+- Câu hỏi mang tính triết lý, ý kiến cá nhân
+- Lời khuyên chung không cần dữ liệu cụ thể"""
+
+        decision_response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=decision_prompt
+        )
+        
+        # Parse decision
+        import json
+        decision_text = decision_response.text.strip()
+        
+        # Extract JSON from response (handle markdown code blocks)
+        if "```json" in decision_text:
+            decision_text = decision_text.split("```json")[1].split("```")[0].strip()
+        elif "```" in decision_text:
+            decision_text = decision_text.split("```")[1].split("```")[0].strip()
+        
+        try:
+            decision = json.loads(decision_text)
+            need_search = decision.get("need_search", False)
+        except:
+            # Fallback: check for keywords
+            search_keywords = ["tin tức", "hiện tại", "hôm nay", "giá", "cập nhật", "mới nhất", "thời tiết"]
+            need_search = any(keyword in request.message.lower() for keyword in search_keywords)
+        
+        search_performed = False
+        search_engine_used = None
+        
+        if need_search:
+            # Use the search engine specified by user
+            search_engine = request.search_engine
+            search_engine_used = search_engine
+            
+            if search_engine == "google":
+                # Use Gemini with Google Search grounding
+                search_performed = True
+                
+                grounding_tool = types.Tool(
+                    google_search=types.GoogleSearch()
+                )
+                
+                config = types.GenerateContentConfig(
+                    tools=[grounding_tool]
+                )
+                
+                final_response = client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=request.message,
+                    config=config
+                )
+                
+                return SmartChatResponse(
+                    response=final_response.text,
+                    status="success",
+                    search_performed=search_performed,
+                    search_engine=search_engine_used
+                )
+            else:
+                # Use DuckDuckGo or SerpAPI
+                search_results = search_web(
+                    request.message,
+                    search_engine=search_engine,
+                    max_results=5
+                )
+                search_performed = True
+                
+                # Generate answer based on search results
+                answer_prompt = f"""Dựa trên kết quả tìm kiếm, hãy trả lời câu hỏi một cách chi tiết và hữu ích.
+
+Câu hỏi: {request.message}
+
+Kết quả tìm kiếm:
+{search_results}
+
+Hãy:
+1. Tổng hợp thông tin từ kết quả tìm kiếm
+2. Trả lời trực tiếp câu hỏi
+3. Đưa ra lời khuyên, phân tích nếu được yêu cầu
+4. Sử dụng định dạng Markdown để dễ đọc
+5. Trả lời bằng tiếng Việt
+
+Trả lời:"""
+                
+                # Generate final answer for DuckDuckGo/SerpAPI
+                final_response = client.models.generate_content(
+                    model="gemini-2.5-flash",
+                    contents=answer_prompt
+                )
+                
+                return SmartChatResponse(
+                    response=final_response.text,
+                    status="success",
+                    search_performed=search_performed,
+                    search_engine=search_engine_used
+                )
+            
+        else:
+            # Answer without search
+            answer_prompt = f"""Trả lời câu hỏi sau một cách chi tiết và hữu ích:
+
+{request.message}
+
+Hãy:
+1. Trả lời dựa trên kiến thức của bạn
+2. Sử dụng định dạng Markdown
+3. Trả lời bằng tiếng Việt
+
+Trả lời:"""
+        
+        # Generate final answer
+        final_response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=answer_prompt
+        )
+        
+        return SmartChatResponse(
+            response=final_response.text,
+            status="success",
+            search_performed=search_performed,
+            search_engine=search_engine_used
+        )
+        
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -274,4 +423,9 @@ async def clear_data():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(
+        "main:app",  # Import string thay vì object để hỗ trợ reload
+        host="0.0.0.0", 
+        port=8000,
+        reload=True  # Auto-reload khi có thay đổi code
+    )
