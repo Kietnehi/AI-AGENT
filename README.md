@@ -133,7 +133,7 @@ cp .env.example .env       # Linux/Mac
 
 ```env
 # Bắt buộc - Gemini AI (Lấy tại: https://makersuite.google.com/app/apikey)
-GEMINI_API_KEY=AIzaSyD...your_actual_key_here
+GEMINI_API_KEY=your_actual_key_here
 
 # Tùy chọn - Wolfram Alpha (Lấy tại: https://products.wolframalpha.com/api/)
 WOLFRAM_APP_ID=XXXXX-XXXXXXXXXX
