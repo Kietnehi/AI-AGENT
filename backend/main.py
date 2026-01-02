@@ -124,26 +124,36 @@ async def chat(request: ChatRequest):
             )
         
         elif request.feature == "math":
-            # Wolfram computation
+            # Wolfram computation only - no Gemini
             wolfram_result = wolfram_compute(request.message)
             
-            # Use Gemini to explain the result
-            prompt = f"""Giải thích kết quả tính toán sau một cách dễ hiểu:
-
-Câu hỏi: {request.message}
-Kết quả từ Wolfram Alpha: {wolfram_result}
-
-Giải thích bằng tiếng Việt:"""
-            
-            response = client.models.generate_content(
-                model="gemini-2.5-flash",
-                contents=prompt
-            )
-            
-            return ChatResponse(
-                response=f"🧮 **Kết quả tính toán:**\n\n{wolfram_result}\n\n📝 **Giải thích:**\n\n{response.text}",
-                status="success"
-            )
+            # Format result for text display while keeping full data for frontend
+            if isinstance(wolfram_result, dict):
+                formatted_text = ""
+                if wolfram_result.get('text_results'):
+                    formatted_text = "\n".join(wolfram_result['text_results'])
+                
+                if wolfram_result.get('plots'):
+                    if formatted_text:
+                        formatted_text += "\n\n"
+                    formatted_text += f"📊 Đã tạo {len(wolfram_result['plots'])} biểu đồ"
+                
+                if wolfram_result.get('images'):
+                    if formatted_text:
+                        formatted_text += "\n\n"
+                    formatted_text += f"🖼️ Đã tạo {len(wolfram_result['images'])} hình ảnh"
+                
+                # Return the full result object as JSON string so frontend can parse it
+                import json
+                return ChatResponse(
+                    response=json.dumps(wolfram_result),
+                    status="success"
+                )
+            else:
+                return ChatResponse(
+                    response=str(wolfram_result),
+                    status="success"
+                )
         
         else:
             # General AI response
@@ -331,7 +341,14 @@ async def math_compute(request: MathRequest):
     """Wolfram Alpha computation endpoint"""
     try:
         result = wolfram_compute(request.query)
-        return {"result": result, "status": "success"}
+        return {
+            "result": result, 
+            "status": "success",
+            "text_results": result.get('text_results', []),
+            "images": result.get('images', []),
+            "plots": result.get('plots', []),
+            "success": result.get('success', False)
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

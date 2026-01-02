@@ -12,7 +12,148 @@ function MathFeature() {
     'solve x^2 + 5x + 6 = 0',
     'derivative of sin(x)*cos(x)',
     'plot y = x^2',
+    'plot sin(x) and cos(x)',
+    'graph of x^3 - 2x + 1',
   ];
+
+  const renderWolframResult = (data) => {
+    if (!data) return null;
+
+    return (
+      <div style={{ width: '100%' }}>
+        {/* Text Results */}
+        {data.text_results && data.text_results.length > 0 && (
+          <div style={{ marginBottom: '20px' }}>
+            <h4 style={{ color: '#667eea', marginBottom: '10px' }}>🧮 Kết quả:</h4>
+            {data.text_results.map((result, idx) => (
+              <div key={idx} style={{ 
+                background: '#f8f9fa', 
+                padding: '10px', 
+                marginBottom: '5px', 
+                borderRadius: '5px',
+                fontFamily: 'monospace'
+              }}>
+                {result}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Plots */}
+        {data.plots && data.plots.length > 0 && (
+          <div style={{ marginBottom: '20px' }}>
+            <h4 style={{ color: '#667eea', marginBottom: '10px' }}>📊 Biểu đồ:</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              {data.plots.map((plot, idx) => (
+                <div key={idx} style={{ 
+                  border: '2px solid #667eea', 
+                  borderRadius: '10px', 
+                  overflow: 'hidden',
+                  background: 'white',
+                  maxWidth: '100%'
+                }}>
+                  <div style={{ 
+                    background: '#667eea', 
+                    color: 'white', 
+                    padding: '8px 12px', 
+                    fontSize: '0.9rem' 
+                  }}>
+                    {plot.title}
+                  </div>
+                  <div style={{ 
+                    padding: '10px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    background: 'white'
+                  }}>
+                    <img 
+                      src={plot.url} 
+                      alt={plot.alt} 
+                      style={{ 
+                        maxWidth: '100%', 
+                        maxHeight: '400px',
+                        height: 'auto',
+                        width: 'auto',
+                        display: 'block',
+                        objectFit: 'contain'
+                      }}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Other Images */}
+        {data.images && data.images.length > 0 && (
+          <div style={{ marginBottom: '20px' }}>
+            <h4 style={{ color: '#667eea', marginBottom: '10px' }}>🖼️ Hình ảnh:</h4>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              {data.images.map((img, idx) => (
+                <div key={idx} style={{ 
+                  border: '2px solid #667eea', 
+                  borderRadius: '10px', 
+                  overflow: 'hidden',
+                  background: 'white',
+                  maxWidth: '100%'
+                }}>
+                  <div style={{ 
+                    background: '#667eea', 
+                    color: 'white', 
+                    padding: '8px 12px', 
+                    fontSize: '0.9rem' 
+                  }}>
+                    {img.title}
+                  </div>
+                  <div style={{ 
+                    padding: '10px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    background: 'white'
+                  }}>
+                    <img 
+                      src={img.url} 
+                      alt={img.alt} 
+                      style={{ 
+                        maxWidth: '100%', 
+                        maxHeight: '300px',
+                        height: 'auto',
+                        width: 'auto',
+                        display: 'block',
+                        objectFit: 'contain'
+                      }}
+                      onError={(e) => {
+                        e.target.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Error message if no success */}
+        {!data.success && (
+          <div style={{ 
+            background: '#ffebee', 
+            color: '#c62828', 
+            padding: '15px', 
+            borderRadius: '5px',
+            border: '1px solid #ffcdd2'
+          }}>
+            ❌ Không thể tính toán được kết quả. Vui lòng kiểm tra lại câu hỏi.
+          </div>
+        )}
+      </div>
+    );
+  };
 
   const handleSend = async () => {
     if (!input.trim()) return;
@@ -24,12 +165,38 @@ function MathFeature() {
 
     try {
       const response = await chatAPI.sendMessage(input, 'math');
-      const agentMessage = { role: 'agent', content: response.response };
+      
+      // Handle both old string format and new JSON format
+      let wolframData;
+      if (typeof response.response === 'string') {
+        // Try to parse as JSON first
+        try {
+          wolframData = JSON.parse(response.response);
+        } catch (e) {
+          // If not JSON, treat as old format - just text
+          wolframData = {
+            text_results: [response.response],
+            plots: [],
+            images: [],
+            success: true
+          };
+        }
+      } else {
+        // New format - object with plots, images, etc.
+        wolframData = response.response;
+      }
+
+      const agentMessage = { 
+        role: 'agent', 
+        content: wolframData,
+        isWolfram: true
+      };
       setMessages(prev => [...prev, agentMessage]);
     } catch (error) {
       const errorMessage = { 
         role: 'agent', 
-        content: `❌ Lỗi: ${error.response?.data?.detail || error.message}` 
+        content: `❌ Lỗi: ${error.response?.data?.detail || error.message}`,
+        isWolfram: false
       };
       setMessages(prev => [...prev, errorMessage]);
     } finally {
@@ -86,19 +253,22 @@ function MathFeature() {
         <div className="messages">
           {messages.length === 0 && (
             <div style={{ textAlign: 'center', color: '#999', padding: '40px' }}>
-              <p>🧮 Tôi có thể giúp bạn tính toán với Wolfram Alpha!</p>
+              <p>🧮 Tôi có thể giúp bạn tính toán và vẽ biểu đồ với Wolfram Alpha!</p>
               <p style={{ fontSize: '0.9rem', marginTop: '10px' }}>
-                Tích phân, đạo hàm, giải phương trình, và nhiều hơn nữa...
+                Tích phân, đạo hàm, giải phương trình, vẽ đồ thị và nhiều hơn nữa...
               </p>
             </div>
           )}
           {messages.map((msg, idx) => (
             <div key={idx} className={`message ${msg.role}`}>
               <div className="message-label">
-                {msg.role === 'user' ? '👤 Bạn' : '🤖 AI Agent'}
+                {msg.role === 'user' ? '👤 Bạn' : '🤖 Wolfram Alpha'}
               </div>
               <div className="message-text">
-                <ReactMarkdown>{msg.content}</ReactMarkdown>
+                {msg.isWolfram ? 
+                  renderWolframResult(msg.content) : 
+                  <ReactMarkdown>{msg.content}</ReactMarkdown>
+                }
               </div>
             </div>
           ))}
@@ -108,7 +278,7 @@ function MathFeature() {
         <div className="input-area">
           <input
             type="text"
-            placeholder="Nhập phép tính của bạn..."
+            placeholder="Nhập phép tính của bạn (thử 'plot y = x^2' để vẽ biểu đồ)..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}

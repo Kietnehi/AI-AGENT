@@ -61,6 +61,16 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
 - Giải toán phức tạp, tích phân, đạo hàm
 - Tính toán khoa học, thống kê
 - Giải phương trình
+- **Vẽ đồ thị hàm số** trực tiếp từ Wolfram Alpha
+
+<div align="center">
+
+![Plot Function](./image/plotdothi.png)
+*Đồ thị hàm số được tạo bằng Wolfram Alpha API*
+
+</div>
+
+**Tính năng vẽ đồ thị nâng cao:** AI Agent tích hợp trực tiếp với Wolfram Alpha API để tạo ra các đồ thị toán học chính xác và đẹp mắt. Chỉ cần nhập lệnh như "plot y = x^2" hoặc "graph sin(x) from -π to π", hệ thống sẽ tự động gửi yêu cầu đến Wolfram Alpha, nhận về hình ảnh đồ thị chất lượng cao và hiển thị ngay lập tức trong giao diện. Wolfram Alpha xử lý các phép vẽ phức tạp bao gồm hàm số nhiều biến, đồ thị 3D, biểu đồ phân cực, và các hàm đặc biệt, giúp người dùng trực quan hóa toán học một cách dễ dàng và chuyên nghiệp.
 
 ### 3. 📊 Phân Tích Dữ Liệu
 - Đọc và phân tích file CSV

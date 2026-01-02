@@ -79,7 +79,20 @@ Trả lời bằng tiếng Việt một cách thân thiện và chuyên nghiệp
             if end != -1:
                 query = text[start+9:end].strip()
                 wolfram_result = wolfram_compute(query)
-                result = text[:start] + f"\n\n🧮 Kết quả tính toán:\n{wolfram_result}\n\n" + text[end+1:]
+                
+                # Format result based on type
+                if isinstance(wolfram_result, dict):
+                    formatted_result = ""
+                    if wolfram_result.get('text_results'):
+                        formatted_result += "\n".join(wolfram_result['text_results'])
+                    if wolfram_result.get('plots'):
+                        formatted_result += f"\n\n📊 Có {len(wolfram_result['plots'])} biểu đồ được tạo"
+                    if wolfram_result.get('images'):
+                        formatted_result += f"\n\n🖼️ Có {len(wolfram_result['images'])} hình ảnh được tạo"
+                else:
+                    formatted_result = str(wolfram_result)
+                
+                result = text[:start] + f"\n\n🧮 Kết quả tính toán:\n{formatted_result}\n\n" + text[end+1:]
         
         # CSV commands
         if "[LOAD_CSV:" in text:
