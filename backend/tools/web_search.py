@@ -34,17 +34,19 @@ class WebSearchTool:
             return self._search_duckduckgo(query, max_results)
     
     def _search_duckduckgo(self, query: str, max_results: int) -> List[Dict]:
-        """Search using DuckDuckGo"""
         try:
             results = []
             with DDGS() as ddgs:
-                for i, result in enumerate(ddgs.text(query, max_results=max_results)):
-                    if i >= max_results:
-                        break
+                for result in ddgs.text(
+                    query,
+                    max_results=max_results,
+                    region="vn-vi",
+                    safesearch="moderate"
+                ):
                     results.append({
-                        'title': result.get('title', ''),
-                        'link': result.get('href', ''),
-                        'snippet': result.get('body', '')
+                        "title": result.get("title", ""),
+                        "link": result.get("href") or result.get("url", ""),
+                        "snippet": result.get("body", "")
                     })
             return results
         except Exception as e:

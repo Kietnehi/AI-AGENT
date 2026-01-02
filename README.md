@@ -1,6 +1,27 @@
+<div align="center">
+
+![AI Agent](./image/readme/aiagent.jpg)
+
+</div>
+
+<p align="center">
+  <img src="./image/readme/gemini.jpg" width="200" alt="Gemini"/>
+  <img src="./image/readme/react.jpg" width="200" alt="React"/>
+  <img src="./image/readme/duckduckgo.png" width="200" alt="DuckDuckGo"/>
+  <img src="./image/readme/langchain.jpg" width="200" alt="LangChain"/>
+</p>
+
+---
+
 # 🤖 AI Agent - Trợ Lý Thông Minh Đa Năng
 
 AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học, và phân tích dữ liệu, sử dụng Gemini API làm LLM chính.
+
+<div align="center">
+
+![Demo](./output.gif)
+
+</div>
 
 ## ✨ Tính Năng
 
@@ -8,6 +29,11 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
 - **DuckDuckGo**: Tìm kiếm miễn phí, bảo mật
 - **SerpAPI**: Tìm kiếm Google với API key
 - Người dùng có thể chọn công cụ tìm kiếm phù hợp
+
+<p align="center">
+  <img src="./image/duckduckgo.png" width="45%" alt="DuckDuckGo Search"/>
+  <img src="./image/serpapi.png" width="45%" alt="SerpAPI Search"/>
+</p>
 
 ### 2. 🧮 Tính Toán Toán Học
 - Sử dụng **Wolfram Alpha API**
@@ -26,6 +52,16 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
   - Pie chart (biểu đồ tròn)
   - Box plot
   - Heatmap (bản đồ nhiệt)
+
+<div align="center">
+
+![Data Analysis](./image/aiagent.png)
+*Giao diện phân tích dữ liệu*
+
+![Bar Chart](./image/cot.png)
+*Tự động tạo biểu đồ cột*
+
+</div>
 
 ### 4. 🧠 Gemini LLM
 - Sử dụng Google Gemini API

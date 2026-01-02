@@ -94,12 +94,13 @@ function DataAnalysisFeature() {
       const response = await dataAPI.analyzeData('create_chart', chartConfig);
       setChartResult(response.result);
       
-      // Extract chart filename from result
+      // Extract chart filename from result and add timestamp to prevent caching
       const match = response.result.match(/charts[\\\/](.+\.png)/);
       if (match) {
+        const timestamp = new Date().getTime();
         setChartResult({
           message: response.result,
-          imageUrl: `http://localhost:8000/charts/${match[1]}`
+          imageUrl: `http://localhost:8000/charts/${match[1]}?t=${timestamp}`
         });
       }
     } catch (error) {

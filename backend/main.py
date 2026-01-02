@@ -230,11 +230,15 @@ async def analyze_data(request: DataAnalysisRequest):
                 raise HTTPException(status_code=400, detail="Prompt required for AI analysis")
             result = data_tool.analyze_with_ai(request.prompt)
         elif request.action == "create_chart":
+            import time
+            # Use timestamp to create unique filename
+            output_filename = f"chart_{request.chart_type or 'bar'}_{int(time.time())}"
             result = data_tool.create_chart(
                 chart_type=request.chart_type or "bar",
                 x_col=request.x_col,
                 y_col=request.y_col,
-                title=request.title
+                title=request.title,
+                output_file=output_filename
             )
         else:
             raise HTTPException(status_code=400, detail="Invalid action")

@@ -140,61 +140,81 @@ class DataAnalysisTool:
             
             output_path = os.path.join(Config.CHART_OUTPUT_DIR, f"{output_file}.png")
             
-            plt.figure(figsize=(12, 7))
+            fig, ax = plt.subplots(figsize=(12, 7))
             
             if chart_type == "bar":
                 if x_col and y_col:
-                    plt.bar(self.df[x_col], self.df[y_col])
-                    plt.xlabel(x_col)
-                    plt.ylabel(y_col)
+                    ax.bar(self.df[x_col], self.df[y_col])
+                    ax.set_xlabel(x_col)
+                    ax.set_ylabel(y_col)
                     plt.xticks(rotation=45, ha='right')
                 else:
+                    plt.close(fig)
                     return "Cần chỉ định x_col và y_col cho biểu đồ cột."
             
             elif chart_type == "line":
                 if x_col and y_col:
-                    self.df.plot(x=x_col, y=y_col, kind='line', marker='o')
+                    ax.plot(self.df[x_col], self.df[y_col], marker='o')
+                    ax.set_xlabel(x_col)
+                    ax.set_ylabel(y_col)
+                    ax.grid(True, alpha=0.3)
                 else:
+                    plt.close(fig)
                     return "Cần chỉ định x_col và y_col cho biểu đồ đường."
             
             elif chart_type == "scatter":
                 if x_col and y_col:
-                    plt.scatter(self.df[x_col], self.df[y_col], alpha=0.5)
-                    plt.xlabel(x_col)
-                    plt.ylabel(y_col)
+                    ax.scatter(self.df[x_col], self.df[y_col], alpha=0.5)
+                    ax.set_xlabel(x_col)
+                    ax.set_ylabel(y_col)
+                    ax.grid(True, alpha=0.3)
                 else:
+                    plt.close(fig)
                     return "Cần chỉ định x_col và y_col cho biểu đồ phân tán."
             
             elif chart_type == "histogram":
                 if x_col:
-                    self.df[x_col].hist(bins=30, edgecolor='black')
-                    plt.xlabel(x_col)
-                    plt.ylabel("Tần suất")
+                    ax.hist(self.df[x_col], bins=30, edgecolor='black')
+                    ax.set_xlabel(x_col)
+                    ax.set_ylabel("Tần suất")
+                    ax.grid(True, alpha=0.3, axis='y')
                 else:
+                    plt.close(fig)
                     return "Cần chỉ định x_col cho histogram."
             
             elif chart_type == "pie":
                 if x_col:
-                    self.df[x_col].value_counts().plot(kind='pie', autopct='%1.1f%%')
-                    plt.ylabel("")
+                    value_counts = self.df[x_col].value_counts()
+                    ax.pie(value_counts, labels=value_counts.index, autopct='%1.1f%%')
+                    ax.set_ylabel("")
                 else:
+                    plt.close(fig)
                     return "Cần chỉ định x_col cho biểu đồ tròn."
             
             elif chart_type == "box":
                 if y_col:
                     if x_col:
-                        self.df.boxplot(column=y_col, by=x_col)
+                        # Group by x_col and create box plot
+                        data_to_plot = [self.df[self.df[x_col] == cat][y_col].dropna() for cat in self.df[x_col].unique()]
+                        ax.boxplot(data_to_plot, labels=self.df[x_col].unique())
+                        ax.set_xlabel(x_col)
+                        ax.set_ylabel(y_col)
+                        plt.xticks(rotation=45, ha='right')
                     else:
-                        self.df[[y_col]].boxplot()
+                        ax.boxplot(self.df[y_col].dropna())
+                        ax.set_ylabel(y_col)
+                    ax.grid(True, alpha=0.3, axis='y')
                 else:
+                    plt.close(fig)
                     return "Cần chỉ định y_col cho box plot."
             
             elif chart_type == "heatmap":
                 numeric_cols = self.df.select_dtypes(include=['number']).columns
                 if len(numeric_cols) > 0:
                     correlation = self.df[numeric_cols].corr()
-                    sns.heatmap(correlation, annot=True, cmap='coolwarm', center=0)
+                    sns.heatmap(correlation, annot=True, cmap='coolwarm', center=0, ax=ax)
                 else:
+                    plt.close(fig)
                     return "Không có cột số để tạo heatmap."
             
             else:
