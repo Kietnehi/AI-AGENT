@@ -63,12 +63,13 @@ class MathRequest(BaseModel):
 
 
 class DataAnalysisRequest(BaseModel):
-    action: str  # "summary", "info", "analyze_column", "create_chart"
+    action: str  # "summary", "info", "analyze_column", "create_chart", "ai_analyze"
     column: Optional[str] = None
     chart_type: Optional[str] = None
     x_col: Optional[str] = None
     y_col: Optional[str] = None
     title: Optional[str] = None
+    prompt: Optional[str] = None  # For AI analysis
 
 
 @app.get("/")
@@ -224,6 +225,10 @@ async def analyze_data(request: DataAnalysisRequest):
             if not request.column:
                 raise HTTPException(status_code=400, detail="Column name required")
             result = data_tool.analyze_column(request.column)
+        elif request.action == "ai_analyze":
+            if not request.prompt:
+                raise HTTPException(status_code=400, detail="Prompt required for AI analysis")
+            result = data_tool.analyze_with_ai(request.prompt)
         elif request.action == "create_chart":
             result = data_tool.create_chart(
                 chart_type=request.chart_type or "bar",

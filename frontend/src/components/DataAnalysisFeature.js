@@ -10,6 +10,8 @@ function DataAnalysisFeature() {
   const [summary, setSummary] = useState('');
   const [chartResult, setChartResult] = useState('');
   const [dragOver, setDragOver] = useState(false);
+  const [aiPrompt, setAiPrompt] = useState('');
+  const [aiResult, setAiResult] = useState('');
   
   const [chartConfig, setChartConfig] = useState({
     type: 'bar',
@@ -107,6 +109,30 @@ function DataAnalysisFeature() {
     }
   };
 
+  const handleAIAnalyze = async () => {
+    if (!fileInfo) {
+      alert('Vui lòng upload file CSV trước');
+      return;
+    }
+
+    if (!aiPrompt.trim()) {
+      alert('Vui lòng nhập câu hỏi phân tích');
+      return;
+    }
+
+    setLoading(true);
+    setAiResult('');
+
+    try {
+      const response = await dataAPI.analyzeData('ai_analyze', { prompt: aiPrompt });
+      setAiResult(response.result);
+    } catch (error) {
+      alert(`Lỗi: ${error.response?.data?.detail || error.message}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div>
       {!fileInfo && (
@@ -171,6 +197,8 @@ function DataAnalysisFeature() {
                 setColumns([]);
                 setSummary('');
                 setChartResult('');
+                setAiResult('');
+                setAiPrompt('');
                 dataAPI.clearData();
               }}
               style={{
@@ -186,6 +214,68 @@ function DataAnalysisFeature() {
             >
               Xóa dữ liệu
             </button>
+          </div>
+
+          <div style={{ marginTop: '30px', padding: '20px', background: '#f0f4ff', borderRadius: '15px' }}>
+            <h3 style={{ color: '#667eea', marginBottom: '15px' }}>🤖 Phân Tích Dữ Liệu với AI</h3>
+            <p style={{ color: '#666', marginBottom: '15px' }}>
+              Hỏi AI bất cứ điều gì về dữ liệu của bạn!
+            </p>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <input
+                type="text"
+                placeholder="VD: Tổng hợp dữ liệu theo tháng, tìm xu hướng, giá trị bất thường..."
+                value={aiPrompt}
+                onChange={(e) => setAiPrompt(e.target.value)}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter') {
+                    handleAIAnalyze();
+                  }
+                }}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  border: '2px solid #667eea',
+                  borderRadius: '10px',
+                  fontSize: '1rem'
+                }}
+                disabled={loading}
+              />
+              <button
+                onClick={handleAIAnalyze}
+                disabled={loading || !aiPrompt.trim()}
+                style={{
+                  padding: '12px 24px',
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '10px',
+                  fontSize: '1rem',
+                  fontWeight: '600',
+                  cursor: loading || !aiPrompt.trim() ? 'not-allowed' : 'pointer',
+                  opacity: loading || !aiPrompt.trim() ? 0.5 : 1
+                }}
+              >
+                Phân Tích
+              </button>
+            </div>
+
+            {aiResult && (
+              <div style={{
+                marginTop: '20px',
+                padding: '20px',
+                background: 'white',
+                borderRadius: '10px',
+                whiteSpace: 'pre-wrap',
+                lineHeight: '1.6',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+              }}>
+                <strong style={{ color: '#667eea', display: 'block', marginBottom: '10px' }}>
+                  📊 Kết quả phân tích:
+                </strong>
+                {aiResult}
+              </div>
+            )}
           </div>
 
           <div style={{ marginTop: '30px' }}>
