@@ -84,15 +84,18 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
   - Box plot
   - Heatmap (bản đồ nhiệt)
 
-<div align="center">
+<div style="display: flex; justify-content: center; gap: 20px;">
+  <div style="flex: 1; text-align: center;">
+    <img src="./image/aiagent.png" style="width: 100%; height: auto;">
+    <p><em>Giao diện phân tích dữ liệu</em></p>
+  </div>
 
-![Data Analysis](./image/aiagent.png)
-*Giao diện phân tích dữ liệu*
-
-![Bar Chart](./image/cot.png)
-*Tự động tạo biểu đồ cột*
-
+  <div style="flex: 1; text-align: center;">
+    <img src="./image/cot.png" style="width: 100%; height: auto;">
+    <p><em>Tự động tạo biểu đồ cột</em></p>
+  </div>
 </div>
+
 
 ### 4. 🧠 Gemini LLM
 - Sử dụng Google Gemini API
