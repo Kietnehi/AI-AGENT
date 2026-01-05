@@ -1,0 +1,52 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      # Mount models cache để không phải download lại
+      - huggingface_cache:/root/.cache/huggingface
+      - paddleocr_cache:/root/.paddleocr
+      - easyocr_cache:/root/.EasyOCR
+      # Mount uploads và outputs
+      - ./backend/uploads:/app/uploads
+      - ./backend/output:/app/output
+      - ./backend/charts:/app/charts
+      - ./backend/slides:/app/slides
+    environment:
+      - PYTHONUNBUFFERED=1
+      # GPU support (uncomment nếu có GPU)
+      # - NVIDIA_VISIBLE_DEVICES=all
+    # Uncomment nếu có NVIDIA GPU
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000
+    restart: unless-stopped
+
+volumes:
+  # Persistent volumes cho models cache
+  huggingface_cache:
+  paddleocr_cache:
+  easyocr_cache:

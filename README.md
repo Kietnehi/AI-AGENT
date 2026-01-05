@@ -31,6 +31,97 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
 
 </div>
 
+## 🐳 Cài Đặt & Chạy với Docker
+
+> **💡 Khuyến nghị:** Sử dụng Docker để triển khai nhanh chóng, tránh các vấn đề về môi trường và dependencies!
+
+### 📦 Docker Images & Containers
+
+Sau khi build thành công, hệ thống sẽ có các Docker images và containers như sau:
+
+<p align="center">
+  <img src="./image/dockerimage.png" width="45%" alt="Docker Images"/>
+  <img src="./image/dockercontainer.png" width="45%" alt="Docker Containers"/>
+</p>
+
+*Hình: Docker Images (trái) và Docker Containers (phải) của hệ thống AI Agent*
+
+### 🚀 Quick Start với Docker
+
+#### **Bước 1: Cài đặt Docker**
+
+- **Windows/Mac**: Tải [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- **Linux**: 
+  ```bash
+  curl -fsSL https://get.docker.com -o get-docker.sh
+  sudo sh get-docker.sh
+  ```
+
+#### **Bước 2: Cấu hình API Keys**
+
+Tạo file `.env` trong thư mục `backend/`:
+
+```env
+GEMINI_API_KEY=your_gemini_api_key_here
+WOLFRAM_APP_ID=your_wolfram_app_id_here
+SERPAPI_KEY=your_serpapi_key_here
+SEARCH_ENGINE=duckduckgo
+```
+
+#### **Bước 3: Build và Chạy**
+
+```bash
+# Build và start tất cả services
+docker-compose up --build
+
+# Hoặc chạy background
+docker-compose up -d --build
+```
+
+#### **Bước 4: Truy cập ứng dụng**
+
+- 🌐 **Frontend**: http://localhost:3000
+- 🔧 **Backend API**: http://localhost:8000
+- 📚 **API Docs**: http://localhost:8000/docs
+
+#### **Các lệnh Docker hữu ích:**
+
+```bash
+# Xem logs
+docker-compose logs -f
+
+# Dừng services
+docker-compose down
+
+# Rebuild một service cụ thể
+docker-compose up -d --build frontend
+docker-compose up -d --build backend
+
+# Xem trạng thái containers
+docker ps
+```
+
+### 💡 Tối ưu hóa Docker
+
+- **BuildKit**: Build nhanh hơn 2-3 lần
+  ```bash
+  # Windows PowerShell
+  $env:DOCKER_BUILDKIT=1
+  docker-compose build
+  
+  # Linux/Mac
+  DOCKER_BUILDKIT=1 docker-compose build
+  ```
+
+- **Models Cache**: Models sẽ được lưu trong Docker volumes, không cần download lại:
+  - `huggingface_cache`: Chứa Qwen, BLIP models (~2-3GB)
+  - `paddleocr_cache`: Chứa PaddleOCR models (~10MB)  
+  - `easyocr_cache`: Chứa EasyOCR models (~100MB)
+
+📖 **Chi tiết về tối ưu hóa Docker**: Xem [README_DOCKER.md](README_DOCKER.md) để tìm hiểu thêm về multi-stage build, layer caching, và các mẹo tối ưu.
+
+---
+
 ## ✨ Tính Năng
 
 ### 🌟 Smart Chat AI (Real-time)
