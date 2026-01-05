@@ -705,7 +705,7 @@ Nếu có vấn đề hoặc câu hỏi, hãy tạo Issue trên GitHub.
 
 <br/>
 
-<h3>🌟 Dự án: RAG Multi-LLM System</h3>
+<h3>🌟 AI Agent Using Multimodal Open-Source Models & APIs </h3>
 <p align="center">
   <a href="https://github.com/Kietnehi/RAG">
     <img src="https://img.shields.io/github/stars/Kietnehi/RAG?style=for-the-badge&color=yellow" alt="Stars"/>
