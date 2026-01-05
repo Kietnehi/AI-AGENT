@@ -1,14 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { smartChatAPI } from '../api';
+import api from '../api';
 import ReactMarkdown from 'react-markdown';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Volume2 } from 'lucide-react';
 
 function SmartChatFeature() {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const [searchEngine, setSearchEngine] = useState('google');
+  const [playingAudio, setPlayingAudio] = useState(null);
   const messagesEndRef = useRef(null);
+  const audioRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -68,6 +71,46 @@ function SmartChatFeature() {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSend();
+    }
+  };
+
+  const handlePlayAudio = async (text, messageIndex) => {
+    try {
+      // Stop previous audio if playing
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+        setPlayingAudio(null);
+      }
+
+      setPlayingAudio(messageIndex);
+      
+      // Get audio from TTS API
+      const audioBlob = await api.textToSpeech(text, 'vi');
+      const audioUrl = URL.createObjectURL(audioBlob);
+      
+      // Create and play audio
+      const audio = new Audio(audioUrl);
+      audioRef.current = audio;
+      
+      audio.onended = () => {
+        setPlayingAudio(null);
+        audioRef.current = null;
+        URL.revokeObjectURL(audioUrl);
+      };
+      
+      audio.onerror = () => {
+        setPlayingAudio(null);
+        audioRef.current = null;
+        alert('Lỗi phát audio');
+      };
+      
+      await audio.play();
+      
+    } catch (error) {
+      console.error('TTS Error:', error);
+      setPlayingAudio(null);
+      alert('Lỗi chuyển đổi text-to-speech');
     }
   };
 
@@ -208,6 +251,34 @@ function SmartChatFeature() {
                       </div>
                     )}
                     <ReactMarkdown>{msg.content}</ReactMarkdown>
+                    
+                    {/* Audio Button for AI responses */}
+                    {msg.role === 'agent' && !msg.isThinking && (
+                      <button
+                        onClick={() => handlePlayAudio(msg.content, idx)}
+                        disabled={playingAudio === idx}
+                        style={{
+                          marginTop: '10px',
+                          padding: '8px 16px',
+                          background: playingAudio === idx 
+                            ? 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)'
+                            : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '20px',
+                          cursor: playingAudio === idx ? 'not-allowed' : 'pointer',
+                          fontSize: '0.85rem',
+                          fontWeight: '600',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '6px',
+                          transition: 'all 0.3s'
+                        }}
+                      >
+                        <Volume2 size={16} />
+                        {playingAudio === idx ? 'Đang phát...' : 'Nghe'}
+                      </button>
+                    )}
                   </>
                 )}
               </div>

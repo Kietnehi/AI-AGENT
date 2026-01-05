@@ -4,8 +4,10 @@ import SmartChatFeature from './components/SmartChatFeature';
 import SearchFeature from './components/SearchFeature';
 import MathFeature from './components/MathFeature';
 import DataAnalysisFeature from './components/DataAnalysisFeature';
+import VisionFeature from './components/VisionFeature';
+import LocalLLMFeature from './components/LocalLLMFeature';
 import AnimatedBackground from './components/AnimatedBackground';
-import { Sparkles, Search, Calculator, BarChart3, Bot, Zap } from 'lucide-react';
+import { Sparkles, Search, Calculator, BarChart3, Bot, Zap, Eye, Cpu } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -25,7 +27,9 @@ function App() {
     { id: 'smart-chat', name: 'Smart Chat', icon: Sparkles, component: SmartChatFeature, color: '#667eea' },
     { id: 'search', name: 'Tìm Kiếm Web', icon: Search, component: SearchFeature, color: '#f093fb' },
     { id: 'math', name: 'Tính Toán', icon: Calculator, component: MathFeature, color: '#4facfe' },
-    { id: 'data', name: 'Phân Tích Dữ Liệu', icon: BarChart3, component: DataAnalysisFeature, color: '#43e97b' }
+    { id: 'data', name: 'Phân Tích Dữ Liệu', icon: BarChart3, component: DataAnalysisFeature, color: '#43e97b' },
+    { id: 'vision', name: 'Vision AI', icon: Eye, component: VisionFeature, color: '#fa709a' },
+    { id: 'local-llm', name: 'Local LLM', icon: Cpu, component: LocalLLMFeature, color: '#30cfd0' }
   ];
 
   const ActiveComponent = features.find(f => f.id === activeFeature)?.component;

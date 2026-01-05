@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { chatAPI } from '../api';
 import ReactMarkdown from 'react-markdown';
+import AudioButton from './AudioButton';
 
 function MathFeature() {
   const [messages, setMessages] = useState([]);
@@ -269,6 +270,9 @@ function MathFeature() {
                   renderWolframResult(msg.content) : 
                   <ReactMarkdown>{msg.content}</ReactMarkdown>
                 }
+                {msg.role === 'agent' && !msg.isWolfram && (
+                  <AudioButton text={typeof msg.content === 'string' ? msg.content : ''} />
+                )}
               </div>
             </div>
           ))}

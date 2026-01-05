@@ -100,6 +100,70 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
 - Hiểu ngữ cảnh hội thoại
 - Tương tác tự nhiên bằng tiếng Việt
 
+### 5. 🔊 Audio Player (Text-to-Speech)
+
+- Giới thiệu: AI Agent hiện hỗ trợ chuyển văn bản thành giọng nói (Text-to-Speech) và phát trực tiếp trên giao diện web. Tính năng này giúp bạn nghe nội dung trả lời, các ghi chú, hoặc kết quả phân tích dữ liệu mà không cần đọc tay.
+
+- Tính năng chính:
+  - Play / Pause: bật/tạm dừng audio.
+  - Seek (tua): click vào thanh tiến trình để tua tới vị trí mong muốn.
+  - Time display: hiển thị thời gian hiện tại và tổng thời lượng (ví dụ: 0:10 / 2:27).
+  - Restart: nút phát lại từ đầu.
+  - Giao diện thân thiện, có chỉ dẫn khi hover để người dùng biết có thể tua.
+
+- Vị trí code:
+  - Frontend component: [frontend/src/components/AudioButton.js](frontend/src/components/AudioButton.js)
+  - Backend endpoint (text-to-speech): [backend/main.py](backend/main.py#L465)
+
+- Cách sử dụng nhanh:
+  1. Tại bất kỳ chỗ nào hiển thị nút "Nghe" hoặc biểu tượng âm lượng, click để tải và phát audio.
+  2. Dùng thanh progress để tua đến vị trí mong muốn (click) hoặc dùng nút Tạm dừng/Tiếp tục.
+  3. Nhấn nút ↻ để phát lại từ đầu.
+
+- Ghi chú kỹ thuật:
+  - Frontend sẽ gọi API `/text-to-speech` để nhận về file audio (MPEG) rồi tạo URL tạm thời (`URL.createObjectURL`) và phát bằng thẻ `Audio` của trình duyệt.
+  - Nếu muốn thay voices hoặc tham số TTS, chỉnh ở `backend/main.py` nơi gọi `gTTS` (hoặc thay thế bằng dịch vụ TTS khác).
+
+  ### 6. 🧩 Local Open-source LLM — QWEN 1.5B
+
+  - Giới thiệu: Ngoài việc dùng Gemini và các dịch vụ đám mây, AI Agent còn hỗ trợ chạy mô hình open-source cỡ nhỏ/nhỏ-vừa tại local. Hiện repo có hướng dẫn tích hợp với `QWEN 1.5B` (một mô hình ngôn ngữ nhẹ, phù hợp để chạy thử trên máy cá nhân có GPU hoặc CPU mạnh).
+
+  - Tính năng khi dùng QWEN 1.5B:
+    - Chạy local LLM để trả lời câu hỏi offline (không cần API key bên thứ ba).
+    - Hỗ trợ trả lời ngôn ngữ tiếng Việt cơ bản và xử lý prompt tùy chỉnh.
+    - Phù hợp để thử nghiệm Local LLM, fine-tune nhỏ hoặc làm prototyping.
+
+  - Minh họa (ảnh):
+
+    ![Local LLM Demo](image/localllm.png)
+
+  - Cách dùng nhanh:
+    1. Chuẩn bị môi trường (Python >=3.8, virtualenv). Cài thêm thư viện mô hình local (ví dụ: `transformers`, `accelerate`, hoặc runtime tương ứng với backend bạn muốn dùng).
+    2. Tải trọng lượng QWEN 1.5B hoặc dùng một bản mirror tương thích (theo hướng dẫn của nhà phát triển QWEN).
+    3. Chạy service local (ví dụ một script nhỏ hoặc FastAPI endpoint) để load model và trả lời prompt.
+
+    Ví dụ minh họa (tối giản):
+
+    ```python
+    # pseudo-example: load với transformers (thực tế có thể cần xử lý cấu hình chi tiết)
+    from transformers import AutoModelForCausalLM, AutoTokenizer
+
+    tokenizer = AutoTokenizer.from_pretrained('qwen/qwen-1.5b')
+    model = AutoModelForCausalLM.from_pretrained('qwen/qwen-1.5b')
+
+    def ask_local(prompt):
+        inputs = tokenizer(prompt, return_tensors='pt')
+        outputs = model.generate(**inputs, max_length=512)
+        return tokenizer.decode(outputs[0], skip_special_tokens=True)
+    ```
+
+  - Lưu ý kỹ thuật & hiệu năng:
+    - `QWEN 1.5B` cần nhiều RAM/VRAM để load; nếu không có GPU mạnh, có thể dùng chế độ CPU nhưng chậm.
+    - Để có hiệu năng tốt, cân nhắc dùng `bitsandbytes` + `8-bit`/`4-bit` quantization hoặc triển khai trên máy có GPU.
+    - Khi chạy local, nhớ kiểm soát resource và hạn chế kích thước batch/prompt để tránh OOM.
+
+   - Vị trí code gợi ý để tích hợp: thêm endpoint FastAPI trong `backend/` để gọi model local, và tạo frontend feature tương ứng ở `frontend/src/components/LocalLLMFeature.js`.
+
 ## 📦 Cài Đặt
 
 ### 1. Clone hoặc tải project

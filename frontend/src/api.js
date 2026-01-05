@@ -90,5 +90,84 @@ export const smartChatAPI = {
   },
 };
 
+// Text-to-Speech API
+export const ttsAPI = {
+  /**
+   * Convert text to speech
+   * @param {string} text - The text to convert
+   * @param {string} lang - Language code (default: 'vi')
+   * @returns {Promise<Blob>} Audio blob
+   */
+  textToSpeech: async (text, lang = 'vi') => {
+    const response = await apiClient.post('/text-to-speech', 
+      { text, lang },
+      { responseType: 'blob' }
+    );
+    return response.data;
+  },
+};
+
+// Local LLM API
+export const localLLMAPI = {
+  /**
+   * Chat with local LLM
+   * @param {object} params - Chat parameters
+   * @param {string} params.message - The message to send
+   * @param {number} params.max_length - Max length of response
+   * @param {number} params.temperature - Sampling temperature
+   * @returns {Promise} Response data
+   */
+  chat: async (params) => {
+    const response = await apiClient.post('/local-llm', params);
+    return response.data;
+  },
+};
+
+// Vision API
+export const visionAPI = {
+  /**
+   * Upload an image
+   * @param {File} file - The image file to upload
+   * @returns {Promise} Response data
+   */
+  uploadImage: async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await apiClient.post('/upload-image', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+
+  /**
+   * Perform vision analysis (VQA or OCR)
+   * @param {object} params - Analysis parameters
+   * @param {string} params.action - 'vqa' or 'ocr'
+   * @param {string} params.image_filename - Name of the uploaded image
+   * @param {string} params.question - Question for VQA (optional)
+   * @returns {Promise} Response data
+   */
+  analyze: async (params) => {
+    const response = await apiClient.post('/vision', params);
+    return response.data;
+  },
+};
+
+// Unified API object
+const api = {
+  chat: chatAPI.sendMessage,
+  smartChat: smartChatAPI.sendSmartMessage,
+  uploadCSV: dataAPI.uploadCSV,
+  analyzeData: dataAPI.analyzeData,
+  clearData: dataAPI.clearData,
+  textToSpeech: ttsAPI.textToSpeech,
+  localLLMChat: localLLMAPI.chat,
+  uploadImage: visionAPI.uploadImage,
+  visionAnalysis: visionAPI.analyze,
+};
+
 // Export default API client for custom requests
-export default apiClient;
+export default api;

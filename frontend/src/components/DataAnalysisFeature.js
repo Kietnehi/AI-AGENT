@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import { dataAPI } from '../api';
+import AudioButton from './AudioButton';
 import { Upload, FileText, BarChart2 } from 'lucide-react';
 
 function DataAnalysisFeature() {
@@ -283,6 +284,7 @@ function DataAnalysisFeature() {
                   📊 Kết quả phân tích:
                 </strong>
                 {aiResult}
+                <AudioButton text={aiResult} />
               </div>
             )}
           </div>

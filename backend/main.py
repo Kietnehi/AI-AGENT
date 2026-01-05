@@ -1,19 +1,26 @@
 """FastAPI Backend for AI Agent"""
 from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, StreamingResponse
 from pydantic import BaseModel
 from typing import Optional, List
 import os
 import shutil
 from pathlib import Path
+import io
 
 from google import genai
 from google.genai import types
 from tools.web_search import search_web
 from tools.wolfram_tool import wolfram_compute
 from tools.data_analysis import DataAnalysisTool
+from tools.vision_tools import vision_tools
+from tools.local_llm import get_local_llm
 from config import Config
+
+# For TTS
+from gtts import gTTS
+import tempfile
 
 # Initialize FastAPI app
 app = FastAPI(title="AI Agent API", version="1.0.0")
@@ -83,6 +90,23 @@ class SmartChatResponse(BaseModel):
     status: str
     search_performed: bool
     search_engine: Optional[str] = None
+
+
+class TextToSpeechRequest(BaseModel):
+    text: str
+    lang: str = "vi"  # Default to Vietnamese
+
+
+class LocalLLMRequest(BaseModel):
+    message: str
+    max_length: int = 512
+    temperature: float = 0.7
+
+
+class VisionRequest(BaseModel):
+    action: str  # "vqa" or "ocr"
+    image_filename: str
+    question: Optional[str] = None  # For VQA only
 
 
 @app.get("/")
@@ -436,6 +460,151 @@ async def clear_data():
     global data_tool
     data_tool = DataAnalysisTool()
     return {"message": "Data cleared", "status": "success"}
+
+
+@app.post("/text-to-speech")
+async def text_to_speech(request: TextToSpeechRequest):
+    """
+    Convert text to speech using gTTS
+    Returns audio file
+    """
+    try:
+        # Validate and clean text
+        text = request.text.strip()
+        if not text:
+            raise HTTPException(status_code=400, detail="Text cannot be empty")
+        
+        # Limit text length to avoid timeout (max ~5000 chars)
+        if len(text) > 5000:
+            text = text[:5000] + "..."
+        
+        # Remove markdown formatting for better TTS
+        import re
+        text = re.sub(r'[#*`_\[\]()]', '', text)
+        text = re.sub(r'\n+', '. ', text)
+        
+        # Create TTS
+        tts = gTTS(text=text, lang=request.lang, slow=False)
+        
+        # Save to temporary file
+        with tempfile.NamedTemporaryFile(delete=False, suffix='.mp3') as fp:
+            temp_path = fp.name
+        
+        tts.save(temp_path)
+        
+        # Read file content
+        with open(temp_path, 'rb') as audio_file:
+            audio_content = audio_file.read()
+        
+        # Delete temp file
+        try:
+            os.unlink(temp_path)
+        except:
+            pass
+        
+        # Return audio as streaming response
+        return StreamingResponse(
+            io.BytesIO(audio_content),
+            media_type="audio/mpeg",
+            headers={
+                "Content-Disposition": "inline; filename=speech.mp3",
+                "Access-Control-Expose-Headers": "Content-Disposition"
+            }
+        )
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        import traceback
+        error_detail = f"TTS error: {str(e)}\n{traceback.format_exc()}"
+        print(error_detail)
+        raise HTTPException(status_code=500, detail=f"TTS error: {str(e)}")
+
+
+@app.post("/local-llm")
+async def local_llm_chat(request: LocalLLMRequest):
+    """
+    Chat using local LLM (Qwen 2.5B)
+    """
+    try:
+        llm = get_local_llm()
+        result = llm.generate(
+            prompt=request.message,
+            max_length=request.max_length,
+            temperature=request.temperature
+        )
+        
+        if result["success"]:
+            return {
+                "response": result["response"],
+                "model": result["model"],
+                "device": result["device"],
+                "status": "success"
+            }
+        else:
+            raise HTTPException(status_code=500, detail=result.get("error", "Unknown error"))
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Local LLM error: {str(e)}")
+
+
+@app.post("/upload-image")
+async def upload_image(file: UploadFile = File(...)):
+    """Upload image for vision analysis"""
+    try:
+        # Validate file type
+        if not file.content_type.startswith("image/"):
+            raise HTTPException(status_code=400, detail="File must be an image")
+        
+        # Save uploaded file
+        file_path = UPLOAD_DIR / file.filename
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        return {
+            "message": "Image uploaded successfully",
+            "filename": file.filename,
+            "status": "success"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/vision")
+async def vision_analysis(request: VisionRequest):
+    """
+    Vision analysis: VQA or OCR
+    """
+    try:
+        image_path = UPLOAD_DIR / request.image_filename
+        
+        if not image_path.exists():
+            raise HTTPException(status_code=404, detail="Image not found")
+        
+        if request.action == "vqa":
+            # Visual Question Answering
+            if not request.question:
+                raise HTTPException(status_code=400, detail="Question required for VQA")
+            
+            result = vision_tools.visual_question_answering(
+                str(image_path),
+                request.question
+            )
+            
+        elif request.action == "ocr":
+            # OCR - Extract text from image
+            result = vision_tools.extract_text_ocr(str(image_path))
+            
+        else:
+            raise HTTPException(status_code=400, detail="Invalid action. Use 'vqa' or 'ocr'")
+        
+        return {
+            "result": result,
+            "status": "success" if result.get("success") else "error"
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Vision analysis error: {str(e)}")
 
 
 if __name__ == "__main__":

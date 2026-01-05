@@ -3,6 +3,7 @@ import { chatAPI } from '../api';
 import ReactMarkdown from 'react-markdown';
 import { motion, AnimatePresence } from 'framer-motion';
 import LoadingAnimation from './LoadingAnimation';
+import AudioButton from './AudioButton';
 import { Send, Sparkles } from 'lucide-react';
 
 function SearchFeature() {
@@ -119,6 +120,7 @@ function SearchFeature() {
                 </div>
                 <div className="message-text">
                   <ReactMarkdown>{msg.content}</ReactMarkdown>
+                  {msg.role === 'agent' && <AudioButton text={msg.content} />}
                 </div>
               </motion.div>
             ))}
