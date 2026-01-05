@@ -212,6 +212,7 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
   Ví dụ file PPTX đã tạo:
 
   ![Slides PPT ví dụ](./image/slidesppt.png)
+  ![Slides tạo từ chức năng tạo slide](./image/slideduoctaotullm.png)
 
 
   - Lưu ý kỹ thuật & hiệu năng:
