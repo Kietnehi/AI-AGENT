@@ -163,6 +163,9 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
 
     ![Local LLM Demo](image/localllm.png)
 
+    ![Local LLM Response](./image/localllm_response.png)
+    *Local LLM Response — Ví dụ phản hồi từ Local LLM (QWEN 1.5B).*
+
   - Cách dùng nhanh:
     1. Chuẩn bị môi trường (Python >=3.8, virtualenv). Cài thêm thư viện mô hình local (ví dụ: `transformers`, `accelerate`, hoặc runtime tương ứng với backend bạn muốn dùng).
     2. Tải trọng lượng QWEN 1.5B hoặc dùng một bản mirror tương thích (theo hướng dẫn của nhà phát triển QWEN).
