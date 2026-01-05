@@ -40,11 +40,16 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
 Sau khi build thành công, hệ thống sẽ có các Docker images và containers như sau:
 
 <p align="center">
-  <img src="./image/dockerimage.png" width="45%" alt="Docker Images"/>
-  <img src="./image/dockercontainer.png" width="45%" alt="Docker Containers"/>
+  <img src="./image/dockerimage.png" width="45%" alt="Docker Image"/>
 </p>
 
-*Hình: Docker Images (trái) và Docker Containers (phải) của hệ thống AI Agent*
+<p align="center">
+  <img src="./image/dockercontainer.png" width="45%" alt="Docker Container"/>
+</p>
+
+<p align="center">
+  <em>Hình: Docker image (trên) và Docker container (dưới) của hệ thống AI Agent</em>
+</p>
 
 ### 🚀 Quick Start với Docker
 
