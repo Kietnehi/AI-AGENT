@@ -25,3 +25,5 @@ accelerate>=0.20.0
 sentencepiece>=0.1.99
 bitsandbytes>=0.41.0  # For 4-bit quantization on 4GB VRAM
 
+# OCR
+paddleocr

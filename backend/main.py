@@ -104,7 +104,7 @@ class LocalLLMRequest(BaseModel):
 
 
 class VisionRequest(BaseModel):
-    action: str  # "vqa" or "ocr"
+    action: str  # "vqa", "ocr_deepseek", or "ocr_paddle"
     image_filename: str
     question: Optional[str] = None  # For VQA only
 
@@ -591,12 +591,16 @@ async def vision_analysis(request: VisionRequest):
                 request.question
             )
             
-        elif request.action == "ocr":
-            # OCR - Extract text from image
-            result = vision_tools.extract_text_ocr(str(image_path))
+        elif request.action == "ocr_deepseek":
+            # OCR - DeepSeek style (text-to-text multimodal)
+            result = vision_tools.extract_text_deepseek_ocr(str(image_path))
+            
+        elif request.action == "ocr_paddle":
+            # OCR - PaddleOCR (traditional OCR with Vietnamese support)
+            result = vision_tools.extract_text_paddleocr(str(image_path))
             
         else:
-            raise HTTPException(status_code=400, detail="Invalid action. Use 'vqa' or 'ocr'")
+            raise HTTPException(status_code=400, detail="Invalid action. Use 'vqa', 'ocr_deepseek', or 'ocr_paddle'")
         
         return {
             "result": result,

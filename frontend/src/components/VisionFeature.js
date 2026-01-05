@@ -8,7 +8,7 @@ const VisionFeature = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [uploadedFilename, setUploadedFilename] = useState(null);
-  const [action, setAction] = useState('vqa'); // 'vqa' or 'ocr'
+  const [action, setAction] = useState('vqa'); // 'vqa', 'ocr_deepseek', or 'ocr_paddle'
   const [question, setQuestion] = useState('');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -68,10 +68,16 @@ const VisionFeature = () => {
         question: action === 'vqa' ? question : undefined
       });
 
-      setResult(response.result);
+      // Check if result contains error
+      if (response.result && response.result.success === false) {
+        setError('Lỗi: ' + (response.result.error || 'Không thể phân tích ảnh'));
+      } else {
+        setResult(response.result);
+      }
       setLoading(false);
     } catch (err) {
-      setError('Lỗi phân tích: ' + err.message);
+      const errorMsg = err.response?.data?.detail || err.message || 'Lỗi không xác định';
+      setError('Lỗi phân tích: ' + errorMsg);
       setLoading(false);
     }
   };
@@ -90,7 +96,7 @@ const VisionFeature = () => {
           onClick={() => setAction('vqa')}
           style={{
             padding: '10px 20px',
-            margin: '0 10px',
+            margin: '5px',
             borderRadius: '8px',
             border: action === 'vqa' ? '2px solid #667eea' : '2px solid transparent',
             background: action === 'vqa' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#2d2d2d',
@@ -102,20 +108,36 @@ const VisionFeature = () => {
           Hỏi Đáp Về Ảnh (VQA)
         </button>
         <button
-          className={`action-btn ${action === 'ocr' ? 'active' : ''}`}
-          onClick={() => setAction('ocr')}
+          className={`action-btn ${action === 'ocr_deepseek' ? 'active' : ''}`}
+          onClick={() => setAction('ocr_deepseek')}
           style={{
             padding: '10px 20px',
-            margin: '0 10px',
+            margin: '5px',
             borderRadius: '8px',
-            border: action === 'ocr' ? '2px solid #667eea' : '2px solid transparent',
-            background: action === 'ocr' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#2d2d2d',
+            border: action === 'ocr_deepseek' ? '2px solid #667eea' : '2px solid transparent',
+            background: action === 'ocr_deepseek' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#2d2d2d',
             color: 'white',
             cursor: 'pointer'
           }}
         >
           <FileText size={20} style={{ marginRight: '8px', display: 'inline' }} />
-          Trích Xuất Văn Bản (OCR)
+          OCR AI (DeepSeek or TrOCR)
+        </button>
+        <button
+          className={`action-btn ${action === 'ocr_paddle' ? 'active' : ''}`}
+          onClick={() => setAction('ocr_paddle')}
+          style={{
+            padding: '10px 20px',
+            margin: '5px',
+            borderRadius: '8px',
+            border: action === 'ocr_paddle' ? '2px solid #667eea' : '2px solid transparent',
+            background: action === 'ocr_paddle' ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' : '#2d2d2d',
+            color: 'white',
+            cursor: 'pointer'
+          }}
+        >
+          <FileText size={20} style={{ marginRight: '8px', display: 'inline' }} />
+          OCR Tiếng Việt (Paddle)
         </button>
       </div>
 
@@ -270,17 +292,35 @@ const VisionFeature = () => {
             </div>
           ) : (
             <div>
-              <p><strong>Văn bản trích xuất:</strong></p>
+              <p><strong>Văn bản trích xuất ({result.model || 'OCR'}):</strong></p>
               <pre style={{
                 whiteSpace: 'pre-wrap',
                 wordWrap: 'break-word',
                 background: '#1a1a1a',
                 padding: '12px',
                 borderRadius: '8px',
-                marginTop: '10px'
+                marginTop: '10px',
+                color: '#ffffff',
+                fontSize: '14px',
+                lineHeight: '1.6'
               }}>
                 {result.text}
               </pre>
+              {result.lines && result.lines.length > 0 && (
+                <div style={{ marginTop: '15px' }}>
+                  <p><strong>Chi tiết phát hiện:</strong></p>
+                  <ul style={{ color: '#ffffff' }}>
+                    {result.lines.map((line, idx) => (
+                      <li key={idx}>
+                        {line.text} 
+                        <span style={{ color: '#28a745', marginLeft: '10px' }}>
+                          ({Math.round(line.confidence * 100)}% độ chính xác)
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
               <AudioButton text={result.text} />
             </div>
           )}

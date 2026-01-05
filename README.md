@@ -164,6 +164,68 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
 
    - Vị trí code gợi ý để tích hợp: thêm endpoint FastAPI trong `backend/` để gọi model local, và tạo frontend feature tương ứng ở `frontend/src/components/LocalLLMFeature.js`.
 
+### 7. 👁️ Visual Question Answering (VQA)
+
+- Giới thiệu: AI Agent hỗ trợ tính năng Visual Question Answering - khả năng trả lời câu hỏi dựa trên nội dung hình ảnh. Sử dụng mô hình BLIP (Bootstrapping Language-Image Pre-training) từ Salesforce, hệ thống có thể hiểu và phân tích nội dung ảnh để đưa ra câu trả lời chính xác cho các câu hỏi của người dùng.
+
+- Tính năng chính:
+  - Trả lời câu hỏi về nội dung hình ảnh (số lượng đối tượng, màu sắc, vị trí, hoạt động...)
+  - Nhận diện và mô tả các yếu tố trong ảnh
+  - Hỗ trợ nhiều loại câu hỏi: "What", "How many", "Where", "What color"...
+  - Xử lý cả ảnh local và ảnh từ URL
+
+<div align="center">
+
+![Visual Question Answering](./image/vqa.png)
+*Giao diện Visual Question Answering với khả năng phân tích và trả lời câu hỏi về hình ảnh*
+
+</div>
+
+- Mô hình sử dụng:
+  - **BLIP-VQA-Base**: Mô hình vision-language được huấn luyện trên nhiều dataset lớn
+  - **Processor**: BlipProcessor để xử lý cả ảnh và text input
+  - **Model**: BlipForQuestionAnswering cho task VQA
+
+- Ví dụ sử dụng:
+
+```python
+from PIL import Image
+from transformers import BlipProcessor, BlipForQuestionAnswering
+
+# Load model và processor
+processor = BlipProcessor.from_pretrained("Salesforce/blip-vqa-base")
+model = BlipForQuestionAnswering.from_pretrained("Salesforce/blip-vqa-base")
+
+# Load ảnh
+image = Image.open("example.jpg").convert('RGB')
+
+# Đặt câu hỏi
+question = "How many people are in the image?"
+inputs = processor(image, question, return_tensors="pt")
+
+# Trả lời
+output = model.generate(**inputs)
+answer = processor.decode(output[0], skip_special_tokens=True)
+print(f"Answer: {answer}")
+```
+
+- Use cases thực tế:
+  - Phân tích ảnh sản phẩm trong e-commerce
+  - Hỗ trợ người khiếm thị hiểu nội dung hình ảnh
+  - Kiểm tra chất lượng và đếm số lượng sản phẩm
+  - Phân tích hình ảnh y tế, giáo dục
+  - Tự động gắn thẻ và phân loại ảnh
+
+- Vị trí code:
+  - Backend endpoint: [backend/tools/vision_tools.py](backend/tools/vision_tools.py)
+  - Frontend component: [frontend/src/components/VisionFeature.js](frontend/src/components/VisionFeature.js)
+
+- Lưu ý kỹ thuật:
+  - Yêu cầu GPU để xử lý nhanh (có thể chạy trên CPU nhưng chậm hơn)
+  - Cần cài đặt thư viện: `transformers`, `Pillow`, `torch`
+  - Model size: ~990MB, cần download lần đầu sử dụng
+  - Hỗ trợ batch processing để xử lý nhiều ảnh cùng lúc
+
 ## 📦 Cài Đặt
 
 ### 1. Clone hoặc tải project
