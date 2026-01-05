@@ -211,24 +211,26 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
   Minh họa giao diện (ví dụ):
 
 <div align="center">
+
+  <!-- Giao diện tạo Slides (in riêng) -->
+  <div style="margin-bottom:24px; max-width:900px;">
+    <h3 style="margin-bottom:12px;">Giao diện tạo Slides</h3>
+    <img src="./image/createslides.png"
+         style="width:100%; height:auto;"
+         alt="Tạo Slides giao diện"/>
+  </div>
+
+  <!-- Bảng 2 cột -->
   <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <th style="width:33%; padding:16px; font-size:18px;">
-        Giao diện tạo Slides
-      </th>
-      <th style="width:33%; padding:16px; font-size:18px;">
+      <th style="width:50%; padding:16px; font-size:18px;">
         File PPTX ví dụ
       </th>
-      <th style="width:33%; padding:16px; font-size:18px;">
+      <th style="width:50%; padding:16px; font-size:18px;">
         Slides được tạo
       </th>
     </tr>
     <tr>
-      <td style="padding:16px;">
-        <img src="./image/createslides.png"
-             style="width:100%; height:auto;"
-             alt="Tạo Slides giao diện"/>
-      </td>
       <td style="padding:16px;">
         <img src="./image/slidesppt.png"
              style="width:100%; height:auto;"
@@ -243,8 +245,9 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
   </table>
 
   <p style="margin-top:12px; font-style:italic; font-size:15px;">
-    Hình: (1) Giao diện tạo Slides — (2) Ví dụ file PPTX đã tạo — (3) Slides sinh bởi chức năng
+    Hình: (1) Giao diện tạo Slides — (2) Ví dụ file PPTX — (3) Slides sinh bởi chức năng
   </p>
+
 </div>
 
 
