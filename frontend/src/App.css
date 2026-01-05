@@ -6,10 +6,10 @@
 }
 
 .app {
-  max-width: 1400px;
+  max-width: 1600px;
   margin: 0 auto;
-  padding: 20px;
-  min-height: 100vh;
+  padding: 10px;
+  min-height: 50vh;
   animation: fadeIn 0.5s ease-in;
   position: relative;
 }
@@ -108,6 +108,8 @@
 /* Feature Selector */
 .feature-selector {
   display: flex;
+  justify-content: flex-start; /* Nằm sát trái */
+  gap: 10px; /* Khoảng cách giữa các nút */
   border-bottom: 2px solid #e0e0e0;
   background: linear-gradient(180deg, #f8f9fa 0%, #ffffff 100%);
   position: relative;
@@ -115,8 +117,7 @@
 }
 
 .feature-btn {
-  flex: 1;
-  min-width: 150px;
+  /* Bỏ flex:1 */
   padding: 22px 20px;
   border: none;
   background: transparent;
@@ -132,7 +133,6 @@
   position: relative;
   overflow: hidden;
 }
-
 .feature-btn::before {
   content: '';
   position: absolute;

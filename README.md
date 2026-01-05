@@ -186,6 +186,34 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
         return tokenizer.decode(outputs[0], skip_special_tokens=True)
     ```
 
+  **Lưu ý về chất lượng kết quả:**
+
+  - Khi sử dụng các mô hình open-source cỡ nhỏ (số lượng tham số ít) hoặc khi áp dụng quantization ở mức thấp như 4-bit để giảm kích thước và tiêu thụ VRAM, chất lượng đầu ra (độ chính xác, độ mạch lạc, khả năng hiểu ngữ cảnh) có thể bị suy giảm so với các mô hình lớn hơn hoặc chạy ở độ chính xác cao hơn.
+  - Nếu kết quả trả về không tốt, nguyên nhân rất có thể là do sử dụng model nhỏ và/hoặc quantization 4-bit; để cải thiện, cân nhắc dùng model có kích thước lớn hơn, chạy ở FP16/FP32, hoặc giảm mức quantization (nếu tài nguyên cho phép).
+
+
+  ### Tạo Slides (Slide Generation)
+
+  - Mô tả: Tính năng tạo slide tự động từ chủ đề do người dùng nhập, sử dụng Local LLM hoặc API LLM để sinh nội dung từng slide và xuất file trình chiếu.
+  - Vị trí frontend: [frontend/src/components/LocalLLMFeature.js](frontend/src/components/LocalLLMFeature.js)
+  - Backend: Frontend sẽ gọi endpoint tạo slides (xem `backend/main.py` để biết chi tiết endpoint và cách backend trả về file PPTX).
+
+  Hướng dẫn nhanh:
+
+  1. Mở giao diện `Local LLM` trong webapp.
+  2. Chọn nút **Tạo Slides**.
+  3. Nhập **chủ đề** và **số lượng slides** mong muốn.
+  4. Nhấn **Tạo Slides** — đợi quá trình sinh slide hoàn tất, sau đó nhấn **Tải xuống Slides** để lấy file PPTX.
+
+  Minh họa giao diện (ví dụ):
+
+  ![Tạo Slides giao diện](./image/createslides.png)
+
+  Ví dụ file PPTX đã tạo:
+
+  ![Slides PPT ví dụ](./image/slidesppt.png)
+
+
   - Lưu ý kỹ thuật & hiệu năng:
     - `QWEN 1.5B` cần nhiều RAM/VRAM để load; nếu không có GPU mạnh, có thể dùng chế độ CPU nhưng chậm.
     - Để có hiệu năng tốt, cân nhắc dùng `bitsandbytes` + `8-bit`/`4-bit` quantization hoặc triển khai trên máy có GPU.

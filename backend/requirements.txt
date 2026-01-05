@@ -16,6 +16,9 @@ uvicorn==0.24.0
 # Text-to-Speech
 gTTS==2.5.4
 
+# PowerPoint creation
+python-pptx==1.0.2
+
 # Local LLM & Vision Models - Hugging Face Transformers
 transformers>=4.46.0
 torch>=2.0.0
@@ -24,6 +27,9 @@ Pillow>=10.0.0
 accelerate>=0.20.0
 sentencepiece>=0.1.99
 bitsandbytes>=0.41.0  # For 4-bit quantization on 4GB VRAM
+
+# Text-to-Image - Stable Diffusion
+diffusers>=0.21.0
 
 # OCR
 paddleocr

@@ -29,7 +29,7 @@ function App() {
     { id: 'math', name: 'Tính Toán', icon: Calculator, component: MathFeature, color: '#4facfe' },
     { id: 'data', name: 'Phân Tích Dữ Liệu', icon: BarChart3, component: DataAnalysisFeature, color: '#43e97b' },
     { id: 'vision', name: 'Vision AI', icon: Eye, component: VisionFeature, color: '#fa709a' },
-    { id: 'local-llm', name: 'Local LLM', icon: Cpu, component: LocalLLMFeature, color: '#30cfd0' }
+    { id: 'local-llm', name: 'Local LLM hoặc API LLM ( Có thể tạo Slide thuyết trình )', icon: Cpu, component: LocalLLMFeature, color: '#30cfd0' }
   ];
 
   const ActiveComponent = features.find(f => f.id === activeFeature)?.component;

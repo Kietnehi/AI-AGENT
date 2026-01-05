@@ -110,15 +110,33 @@ export const ttsAPI = {
 // Local LLM API
 export const localLLMAPI = {
   /**
-   * Chat with local LLM
+   * Chat with local LLM or Gemini API
    * @param {object} params - Chat parameters
    * @param {string} params.message - The message to send
    * @param {number} params.max_length - Max length of response
    * @param {number} params.temperature - Sampling temperature
+   * @param {boolean} params.use_api - Use Gemini API or local LLM
+   * @param {string} params.api_key - Gemini API key (if use_api is true)
+   * @param {string} params.model_name - Gemini model name (if use_api is true)
    * @returns {Promise} Response data
    */
   chat: async (params) => {
     const response = await apiClient.post('/local-llm', params);
+    return response.data;
+  },
+  
+  /**
+   * Create presentation slides
+   * @param {object} params - Slide creation parameters
+   * @param {string} params.topic - Topic for the presentation
+   * @param {number} params.num_slides - Number of slides to create
+   * @param {boolean} params.use_api - Use Gemini API or local LLM
+   * @param {string} params.api_key - Gemini API key (if use_api is true)
+   * @param {string} params.model_name - Gemini model name (if use_api is true)
+   * @returns {Promise} Response data
+   */
+  createSlides: async (params) => {
+    const response = await apiClient.post('/create-slides', params);
     return response.data;
   },
 };
@@ -165,6 +183,7 @@ const api = {
   clearData: dataAPI.clearData,
   textToSpeech: ttsAPI.textToSpeech,
   localLLMChat: localLLMAPI.chat,
+  createSlides: localLLMAPI.createSlides,
   uploadImage: visionAPI.uploadImage,
   visionAnalysis: visionAPI.analyze,
 };

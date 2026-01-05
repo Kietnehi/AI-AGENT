@@ -15,7 +15,7 @@ from tools.web_search import search_web
 from tools.wolfram_tool import wolfram_compute
 from tools.data_analysis import DataAnalysisTool
 from tools.vision_tools import vision_tools
-from tools.local_llm import get_local_llm
+from tools.local_llm import get_local_llm, get_gemini_api
 from tools.summarization_tool import get_summarization_tool
 from config import Config
 
@@ -102,6 +102,17 @@ class LocalLLMRequest(BaseModel):
     message: str
     max_length: int = 512
     temperature: float = 0.7
+    use_api: bool = False  # True for Gemini API, False for Local LLM
+    api_key: Optional[str] = None  # Gemini API key
+    model_name: Optional[str] = "gemini-2.5-flash"  # Gemini model name
+
+
+class CreateSlidesRequest(BaseModel):
+    topic: str
+    num_slides: int = 5
+    use_api: bool = False  # True for Gemini API, False for Local LLM
+    api_key: Optional[str] = None  # Gemini API key
+    model_name: Optional[str] = "gemini-2.5-flash"  # Gemini model name
 
 
 class VisionRequest(BaseModel):
@@ -532,15 +543,28 @@ async def text_to_speech(request: TextToSpeechRequest):
 @app.post("/local-llm")
 async def local_llm_chat(request: LocalLLMRequest):
     """
-    Chat using local LLM (Qwen 2.5B)
+    Chat using local LLM (Qwen 2.5B) or Gemini API
     """
     try:
-        llm = get_local_llm()
-        result = llm.generate(
-            prompt=request.message,
-            max_length=request.max_length,
-            temperature=request.temperature
-        )
+        if request.use_api:
+            # Use Gemini API
+            if not request.api_key:
+                raise HTTPException(status_code=400, detail="API key is required for Gemini API")
+            
+            llm = get_gemini_api(request.api_key, request.model_name)
+            result = llm.generate(
+                prompt=request.message,
+                max_length=request.max_length,
+                temperature=request.temperature
+            )
+        else:
+            # Use local LLM
+            llm = get_local_llm()
+            result = llm.generate(
+                prompt=request.message,
+                max_length=request.max_length,
+                temperature=request.temperature
+            )
         
         if result["success"]:
             return {
@@ -553,7 +577,67 @@ async def local_llm_chat(request: LocalLLMRequest):
             raise HTTPException(status_code=500, detail=result.get("error", "Unknown error"))
             
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Local LLM error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"LLM error: {str(e)}")
+
+
+@app.post("/create-slides")
+async def create_slides(request: CreateSlidesRequest):
+    """
+    Create presentation slides using local LLM or Gemini API
+    """
+    try:
+        if request.use_api:
+            # Use Gemini API
+            if not request.api_key:
+                raise HTTPException(status_code=400, detail="API key is required for Gemini API")
+            
+            llm = get_gemini_api(request.api_key, request.model_name)
+            result = llm.create_presentation_slides(
+                topic=request.topic,
+                num_slides=request.num_slides
+            )
+        else:
+            # Use local LLM
+            llm = get_local_llm()
+            result = llm.create_presentation_slides(
+                topic=request.topic,
+                num_slides=request.num_slides
+            )
+        
+        if result["success"]:
+            return {
+                "filename": result["filename"],
+                "title": result["title"],
+                "num_slides": result["num_slides"],
+                "num_images": result.get("num_images", 0),
+                "model": result["model"],
+                "status": "success"
+            }
+        else:
+            raise HTTPException(status_code=500, detail=result.get("error", "Unknown error"))
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Slides creation error: {str(e)}")
+
+
+@app.get("/download-slides/{filename}")
+async def download_slides(filename: str):
+    """
+    Download created presentation slides
+    """
+    try:
+        file_path = Path("slides") / filename
+        if not file_path.exists():
+            raise HTTPException(status_code=404, detail="File not found")
+        
+        return FileResponse(
+            path=file_path,
+            filename=filename,
+            media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation"
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Download error: {str(e)}")
+
 
 
 @app.post("/upload-image")
