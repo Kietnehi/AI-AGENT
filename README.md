@@ -133,6 +133,32 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
     - Hỗ trợ trả lời ngôn ngữ tiếng Việt cơ bản và xử lý prompt tùy chỉnh.
     - Phù hợp để thử nghiệm Local LLM, fine-tune nhỏ hoặc làm prototyping.
 
+  ### 7. 📝 Text Summarization
+
+  - Giới thiệu: AI Agent hỗ trợ tóm tắt văn bản tiếng Anh sử dụng mô hình `facebook/bart-large-cnn`. Tính năng này giúp bạn nhanh chóng nắm bắt nội dung chính từ các đoạn văn bản dài.
+
+  - Tính năng chính:
+    - Tóm tắt văn bản tiếng Anh tự động
+    - Hiển thị tỷ lệ nén (compression ratio)
+    - Hiển thị độ dài văn bản gốc và văn bản tóm tắt
+    - Hỗ trợ Text-to-Speech cho kết quả tóm tắt
+    - Tự động xử lý văn bản dài (truncate nếu vượt quá giới hạn)
+
+  - Minh họa (ảnh):
+
+    ![Summarization Demo](./image/summarization.png)
+
+  - Vị trí code:
+    - Backend tool: [backend/tools/summarization_tool.py](backend/tools/summarization_tool.py)
+    - Backend endpoint: [backend/main.py](backend/main.py) - `/summarization`
+    - Frontend component: [frontend/src/components/SummarizationFeature.js](frontend/src/components/SummarizationFeature.js)
+
+  - Cách sử dụng:
+    1. Nhập văn bản tiếng Anh (tối thiểu 50 ký tự)
+    2. Nhấn nút "Summarize" để tạo tóm tắt
+    3. Xem kết quả với thống kê chi tiết
+    4. Sử dụng nút "Nghe" để nghe tóm tắt
+
   - Minh họa (ảnh):
 
     ![Local LLM Demo](image/localllm.png)

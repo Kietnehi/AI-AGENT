@@ -6,8 +6,9 @@ import MathFeature from './components/MathFeature';
 import DataAnalysisFeature from './components/DataAnalysisFeature';
 import VisionFeature from './components/VisionFeature';
 import LocalLLMFeature from './components/LocalLLMFeature';
+import SummarizationFeature from './components/SummarizationFeature';
 import AnimatedBackground from './components/AnimatedBackground';
-import { Sparkles, Search, Calculator, BarChart3, Bot, Zap, Eye, Cpu } from 'lucide-react';
+import { Sparkles, Search, Calculator, BarChart3, Bot, Zap, Eye, Cpu, FileText } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -29,7 +30,8 @@ function App() {
     { id: 'math', name: 'Tính Toán', icon: Calculator, component: MathFeature, color: '#4facfe' },
     { id: 'data', name: 'Phân Tích Dữ Liệu', icon: BarChart3, component: DataAnalysisFeature, color: '#43e97b' },
     { id: 'vision', name: 'Vision AI', icon: Eye, component: VisionFeature, color: '#fa709a' },
-    { id: 'local-llm', name: 'Local LLM', icon: Cpu, component: LocalLLMFeature, color: '#30cfd0' }
+    { id: 'local-llm', name: 'Local LLM', icon: Cpu, component: LocalLLMFeature, color: '#30cfd0' },
+    { id: 'summarization', name: 'Summarization', icon: FileText, component: SummarizationFeature, color: '#ec4899' }
   ];
 
   const ActiveComponent = features.find(f => f.id === activeFeature)?.component;

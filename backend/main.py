@@ -16,6 +16,7 @@ from tools.wolfram_tool import wolfram_compute
 from tools.data_analysis import DataAnalysisTool
 from tools.vision_tools import vision_tools
 from tools.local_llm import get_local_llm
+from tools.summarization_tool import get_summarization_tool
 from config import Config
 
 # For TTS
@@ -107,6 +108,13 @@ class VisionRequest(BaseModel):
     action: str  # "vqa", "ocr_deepseek", or "ocr_paddle"
     image_filename: str
     question: Optional[str] = None  # For VQA only
+
+
+class SummarizationRequest(BaseModel):
+    text: str
+    max_length: int = 130
+    min_length: int = 30
+    do_sample: bool = False
 
 
 @app.get("/")
@@ -609,6 +617,39 @@ async def vision_analysis(request: VisionRequest):
         
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Vision analysis error: {str(e)}")
+
+
+@app.post("/summarization")
+async def summarize_text(request: SummarizationRequest):
+    """
+    Text summarization using facebook/bart-large-cnn
+    """
+    try:
+        summarizer = get_summarization_tool()
+        result = summarizer.summarize(
+            text=request.text,
+            max_length=request.max_length,
+            min_length=request.min_length,
+            do_sample=request.do_sample
+        )
+        
+        if "error" in result:
+            raise HTTPException(status_code=400, detail=result["error"])
+        
+        return {
+            "summary": result["summary"],
+            "original_length": result["original_length"],
+            "summary_length": result["summary_length"],
+            "compression_ratio": result["compression_ratio"],
+            "truncated": result.get("truncated", False),
+            "model": result["model"],
+            "status": "success"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Summarization error: {str(e)}")
 
 
 if __name__ == "__main__":
