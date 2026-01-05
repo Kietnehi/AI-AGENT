@@ -2,6 +2,7 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from typing import Optional, List
 import os
@@ -45,8 +46,15 @@ data_tool = DataAnalysisTool()
 # Create directories
 UPLOAD_DIR = Path("uploads")
 CHARTS_DIR = Path("charts")
+OUTPUT_DIR = Path("output")
 UPLOAD_DIR.mkdir(exist_ok=True)
 CHARTS_DIR.mkdir(exist_ok=True)
+OUTPUT_DIR.mkdir(exist_ok=True)
+
+# Mount static file directories
+app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+app.mount("/charts", StaticFiles(directory="charts"), name="charts")
+app.mount("/output", StaticFiles(directory="output"), name="output")
 
 
 # Request/Response Models
@@ -683,16 +691,16 @@ async def vision_analysis(request: VisionRequest):
                 request.question
             )
             
-        elif request.action == "ocr_deepseek":
-            # OCR - DeepSeek style (text-to-text multimodal)
-            result = vision_tools.extract_text_deepseek_ocr(str(image_path))
+        elif request.action == "ocr_easyocr":
+            # OCR - EasyOCR (simple and accurate)
+            result = vision_tools.extract_text_easyocr(str(image_path))
             
         elif request.action == "ocr_paddle":
             # OCR - PaddleOCR (traditional OCR with Vietnamese support)
             result = vision_tools.extract_text_paddleocr(str(image_path))
             
         else:
-            raise HTTPException(status_code=400, detail="Invalid action. Use 'vqa', 'ocr_deepseek', or 'ocr_paddle'")
+            raise HTTPException(status_code=400, detail="Invalid action. Use 'vqa', 'ocr_easyocr', or 'ocr_paddle'")
         
         return {
             "result": result,
@@ -700,6 +708,9 @@ async def vision_analysis(request: VisionRequest):
         }
         
     except Exception as e:
+        import traceback
+        error_detail = traceback.format_exc()
+        print(f"❌ Vision Error: {error_detail}")
         raise HTTPException(status_code=500, detail=f"Vision analysis error: {str(e)}")
 
 

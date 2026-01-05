@@ -33,3 +33,5 @@ diffusers>=0.21.0
 
 # OCR
 paddleocr
+paddlex[ocr]
+easyocr==1.7.2

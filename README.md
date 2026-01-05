@@ -207,13 +207,24 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
 
   Minh họa giao diện (ví dụ):
 
-  ![Tạo Slides giao diện](./image/createslides.png)
+  <div align="center">
 
-  Ví dụ file PPTX đã tạo:
+  <table>
+    <tr>
+      <th>Giao diện tạo Slides</th>
+      <th>File PPTX ví dụ</th>
+      <th>Slides được tạo</th>
+    </tr>
+    <tr>
+      <td><img src="./image/createslides.png" width="300" alt="Tạo Slides giao diện"/></td>
+      <td><img src="./image/slidesppt.png" width="300" alt="Slides PPT ví dụ"/></td>
+      <td><img src="./image/slideduoctaotullm.png" width="300" alt="Slides tạo từ chức năng tạo slide"/></td>
+    </tr>
+  </table>
 
-  ![Slides PPT ví dụ](./image/slidesppt.png)
-  ![Slides tạo từ chức năng tạo slide](./image/slideduoctaotullm.png)
+  <p style="margin-top:8px; font-style:italic;">Hình: (1) Giao diện tạo Slides — (2) Ví dụ file PPTX đã tạo — (3) Slides sinh bởi chức năng</p>
 
+  </div>
 
   - Lưu ý kỹ thuật & hiệu năng:
     - `QWEN 1.5B` cần nhiều RAM/VRAM để load; nếu không có GPU mạnh, có thể dùng chế độ CPU nhưng chậm.
@@ -283,6 +294,110 @@ print(f"Answer: {answer}")
   - Cần cài đặt thư viện: `transformers`, `Pillow`, `torch`
   - Model size: ~990MB, cần download lần đầu sử dụng
   - Hỗ trợ batch processing để xử lý nhiều ảnh cùng lúc
+
+### 8. 📷 Image to Text - OCR (Optical Character Recognition)
+
+- Giới thiệu: AI Agent tích hợp hai công nghệ OCR mạnh mẽ để trích xuất văn bản từ hình ảnh: **EasyOCR** và **PaddleOCR**. Tính năng này giúp bạn chuyển đổi văn bản trong ảnh thành text có thể chỉnh sửa, hỗ trợ nhiều ngôn ngữ bao gồm tiếng Việt, tiếng Anh, và hàng chục ngôn ngữ khác.
+
+- Tính năng chính:
+  - **Hai engine OCR mạnh mẽ**: 
+    - **EasyOCR**: Dễ sử dụng, hỗ trợ 80+ ngôn ngữ
+    - **PaddleOCR**: Tốc độ nhanh, độ chính xác cao
+  - Trích xuất văn bản từ ảnh với độ chính xác cao
+  - Hỗ trợ tiếng Việt và nhiều ngôn ngữ khác
+  - Xử lý cả ảnh có nhiều ngôn ngữ đan xen
+  - Nhận diện văn bản in và viết tay (tùy model)
+  - Xử lý ảnh từ file local hoặc URL
+
+<div align="center">
+
+<p align="center">
+  <img src="./image/easyocr.png" width="45%" alt="EasyOCR Demo"/>
+  <img src="./image/paddleocr.png" width="45%" alt="PaddleOCR Demo"/>
+</p>
+
+*Giao diện OCR với hai engine: EasyOCR (trái) và PaddleOCR (phải)*
+
+</div>
+
+- So sánh EasyOCR vs PaddleOCR:
+
+| Tiêu chí | EasyOCR | PaddleOCR |
+|----------|---------|-----------|
+| **Dễ sử dụng** | ⭐⭐⭐⭐⭐ Rất dễ | ⭐⭐⭐⭐ Dễ |
+| **Tốc độ** | ⭐⭐⭐ Trung bình | ⭐⭐⭐⭐⭐ Rất nhanh |
+| **Độ chính xác** | ⭐⭐⭐⭐ Cao | ⭐⭐⭐⭐⭐ Rất cao |
+| **Ngôn ngữ hỗ trợ** | 80+ ngôn ngữ | 80+ ngôn ngữ |
+| **Tiếng Việt** | ✅ Tốt | ✅ Rất tốt |
+| **Kích thước model** | ~100MB | ~10MB |
+| **Cài đặt** | Đơn giản | Đơn giản |
+
+- Ví dụ sử dụng EasyOCR:
+
+```python
+import easyocr
+
+# Khởi tạo reader với tiếng Việt và tiếng Anh
+reader = easyocr.Reader(['vi', 'en'], gpu=True)
+
+# Đọc văn bản từ ảnh
+results = reader.readtext('image.jpg')
+
+# Hiển thị kết quả
+for (bbox, text, confidence) in results:
+    print(f"Text: {text}")
+    print(f"Confidence: {confidence:.2f}")
+```
+
+- Ví dụ sử dụng PaddleOCR:
+
+```python
+from paddleocr import PaddleOCR
+
+# Khởi tạo OCR với tiếng Việt
+ocr = PaddleOCR(lang='vi', use_angle_cls=True)
+
+# Đọc văn bản từ ảnh
+result = ocr.ocr('image.jpg', cls=True)
+
+# Hiển thị kết quả
+for line in result[0]:
+    text = line[1][0]
+    confidence = line[1][1]
+    print(f"Text: {text}")
+    print(f"Confidence: {confidence:.2f}")
+```
+
+- Use cases thực tế:
+  - Số hóa tài liệu, hóa đơn, biên lai
+  - Trích xuất thông tin từ danh thiếp, CCCD, CMND
+  - Đọc văn bản từ biển báo, bảng hiệu
+  - Chuyển đổi sách, báo giấy thành văn bản số
+  - Hỗ trợ người khiếm thị đọc văn bản
+  - Tự động nhập liệu từ form, phiếu giấy
+
+- Vị trí code:
+  - Backend tool: [backend/tools/vision_tools.py](backend/tools/vision_tools.py)
+  - Backend endpoint: [backend/main.py](backend/main.py) - `/ocr`
+  - Frontend component: [frontend/src/components/VisionFeature.js](frontend/src/components/VisionFeature.js)
+
+- Cài đặt:
+
+```bash
+# Cài đặt EasyOCR
+pip install easyocr
+
+# Cài đặt PaddleOCR
+pip install paddlepaddle paddleocr
+```
+
+- Lưu ý kỹ thuật:
+  - **EasyOCR**: Yêu cầu PyTorch, tốt nhất là có GPU (CUDA)
+  - **PaddleOCR**: Nhẹ hơn, chạy tốt trên CPU, có hỗ trợ GPU
+  - Lần đầu chạy sẽ tải model về (EasyOCR ~100MB, PaddleOCR ~10MB)
+  - Để có kết quả tốt, ảnh đầu vào nên có độ phân giải cao, rõ nét
+  - Hỗ trợ xử lý batch để OCR nhiều ảnh cùng lúc
+  - Có thể tùy chỉnh threshold confidence để lọc kết quả
 
 ## 📦 Cài Đặt
 

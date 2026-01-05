@@ -7,9 +7,7 @@ from typing import Optional, Dict, Any
 # Import transformers for Hugging Face models
 try:
     from transformers import (
-        BlipProcessor, BlipForQuestionAnswering, 
-        AutoModel, AutoTokenizer,
-        TrOCRProcessor, VisionEncoderDecoderModel
+        BlipProcessor, BlipForQuestionAnswering
     )
     import torch
     TRANSFORMERS_AVAILABLE = True
@@ -19,33 +17,40 @@ except ImportError:
     print("⚠️ Transformers not installed. Please run: pip install transformers torch torchvision")
     raise Exception("Transformers is required for vision models")
 
-# Import PaddleOCRVL
+# Import PaddleOCR
 PADDLEOCR_AVAILABLE = False
 try:
-    from paddleocr import PaddleOCRVL
+    from paddleocr import PaddleOCR
     PADDLEOCR_AVAILABLE = True
-    print("✓ PaddleOCRVL available")
+    print("✓ PaddleOCR available")
 except Exception as e:
     PADDLEOCR_AVAILABLE = False
-    print(f"⚠️ PaddleOCRVL not available: {str(e)[:100]}")
+    print(f"⚠️ PaddleOCR not available: {str(e)[:100]}")
+
+# Import EasyOCR
+EASYOCR_AVAILABLE = False
+try:
+    import easyocr
+    EASYOCR_AVAILABLE = True
+    print("✓ EasyOCR available")
+except Exception as e:
+    EASYOCR_AVAILABLE = False
+    print(f"⚠️ EasyOCR not available: {str(e)[:100]}")
 
 class VisionTools:
-    """Tools for image analysis: VQA and OCR using BLIP, DeepSeek-OCR and PaddleOCRVL"""
+    """Tools for image analysis: VQA and OCR using BLIP-VQA, PaddleOCR and EasyOCR"""
     
     def __init__(self):
         """Initialize vision models"""
         self.vqa_processor = None
         self.vqa_model = None
-        self.trocr_processor = None
-        self.trocr_model = None
-        self.deepseek_tokenizer = None
-        self.deepseek_model = None
-        self.paddleocr_vl = None
+        self.paddleocr = None
+        self.easyocr_reader = None
         self.device = "cuda" if TRANSFORMERS_AVAILABLE and torch.cuda.is_available() else "cpu"
         
         print(f"🖥️ Vision tools will use device: {self.device}")
-        print("📦 Models: BLIP-VQA (VQA) + DeepSeek-OCR/PaddleOCRVL (OCR)")
-        print("💡 Using official API for better compatibility")
+        print("📦 Models: BLIP-VQA (VQA) + PaddleOCR/EasyOCR (OCR)")
+        print("💡 Use extract_text_paddleocr() or extract_text_easyocr() for OCR")
         
     def load_vqa_model(self):
         """Lazy load Visual Question Answering model - BLIP-VQA"""
@@ -66,62 +71,41 @@ class VisionTools:
                 raise Exception(f"Failed to load BLIP-VQA model: {e}")
         return self.vqa_processor, self.vqa_model
     
-    def load_trocr_model(self):
-        """Lazy load TrOCR model - Basic OCR for printed text"""
-        if self.trocr_processor is None or self.trocr_model is None:
+
+    def load_easyocr(self):
+        """Lazy load EasyOCR - Simple and accurate OCR"""
+        if self.easyocr_reader is None:
+            if not EASYOCR_AVAILABLE:
+                raise Exception("EasyOCR not available. Please install: pip install easyocr")
             try:
-                print("🔄 Loading TrOCR model (microsoft/trocr-base-printed)...")
-                
-                # Load processor and model
-                self.trocr_processor = TrOCRProcessor.from_pretrained("microsoft/trocr-base-printed")
-                self.trocr_model = VisionEncoderDecoderModel.from_pretrained("microsoft/trocr-base-printed")
-                
-                # Move model to device
-                self.trocr_model = self.trocr_model.to(self.device)
-                
-                print("✓ TrOCR model loaded successfully!")
+                print("🔄 Loading EasyOCR reader (English + Vietnamese)...")
+                import easyocr
+                self.easyocr_reader = easyocr.Reader(['en', 'vi'], gpu=False)  # Dùng CPU trước
+                print("✓ EasyOCR loaded successfully!")
             except Exception as e:
-                print(f"✗ Error loading TrOCR: {e}")
-                raise Exception(f"Failed to load TrOCR model: {e}")
-        return self.trocr_processor, self.trocr_model
+                print(f"✗ Error loading EasyOCR: {e}")
+                import traceback
+                print(traceback.format_exc())
+                raise Exception(f"Failed to load EasyOCR: {e}")
+        return self.easyocr_reader
     
-    def load_deepseek_ocr_model(self):
-        """Lazy load DeepSeek OCR - Advanced multimodal OCR"""
-        if self.deepseek_tokenizer is None or self.deepseek_model is None:
-            try:
-                print("🔄 Loading DeepSeek-OCR model (deepseek-ai/DeepSeek-OCR)...")
-                model_name = 'deepseek-ai/DeepSeek-OCR'
-                
-                # Load tokenizer
-                self.deepseek_tokenizer = AutoTokenizer.from_pretrained(model_name, trust_remote_code=True)
-                
-                # Load model with auto dtype
-                self.deepseek_model = AutoModel.from_pretrained(
-                    model_name,
-                    trust_remote_code=True,
-                    dtype="auto"
-                )
-                    
-                print("✓ DeepSeek-OCR model loaded successfully!")
-            except Exception as e:
-                print(f"✗ Error loading DeepSeek-OCR: {e}")
-                print("Falling back to TrOCR base...")
-                return None, None
-        return self.deepseek_tokenizer, self.deepseek_model
-    
-    def load_paddleocr_vl(self):
-        """Lazy load PaddleOCRVL - Advanced OCR with structured output"""
-        if self.paddleocr_vl is None:
+    def load_paddleocr(self):
+        """Lazy load PaddleOCR - Advanced OCR with structured output"""
+        if self.paddleocr is None:
             if not PADDLEOCR_AVAILABLE:
-                raise Exception("PaddleOCRVL not available. Please install: pip install paddleocr")
+                raise Exception("PaddleOCR not available. Please install: pip install paddleocr")
             try:
-                print("🔄 Loading PaddleOCRVL pipeline...")
-                self.paddleocr_vl = PaddleOCRVL()
-                print("✓ PaddleOCRVL loaded successfully!")
+                print("🔄 Loading PaddleOCR pipeline...")
+                self.paddleocr = PaddleOCR(
+                    use_doc_orientation_classify=False,
+                    use_doc_unwarping=False,
+                    use_textline_orientation=False
+                )
+                print("✓ PaddleOCR loaded successfully!")
             except Exception as e:
-                print(f"✗ Error loading PaddleOCRVL: {e}")
-                raise Exception(f"Failed to load PaddleOCRVL: {e}")
-        return self.paddleocr_vl
+                print(f"✗ Error loading PaddleOCR: {e}")
+                raise Exception(f"Failed to load PaddleOCR: {e}")
+        return self.paddleocr
     
     def visual_question_answering(self, image_path: str, question: str) -> Dict[str, Any]:
         """
@@ -177,16 +161,16 @@ class VisionTools:
                 "error": f"VQA failed: {str(e)}"
             }
     
-    def extract_text_deepseek_ocr(self, image_path: str, output_path: Optional[str] = None) -> Dict[str, Any]:
+    def extract_text_easyocr(self, image_path: str, detail: int = 1) -> Dict[str, Any]:
         """
-        Extract text using DeepSeek-OCR multimodal model
+        Extract text using EasyOCR
         
         Args:
             image_path: Path to image file
-            output_path: Optional output directory for results
+            detail: 0 = simple text list, 1 = bounding boxes + text + confidence
             
         Returns:
-            Dict with extracted text
+            Dict with extracted text and detection details
         """
         try:
             if not os.path.exists(image_path):
@@ -195,75 +179,54 @@ class VisionTools:
                     "error": f"Image not found: {image_path}"
                 }
             
-            # Load DeepSeek-OCR model
-            tokenizer, model = self.load_deepseek_ocr_model()
+            # Load EasyOCR reader
+            reader = self.load_easyocr()
             
-            if tokenizer is None or model is None:
-                # Fallback to TrOCR if DeepSeek-OCR failed
-                print("⚠️ Using TrOCR as fallback...")
-                processor, trocr_model = self.load_trocr_model()
-                image = Image.open(image_path).convert("RGB")
-                
-                # Process image
-                pixel_values = processor(image, return_tensors="pt").pixel_values.to(self.device)
-                generated_ids = trocr_model.generate(pixel_values)
-                extracted_text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
-                
-                return {
-                    "success": True,
-                    "text": extracted_text,
-                    "image": image_path,
-                    "model": "TrOCR (fallback)"
-                }
+            print("📄 Extracting text from image with EasyOCR...")
             
-            print("📄 Extracting text from image with DeepSeek-OCR...")
+            # Run OCR
+            result = reader.readtext(image_path, detail=detail)
             
-            # Use DeepSeek-OCR with proper API
-            # prompt = "<image>\nFree OCR. "  # Simple OCR
-            prompt = "<image>\n<|grounding|>Convert the document to markdown. "  # Structured OCR
-            
-            # Set output path if not provided
-            if output_path is None:
-                output_path = os.path.dirname(image_path)
-            
-            # Call infer method with Gundam configuration (base_size=1024, image_size=640, crop_mode=True)
-            result = model.infer(
-                tokenizer,
-                prompt=prompt,
-                image_file=image_path,
-                output_path=output_path,
-                base_size=1024,
-                image_size=640,
-                crop_mode=True,
-                save_results=False,  # Don't save files by default
-                test_compress=True
-            )
-            
-            # Extract text from result
-            extracted_text = result if isinstance(result, str) else str(result)
+            # Process results
+            if detail == 0:
+                # Simple list of text
+                extracted_text = "\n".join(result)
+                detections = []
+            else:
+                # Detailed results with bounding boxes
+                extracted_text = "\n".join([text for (bbox, text, conf) in result])
+                detections = [
+                    {
+                        "bbox": [[int(x), int(y)] for x, y in bbox],  # Convert to JSON-serializable format
+                        "text": text,
+                        "confidence": float(conf)
+                    }
+                    for bbox, text, conf in result
+                ]
             
             return {
                 "success": True,
                 "text": extracted_text,
+                "detections": detections,
                 "image": image_path,
-                "model": "DeepSeek-OCR"
+                "model": "EasyOCR"
             }
             
         except Exception as e:
             import traceback
             error_msg = traceback.format_exc()
-            print(f"✗ DeepSeek-OCR Error: {error_msg}")
+            print(f"✗ EasyOCR Error: {error_msg}")
             return {
                 "success": False,
-                "error": f"DeepSeek-OCR failed: {str(e)}"
+                "error": f"EasyOCR failed: {str(e)}"
             }
     
     def extract_text_paddleocr(self, image_path: str, output_path: Optional[str] = "output") -> Dict[str, Any]:
-        """Extract text using PaddleOCRVL (supports structured output)
+        """Extract text using PaddleOCR (supports structured output)
         
         Args:
             image_path: Path to image file or URL
-            output_path: Optional output directory for JSON and Markdown results
+            output_path: Optional output directory for image and JSON results
             
         Returns:
             Dict with extracted text and structured data
@@ -276,25 +239,45 @@ class VisionTools:
                     "error": f"Image not found: {image_path}"
                 }
             
-            # Load PaddleOCRVL
-            pipeline = self.load_paddleocr_vl()
-            print(f"📄 Extracting text from image with PaddleOCRVL...")
+            # Load PaddleOCR
+            ocr = self.load_paddleocr()
+            print(f"📄 Extracting text from image with PaddleOCR...")
             
             # Run prediction
-            output = pipeline.predict(image_path)
+            result = ocr.predict(input=image_path)
             
             # Process results
             all_text = []
             results_data = []
+            output_image_paths = []
             
-            for res in output:
+            for idx, res in enumerate(result):
                 # Print to console
                 res.print()
                 
-                # Save to JSON and Markdown if output_path provided
+                # Save to image and JSON if output_path provided
                 if output_path:
-                    res.save_to_json(save_path=output_path)
-                    res.save_to_markdown(save_path=output_path)
+                    # Create output directory if it doesn't exist
+                    os.makedirs(output_path, exist_ok=True)
+                    
+                    # Save visualized image with bounding boxes
+                    print(f"💾 Saving result to: {output_path}")
+                    res.save_to_img(output_path)
+                    res.save_to_json(output_path)
+                    
+                    # Get the saved image path - PaddleOCR tạo file với tên *_ocr_res_img.png
+                    base_name = os.path.splitext(os.path.basename(image_path))[0]
+                    output_img = os.path.join(output_path, f"{base_name}_ocr_res_img.png")
+                    print(f"🔍 Looking for output image at: {output_img}")
+                    if os.path.exists(output_img):
+                        print(f"✓ Found output image: {output_img}")
+                        output_image_paths.append(output_img)
+                    else:
+                        print(f"✗ Output image not found at: {output_img}")
+                        # List files in output directory to see what was created
+                        if os.path.exists(output_path):
+                            files = os.listdir(output_path)
+                            print(f"📁 Files in output directory: {files}")
                 
                 # Extract text and metadata
                 if hasattr(res, 'text'):
@@ -311,16 +294,17 @@ class VisionTools:
                 "text": full_text,
                 "results": results_data,
                 "image": image_path,
-                "model": "PaddleOCRVL",
+                "output_images": output_image_paths,  # Hình ảnh đã OCR với bounding box
+                "model": "PaddleOCR",
                 "output_saved": output_path if output_path else None
             }
             
         except Exception as e:
             import traceback
-            print(f"✗ PaddleOCRVL Error: {traceback.format_exc()}")
+            print(f"✗ PaddleOCR Error: {traceback.format_exc()}")
             return {
                 "success": False,
-                "error": f"PaddleOCRVL failed: {str(e)}"
+                "error": f"PaddleOCR failed: {str(e)}"
             }
     
     def cleanup(self):
@@ -333,25 +317,13 @@ class VisionTools:
             del self.vqa_model
             self.vqa_model = None
         
-        if self.trocr_processor is not None:
-            del self.trocr_processor
-            self.trocr_processor = None
-            
-        if self.trocr_model is not None:
-            del self.trocr_model
-            self.trocr_model = None
-            
-        if self.deepseek_tokenizer is not None:
-            del self.deepseek_tokenizer
-            self.deepseek_tokenizer = None
-            
-        if self.deepseek_model is not None:
-            del self.deepseek_model
-            self.deepseek_model = None
+        if self.paddleocr is not None:
+            del self.paddleocr
+            self.paddleocr = None
         
-        if self.paddleocr_vl is not None:
-            del self.paddleocr_vl
-            self.paddleocr_vl = None
+        if self.easyocr_reader is not None:
+            del self.easyocr_reader
+            self.easyocr_reader = None
         
         # Clear CUDA cache if available
         if TRANSFORMERS_AVAILABLE and torch.cuda.is_available():
