@@ -207,22 +207,43 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
 
   Minh họa giao diện (ví dụ):
 
-  <div align="center">
-
-  <table>
+<div align="center">
+  <table style="width:100%; border-collapse:collapse;">
     <tr>
-      <th>Giao diện tạo Slides</th>
-      <th>File PPTX ví dụ</th>
-      <th>Slides được tạo</th>
+      <th style="width:33%; padding:16px; font-size:18px;">
+        Giao diện tạo Slides
+      </th>
+      <th style="width:33%; padding:16px; font-size:18px;">
+        File PPTX ví dụ
+      </th>
+      <th style="width:33%; padding:16px; font-size:18px;">
+        Slides được tạo
+      </th>
     </tr>
     <tr>
-      <td><img src="./image/createslides.png" width="300" alt="Tạo Slides giao diện"/></td>
-      <td><img src="./image/slidesppt.png" width="300" alt="Slides PPT ví dụ"/></td>
-      <td><img src="./image/slideduoctaotullm.png" width="300" alt="Slides tạo từ chức năng tạo slide"/></td>
+      <td style="padding:16px;">
+        <img src="./image/createslides.png"
+             style="width:100%; height:auto;"
+             alt="Tạo Slides giao diện"/>
+      </td>
+      <td style="padding:16px;">
+        <img src="./image/slidesppt.png"
+             style="width:100%; height:auto;"
+             alt="Slides PPT ví dụ"/>
+      </td>
+      <td style="padding:16px;">
+        <img src="./image/slideduoctaotullm.png"
+             style="width:100%; height:auto;"
+             alt="Slides tạo từ chức năng tạo slide"/>
+      </td>
     </tr>
   </table>
 
-  <p style="margin-top:8px; font-style:italic;">Hình: (1) Giao diện tạo Slides — (2) Ví dụ file PPTX đã tạo — (3) Slides sinh bởi chức năng</p>
+  <p style="margin-top:12px; font-style:italic; font-size:15px;">
+    Hình: (1) Giao diện tạo Slides — (2) Ví dụ file PPTX đã tạo — (3) Slides sinh bởi chức năng
+  </p>
+</div>
+
 
   </div>
 
