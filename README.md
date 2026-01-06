@@ -344,19 +344,6 @@ print(result['text'])
   - Backend endpoint: [backend/main.py](backend/main.py) - `/asr-transcribe`, `/asr-translate`
   - Frontend component: [frontend/src/components/ASRFeature.js](frontend/src/components/ASRFeature.js)
 
-- Cài đặt:
-
-```bash
-# Cài đặt Whisper
-pip install openai-whisper
-
-# Hoặc cài bản nâng cao với faster-whisper
-pip install faster-whisper
-
-# Dependencies bổ sung
-pip install ffmpeg-python soundfile
-```
-
 - Lưu ý kỹ thuật:
   - **GPU Acceleration**: Whisper chạy nhanh hơn 5-10 lần trên GPU (CUDA)
   - **Model Loading**: Lần đầu sử dụng sẽ tải model về (~40MB - 1.5GB tùy size)
@@ -466,8 +453,8 @@ model = WhisperModel("base", device="cuda")
     # pseudo-example: load với transformers (thực tế có thể cần xử lý cấu hình chi tiết)
     from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    tokenizer = AutoTokenizer.from_pretrained('qwen/qwen-1.5b')
-    model = AutoModelForCausalLM.from_pretrained('qwen/qwen-1.5b')
+    tokenizer = AutoTokenizer.from_pretrained('qwen/Qwen2.5-1.5B')
+    model = AutoModelForCausalLM.from_pretrained('qwen/Qwen2.5-1.5B')
 
     def ask_local(prompt):
         inputs = tokenizer(prompt, return_tensors='pt')
@@ -693,16 +680,6 @@ for line in result[0]:
   - Backend tool: [backend/tools/vision_tools.py](backend/tools/vision_tools.py)
   - Backend endpoint: [backend/main.py](backend/main.py) - `/ocr`
   - Frontend component: [frontend/src/components/VisionFeature.js](frontend/src/components/VisionFeature.js)
-
-- Cài đặt:
-
-```bash
-# Cài đặt EasyOCR
-pip install easyocr
-
-# Cài đặt PaddleOCR
-pip install paddlepaddle paddleocr
-```
 
 - Lưu ý kỹ thuật:
   - **EasyOCR**: Yêu cầu PyTorch, tốt nhất là có GPU (CUDA)
