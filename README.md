@@ -732,6 +732,10 @@ curl -X POST https://clipdrop-api.co/text-to-image/v1 \
 ### 🖼️ Kết quả minh họa
 
 <div align="center">
+
+**📸 Ảnh được sinh từ prompt văn bản bằng Clipdrop API**
+
+<br/>
   <img 
     src="./image/texttoimage.png" 
     alt="Text to Image - Clipdrop Prompt Result"
