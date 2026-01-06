@@ -4,6 +4,7 @@ import LoadingAnimation from './LoadingAnimation';
 import api from '../api';
 
 const ImageGenerationFeature = () => {
+  // --- PHẦN LOGIC GIỮ NGUYÊN KHÔNG ĐỤNG CHẠM ---
   const [prompt, setPrompt] = useState('');
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -31,191 +32,218 @@ const ImageGenerationFeature = () => {
       setLoading(false);
     }
   };
+  // -------------------------------------------
+
+  // --- PHẦN GIAO DIỆN ĐƯỢC CHỈNH SỬA ---
+  const theme = {
+    bgMain: '#0f172a', // Nền tối sâu hơn
+    bgCard: '#1e293b', // Nền card phẳng hơn, bớt gradient
+    bgInput: '#334155', // Nền input
+    textLight: '#f1f5f9',
+    textGray: '#94a3b8',
+    accent: '#6366f1', // Màu nhấn indigo hiện đại
+    accentHover: '#4f46e5',
+    border: '1px solid rgba(255,255,255,0.08)',
+    shadow: '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.1)',
+    radius: '12px'
+  };
 
   return (
     <div style={{
-      maxWidth: '1800px',
+      maxWidth: '1200px', // GIẢM KÍCH THƯỚC TỔNG TỪ 1800px xuống 1200px
       margin: '0 auto',
-      padding: '40px 20px'
+      padding: '30px 20px',
+      fontFamily: 'ui-sans-serif, system-ui, sans-serif', // Font chữ hiện đại hơn
+      color: theme.textLight,
+      backgroundColor: theme.bgMain,
+      minHeight: '100vh'
     }}>
-      {/* Header Section */}
+      {/* Header Section - Gọn hơn */}
       <div style={{
         textAlign: 'center',
-        marginBottom: '50px'
+        marginBottom: '40px'
       }}>
         <h1 style={{
-          fontSize: '42px',
+          fontSize: '32px', // Giảm font size tiêu đề
           fontWeight: '700',
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          WebkitBackgroundClip: 'text',
-          WebkitTextFillColor: 'transparent',
-          marginBottom: '15px'
+          color: theme.textLight,
+          marginBottom: '10px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '12px'
         }}>
-          <Wand2 size={48} style={{ marginRight: '15px', display: 'inline-block', verticalAlign: 'middle', color: '#667eea' }} />
+          <Wand2 size={32} style={{ color: theme.accent }} />
           Text to Image AI
         </h1>
         <p style={{
-          fontSize: '18px',
-          color: '#888',
-          maxWidth: '700px',
+          fontSize: '16px',
+          color: theme.textGray,
+          maxWidth: '600px',
           margin: '0 auto'
         }}>
-          Tạo hình ảnh từ mô tả văn bản bằng AI - Chỉ cần nhập mô tả và để AI tạo ra hình ảnh cho bạn
+          Biến ý tưởng thành hình ảnh chỉ trong vài giây với công nghệ AI.
         </p>
       </div>
 
-      {/* Main Content Grid */}
+      {/* Main Content Grid - Cân đối lại */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(600px, 1fr))',
-        gap: '30px',
-        marginBottom: '40px'
+        gridTemplateColumns: 'repeat(auto-fit, minmax(450px, 1fr))', // Giảm minmax để layout linh hoạt hơn trên laptop
+        gap: '25px',
+        marginBottom: '30px',
+        alignItems: 'start'
       }}>
         {/* Left Panel - Input */}
         <div style={{
-          background: 'linear-gradient(145deg, #1e1e1e 0%, #2a2a2a 100%)',
-          borderRadius: '20px',
-          padding: '35px',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-          border: '1px solid rgba(255,255,255,0.05)'
+          background: theme.bgCard,
+          borderRadius: theme.radius,
+          padding: '25px', // Giảm padding
+          boxShadow: theme.shadow,
+          border: theme.border
         }}>
           <h3 style={{
-            fontSize: '20px',
+            fontSize: '18px',
             fontWeight: '600',
-            color: '#fff',
+            color: theme.textLight,
             marginBottom: '20px',
             display: 'flex',
             alignItems: 'center',
             gap: '10px'
           }}>
-            <Wand2 size={24} />
-            Tạo Hình Ảnh
+            <Wand2 size={20} color={theme.accent} />
+            Tạo Hình Ảnh Mới
           </h3>
-          <p style={{ color: '#888', marginBottom: '25px' }}>
-            Nhập mô tả chi tiết về hình ảnh bạn muốn tạo
-          </p>
 
           {/* Prompt Input */}
           <div style={{ marginBottom: '25px' }}>
             <label style={{
               display: 'block',
-              marginBottom: '10px',
-              color: '#fff',
-              fontSize: '16px',
+              marginBottom: '8px',
+              color: theme.textLight,
+              fontSize: '14px',
               fontWeight: '500'
             }}>
-              Mô Tả Hình Ảnh
+              Mô tả ý tưởng của bạn (Prompt)
             </label>
             <textarea
               value={prompt}
               onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Ví dụ: a beautiful sunset over mountains, a cute cat wearing a hat, a futuristic city with flying cars..."
+              placeholder="Ví dụ: a futuristic city with flying cars at night, cyberpunk style, highly detailed..."
               style={{
                 width: '100%',
-                minHeight: '150px',
-                padding: '15px',
-                background: 'rgba(255,255,255,0.05)',
-                border: '2px solid rgba(255,255,255,0.1)',
-                borderRadius: '12px',
-                color: '#fff',
-                fontSize: '16px',
+                minHeight: '120px', // Giảm chiều cao mặc định
+                padding: '12px',
+                background: theme.bgInput,
+                border: theme.border,
+                borderRadius: '8px',
+                color: theme.textLight,
+                fontSize: '14px',
                 resize: 'vertical',
-                fontFamily: 'inherit'
+                fontFamily: 'inherit',
+                outline: 'none',
+                transition: 'border-color 0.2s',
               }}
+              onFocus={(e) => e.target.style.borderColor = theme.accent}
+              onBlur={(e) => e.target.style.borderColor = 'rgba(255,255,255,0.08)'}
             />
-            <p style={{ 
-              color: '#888', 
-              fontSize: '14px', 
-              marginTop: '8px',
-              fontStyle: 'italic'
+            <p style={{
+              color: theme.textGray,
+              fontSize: '12px',
+              marginTop: '6px',
             }}>
-              💡 Mẹo: Mô tả càng chi tiết thì hình ảnh càng chính xác. Nên sử dụng tiếng Anh để có kết quả tốt nhất.
+              Mẹo: Sử dụng tiếng Anh và mô tả chi tiết để có kết quả tốt nhất.
             </p>
           </div>
 
-          {/* Size Controls */}
-          <div style={{ 
+          {/* Size Controls - Gọn gàng hơn */}
+          <div style={{
             marginBottom: '25px',
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '15px'
+            background: 'rgba(0,0,0,0.1)',
+            padding: '15px',
+            borderRadius: '8px'
           }}>
-            <div>
-              <label style={{
-                display: 'block',
-                marginBottom: '10px',
-                color: '#fff',
-                fontSize: '16px',
-                fontWeight: '500'
-              }}>
-                Chiều Rộng: {width}px
-              </label>
-              <input
-                type="range"
-                min="256"
-                max="2048"
-                step="128"
-                value={width}
-                onChange={(e) => setWidth(parseInt(e.target.value))}
-                style={{ width: '100%' }}
-              />
-            </div>
-            <div>
-              <label style={{
-                display: 'block',
-                marginBottom: '10px',
-                color: '#fff',
-                fontSize: '16px',
-                fontWeight: '500'
-              }}>
-                Chiều Cao: {height}px
-              </label>
-              <input
-                type="range"
-                min="256"
-                max="2048"
-                step="128"
-                value={height}
-                onChange={(e) => setHeight(parseInt(e.target.value))}
-                style={{ width: '100%' }}
-              />
+             <label style={{
+              display: 'block',
+              marginBottom: '15px',
+              color: theme.textLight,
+              fontSize: '14px',
+              fontWeight: '600'
+            }}>
+              Kích thước ảnh
+            </label>
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '20px'
+            }}>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '12px', color: theme.textGray }}>
+                  <span>Chiều Rộng</span>
+                  <span style={{ color: theme.accent, fontWeight: '600' }}>{width}px</span>
+                </div>
+                <input
+                  type="range"
+                  min="256"
+                  max="2048"
+                  step="128"
+                  value={width}
+                  onChange={(e) => setWidth(parseInt(e.target.value))}
+                  style={{ width: '100%', cursor: 'pointer', accentColor: theme.accent }}
+                />
+              </div>
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '5px', fontSize: '12px', color: theme.textGray }}>
+                  <span>Chiều Cao</span>
+                  <span style={{ color: theme.accent, fontWeight: '600' }}>{height}px</span>
+                </div>
+                <input
+                  type="range"
+                  min="256"
+                  max="2048"
+                  step="128"
+                  value={height}
+                  onChange={(e) => setHeight(parseInt(e.target.value))}
+                  style={{ width: '100%', cursor: 'pointer', accentColor: theme.accent }}
+                />
+              </div>
             </div>
           </div>
 
-          {/* Generate Button */}
+          {/* Generate Button - Hiện đại hơn */}
           <button
             onClick={handleGenerate}
             disabled={loading}
             style={{
               width: '100%',
-              padding: '18px',
-              background: loading 
-                ? '#555'
-                : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              padding: '14px',
+              background: loading
+                ? theme.bgInput
+                : theme.accent, // Sử dụng màu solid thay vì gradient sến
               color: '#fff',
               border: 'none',
-              borderRadius: '12px',
-              fontSize: '18px',
+              borderRadius: '8px',
+              fontSize: '16px',
               fontWeight: '600',
               cursor: loading ? 'not-allowed' : 'pointer',
-              transition: 'all 0.3s ease',
+              transition: 'all 0.2s ease',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: '10px',
-              boxShadow: loading ? 'none' : '0 8px 32px rgba(102, 126, 234, 0.4)'
+              boxShadow: loading ? 'none' : `0 4px 12px ${theme.accent}40` // Shadow màu accent nhẹ
             }}
             onMouseEnter={(e) => {
-              if (!loading) e.target.style.transform = 'translateY(-2px)';
+              if (!loading) e.target.style.background = theme.accentHover;
             }}
             onMouseLeave={(e) => {
-              if (!loading) e.target.style.transform = 'translateY(0)';
+              if (!loading) e.target.style.background = theme.accent;
             }}
           >
             {loading ? (
               <>
                 <Loader className="spin" size={20} />
-                Đang Tạo Hình Ảnh...
+                Đang khởi tạo...
               </>
             ) : (
               <>
@@ -228,123 +256,145 @@ const ImageGenerationFeature = () => {
 
         {/* Right Panel - Result */}
         <div style={{
-          background: 'linear-gradient(145deg, #1e1e1e 0%, #2a2a2a 100%)',
-          borderRadius: '20px',
-          padding: '35px',
-          boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-          border: '1px solid rgba(255,255,255,0.05)',
-          minHeight: '400px',
+          background: theme.bgCard,
+          borderRadius: theme.radius,
+          padding: '25px',
+          boxShadow: theme.shadow,
+          border: theme.border,
+          minHeight: '450px', // Tăng nhẹ chiều cao tối thiểu
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: 'center'
+          justifyContent: 'center',
+          position: 'relative'
         }}>
           {loading && (
             <div style={{ textAlign: 'center' }}>
               <LoadingAnimation />
-              <p style={{ color: '#888', marginTop: '20px', fontSize: '16px' }}>
-                Đang tạo hình ảnh... Vui lòng đợi trong giây lát
+              <p style={{ color: theme.textGray, marginTop: '20px', fontSize: '14px' }}>
+                AI đang vẽ, vui lòng đợi một chút...
               </p>
             </div>
           )}
 
           {error && (
             <div style={{
-              padding: '20px',
+              padding: '15px',
               background: 'rgba(239, 68, 68, 0.1)',
-              border: '1px solid rgba(239, 68, 68, 0.3)',
-              borderRadius: '12px',
+              border: '1px solid rgba(239, 68, 68, 0.2)',
+              borderRadius: '8px',
               color: '#f87171',
               display: 'flex',
               alignItems: 'center',
               gap: '12px',
-              width: '100%'
+              width: '100%',
+              fontSize: '14px'
             }}>
-              <AlertCircle size={24} />
+              <AlertCircle size={20} />
               <p style={{ margin: 0 }}>{error}</p>
             </div>
           )}
 
           {result && (
-            <div style={{ width: '100%' }}>
+            <div style={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column' }}>
               <div style={{
+                flex: 1,
                 display: 'flex',
                 alignItems: 'center',
-                gap: '12px',
+                justifyContent: 'center',
+                background: '#000',
+                borderRadius: '8px',
+                overflow: 'hidden',
                 marginBottom: '20px',
-                padding: '15px',
-                background: 'rgba(34, 197, 94, 0.1)',
-                border: '1px solid rgba(34, 197, 94, 0.3)',
-                borderRadius: '12px',
-                color: '#4ade80'
+                border: theme.border
               }}>
-                <CheckCircle size={24} />
-                <p style={{ margin: 0, flex: 1 }}>Tạo hình ảnh thành công!</p>
-              </div>
-
-              <div style={{ textAlign: 'center' }}>
                 <img
                   src={`http://localhost:8000${result.image_url}`}
                   alt="Generated"
                   style={{
                     maxWidth: '100%',
-                    borderRadius: '12px',
-                    boxShadow: '0 8px 32px rgba(0,0,0,0.3)',
-                    marginBottom: '20px'
+                    maxHeight: '400px',
+                    objectFit: 'contain', // Đảm bảo ảnh không bị méo
                   }}
                 />
+              </div>
+              
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                 <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    color: '#4ade80',
+                    fontSize: '14px',
+                    fontWeight: '500'
+                  }}>
+                    <CheckCircle size={18} />
+                    <span>Hoàn tất!</span>
+                  </div>
+
                 <a
                   href={`http://localhost:8000${result.image_url}`}
                   download
                   style={{
-                    display: 'inline-block',
-                    padding: '12px 24px',
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    color: '#fff',
-                    borderRadius: '8px',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    padding: '10px 20px',
+                    background: theme.bgInput,
+                    color: theme.textLight,
+                    borderRadius: '6px',
                     textDecoration: 'none',
-                    fontWeight: '600',
-                    transition: 'all 0.3s ease'
+                    fontWeight: '500',
+                    fontSize: '14px',
+                    transition: 'all 0.2s ease',
+                    border: theme.border
                   }}
+                   onMouseEnter={(e) => {
+                      e.target.style.background = theme.accent;
+                      e.target.style.borderColor = theme.accent;
+                    }}
+                    onMouseLeave={(e) => {
+                      e.target.style.background = theme.bgInput;
+                       e.target.style.borderColor = theme.border;
+                    }}
                 >
-                  Tải Xuống Hình Ảnh
+                  Tải Xuống
                 </a>
               </div>
             </div>
           )}
 
           {!loading && !error && !result && (
-            <div style={{ textAlign: 'center', color: '#666' }}>
-              <Wand2 size={64} style={{ marginBottom: '20px', opacity: 0.3 }} />
-              <p style={{ fontSize: '16px' }}>Hình ảnh được tạo sẽ hiển thị ở đây</p>
-              <p style={{ fontSize: '14px', marginTop: '10px', color: '#555' }}>
-                Nhập mô tả và nhấn "Tạo Hình Ảnh" để bắt đầu
+            <div style={{ textAlign: 'center', color: theme.textGray }}>
+              <Wand2 size={48} style={{ marginBottom: '15px', opacity: 0.2 }} />
+              <p style={{ fontSize: '16px', fontWeight: '500', color: theme.textLight }}>Chưa có hình ảnh</p>
+              <p style={{ fontSize: '14px', marginTop: '5px' }}>
+                Nhập mô tả và nhấn nút tạo để bắt đầu
               </p>
             </div>
           )}
         </div>
       </div>
 
-      {/* Examples Section */}
+      {/* Examples Section - Gọn gàng hơn dạng Chips/Tags */}
       <div style={{
-        background: 'linear-gradient(145deg, #1e1e1e 0%, #2a2a2a 100%)',
-        borderRadius: '20px',
-        padding: '35px',
-        boxShadow: '0 20px 60px rgba(0,0,0,0.3)',
-        border: '1px solid rgba(255,255,255,0.05)'
+        background: theme.bgCard,
+        borderRadius: theme.radius,
+        padding: '25px',
+        boxShadow: theme.shadow,
+        border: theme.border
       }}>
         <h3 style={{
-          fontSize: '20px',
+          fontSize: '16px',
           fontWeight: '600',
-          color: '#fff',
-          marginBottom: '20px'
+          color: theme.textLight,
+          marginBottom: '15px'
         }}>
-          💡 Ví Dụ Mô Tả
+          💡 Gợi ý nhanh
         </h3>
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '15px'
+          display: 'flex',
+          flexWrap: 'wrap', // Thay đổi từ grid sang flex wrap để giống dạng tags
+          gap: '10px'
         }}>
           {[
             "a beautiful sunset over mountains with orange sky",
@@ -358,25 +408,25 @@ const ImageGenerationFeature = () => {
               key={index}
               onClick={() => setPrompt(example)}
               style={{
-                padding: '15px',
-                background: 'rgba(255,255,255,0.05)',
-                border: '2px solid rgba(255,255,255,0.1)',
-                borderRadius: '12px',
-                color: '#aaa',
-                fontSize: '14px',
+                padding: '8px 16px', // Padding nhỏ hơn
+                background: theme.bgInput,
+                border: theme.border,
+                borderRadius: '20px', // Bo tròn kiểu chip/tag
+                color: theme.textGray,
+                fontSize: '13px',
                 cursor: 'pointer',
                 textAlign: 'left',
-                transition: 'all 0.3s ease'
+                transition: 'all 0.2s ease'
               }}
               onMouseEnter={(e) => {
-                e.target.style.background = 'rgba(102, 126, 234, 0.1)';
-                e.target.style.borderColor = '#667eea';
+                e.target.style.background = theme.accent;
                 e.target.style.color = '#fff';
+                e.target.style.borderColor = theme.accent;
               }}
               onMouseLeave={(e) => {
-                e.target.style.background = 'rgba(255,255,255,0.05)';
-                e.target.style.borderColor = 'rgba(255,255,255,0.1)';
-                e.target.style.color = '#aaa';
+                e.target.style.background = theme.bgInput;
+                e.target.style.color = theme.textGray;
+                 e.target.style.borderColor = theme.border;
               }}
             >
               {example}

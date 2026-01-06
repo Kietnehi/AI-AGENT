@@ -710,7 +710,6 @@ curl -X POST https://clipdrop-api.co/text-to-image/v1 \
 
 <div align="center">
   <img src="./image/texttoimage.png" width="45%" alt="Text to Image - prompt"/>
-  <img src="./image/texttoimage2.png" width="45%" alt="Text to Image - result"/>
 </div>
 
 ## 📦 Cài Đặt
