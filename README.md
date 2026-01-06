@@ -232,7 +232,188 @@ docker ps
   - Hướng dẫn nhanh: Click micro → nói → dừng → kiểm tra/ chỉnh sửa text → gửi.
 
   - Lưu ý: Trình duyệt cần hỗ trợ `MediaRecorder`; muốn nâng cao chất lượng, cấu hình backend dùng Whisper hoặc STT cloud.
-  ### 6. 🧩 Local Open-source LLM — QWEN 1.5B
+
+### 6. 🎤 Automatic Speech Recognition (ASR) - Whisper AI
+
+- Giới thiệu: AI Agent tích hợp **OpenAI Whisper** - một mô hình ASR mạnh mẽ với khả năng tự động nhận diện ngôn ngữ và chuyển đổi giọng nói thành văn bản chính xác. Whisper hỗ trợ hơn 90 ngôn ngữ và có thể tự động dịch sang tiếng Anh, phù hợp cho các ứng dụng đa ngôn ngữ.
+
+- Tính năng chính:
+  - **Automatic Transcription**: Tự động nhận diện ngôn ngữ và chuyển đổi giọng nói thành văn bản
+  - **Multi-language Support**: Hỗ trợ 90+ ngôn ngữ (Tiếng Việt, Anh, Nhật, Hàn, Trung, Pháp, Đức...)
+  - **Auto-translate to English**: Tự động dịch mọi ngôn ngữ sang tiếng Anh
+  - **High Accuracy**: Độ chính xác cao ngay cả với giọng địa phương, nhiễu nền
+  - **Multiple Model Sizes**: Hỗ trợ nhiều kích thước model (tiny, base, small, medium, large)
+  - **Real-time Processing**: Xử lý nhanh chóng với streaming audio
+
+<div align="center">
+
+<table style="width:100%; border-collapse:collapse;">
+  <tr>
+    <th style="width:50%; padding:16px; font-size:18px;">
+      Auto Transcribe (Mọi ngôn ngữ)
+    </th>
+    <th style="width:50%; padding:16px; font-size:18px;">
+      Translate sang Tiếng Anh
+    </th>
+  </tr>
+  <tr>
+    <td style="padding:16px;">
+      <img src="./image/autotranscribe_whisper.png"
+           style="width:100%; height:auto;"
+           alt="Whisper Auto Transcribe"/>
+    </td>
+    <td style="padding:16px;">
+      <img src="./image/translate_whisper.png"
+           style="width:100%; height:auto;"
+           alt="Whisper Translate to English"/>
+    </td>
+  </tr>
+</table>
+
+<p style="margin-top:12px; font-style:italic; font-size:15px;">
+  Hình: (Trái) Tự động transcribe mọi ngôn ngữ — (Phải) Transcribe và dịch sang tiếng Anh
+</p>
+
+</div>
+
+- Các chế độ hoạt động:
+
+  **1. Auto Transcribe Mode (Chế độ Phiên âm Tự động)**
+  - Tự động nhận diện ngôn ngữ đang nói
+  - Chuyển đổi giọng nói thành văn bản bằng ngôn ngữ gốc
+  - Phù hợp: Ghi chú, phụ đề, phiên âm cuộc họp
+
+  **2. Translate Mode (Chế độ Dịch)**
+  - Nhận diện ngôn ngữ gốc
+  - Phiên âm và tự động dịch sang tiếng Anh
+  - Phù hợp: Dịch thuật real-time, giao tiếp quốc tế
+
+- So sánh các model Whisper:
+
+| Model | Size | Tốc độ | Độ chính xác | RAM/VRAM | Use case |
+|-------|------|--------|--------------|----------|----------|
+| **tiny** | ~40MB | ⭐⭐⭐⭐⭐ Rất nhanh | ⭐⭐⭐ Trung bình | ~1GB | Demo, testing |
+| **base** | ~75MB | ⭐⭐⭐⭐ Nhanh | ⭐⭐⭐⭐ Tốt | ~1GB | Production nhẹ |
+| **small** | ~240MB | ⭐⭐⭐ Trung bình | ⭐⭐⭐⭐ Tốt | ~2GB | Khuyến nghị |
+| **medium** | ~770MB | ⭐⭐ Chậm | ⭐⭐⭐⭐⭐ Rất tốt | ~5GB | Chất lượng cao |
+| **large** | ~1.5GB | ⭐ Rất chậm | ⭐⭐⭐⭐⭐ Tốt nhất | ~10GB | Professional |
+
+- Ví dụ sử dụng với Python:
+
+```python
+import whisper
+
+# Load model (chọn size phù hợp với tài nguyên)
+model = whisper.load_model("base")  # tiny, base, small, medium, large
+
+# 1. Auto Transcribe (giữ nguyên ngôn ngữ)
+result = model.transcribe("audio.mp3")
+print(f"Detected Language: {result['language']}")
+print(f"Text: {result['text']}")
+
+# 2. Translate to English (dịch sang tiếng Anh)
+result = model.transcribe("audio.mp3", task="translate")
+print(f"English Translation: {result['text']}")
+
+# 3. Với streaming audio
+import sounddevice as sd
+import numpy as np
+
+# Record audio (5 seconds)
+duration = 5  # seconds
+fs = 16000  # Sample rate
+audio = sd.rec(int(duration * fs), samplerate=fs, channels=1)
+sd.wait()
+
+# Transcribe
+result = model.transcribe(audio.flatten())
+print(result['text'])
+```
+
+- Use cases thực tế:
+  - **Phiên âm hội nghị**: Ghi lại và chuyển đổi cuộc họp đa ngôn ngữ
+  - **Phụ đề video**: Tự động tạo phụ đề cho video YouTube, TikTok
+  - **Hỗ trợ người khiếm thính**: Chuyển đổi giọng nói thành text real-time
+  - **Học ngoại ngữ**: Luyện phát âm và so sánh với bản phiên âm chuẩn
+  - **Dịch vụ khách hàng**: Ghi lại và phân tích cuộc gọi
+  - **Ghi chú y tế**: Phiên âm chẩn đoán và ghi chú bệnh án
+  - **Phỏng vấn & báo chí**: Tự động ghi chú và phiên âm
+
+- Vị trí code:
+  - Backend tool: [backend/tools/asr_tool.py](backend/tools/asr_tool.py)
+  - Backend endpoint: [backend/main.py](backend/main.py) - `/asr-transcribe`, `/asr-translate`
+  - Frontend component: [frontend/src/components/ASRFeature.js](frontend/src/components/ASRFeature.js)
+
+- Cài đặt:
+
+```bash
+# Cài đặt Whisper
+pip install openai-whisper
+
+# Hoặc cài bản nâng cao với faster-whisper
+pip install faster-whisper
+
+# Dependencies bổ sung
+pip install ffmpeg-python soundfile
+```
+
+- Lưu ý kỹ thuật:
+  - **GPU Acceleration**: Whisper chạy nhanh hơn 5-10 lần trên GPU (CUDA)
+  - **Model Loading**: Lần đầu sử dụng sẽ tải model về (~40MB - 1.5GB tùy size)
+  - **Audio Format**: Hỗ trợ MP3, WAV, M4A, FLAC, OGG...
+  - **Max Audio Length**: Không giới hạn, nhưng chia nhỏ cho audio dài (>30 phút)
+  - **Noise Handling**: Whisper xử lý tốt tiếng ồn nền, nhưng audio chất lượng cao cho kết quả tốt hơn
+  - **Fine-tuning**: Có thể fine-tune cho giọng địa phương hoặc domain đặc biệt
+  - **API Alternative**: Sử dụng OpenAI Whisper API nếu không muốn chạy local
+
+- Tối ưu hóa hiệu năng:
+
+```python
+# 1. Sử dụng faster-whisper (nhanh hơn 4x)
+from faster_whisper import WhisperModel
+
+model = WhisperModel("base", device="cuda", compute_type="int8")
+segments, info = model.transcribe("audio.mp3")
+
+# 2. Batch processing cho nhiều file
+import concurrent.futures
+
+def process_audio(file_path):
+    return model.transcribe(file_path)
+
+with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    results = executor.map(process_audio, audio_files)
+
+# 3. Streaming cho real-time
+from faster_whisper import WhisperModel
+
+model = WhisperModel("base", device="cuda")
+# Stream audio chunks và transcribe realtime
+```
+
+- Ngôn ngữ được hỗ trợ (Top 20):
+  - 🇻🇳 Tiếng Việt (Vietnamese)
+  - 🇺🇸 English (Tiếng Anh)
+  - 🇨🇳 中文 (Tiếng Trung)
+  - 🇯🇵 日本語 (Tiếng Nhật)
+  - 🇰🇷 한국어 (Tiếng Hàn)
+  - 🇫🇷 Français (Tiếng Pháp)
+  - 🇩🇪 Deutsch (Tiếng Đức)
+  - 🇪🇸 Español (Tiếng Tây Ban Nha)
+  - 🇷🇺 Русский (Tiếng Nga)
+  - 🇮🇹 Italiano (Tiếng Ý)
+  - 🇵🇹 Português (Tiếng Bồ Đào Nha)
+  - 🇹🇭 ไทย (Tiếng Thái)
+  - 🇮🇳 हिन्दी (Hindi)
+  - 🇹🇷 Türkçe (Tiếng Thổ Nhĩ Kỳ)
+  - 🇵🇱 Polski (Tiếng Ba Lan)
+  - 🇳🇱 Nederlands (Tiếng Hà Lan)
+  - 🇸🇪 Svenska (Tiếng Thụy Điển)
+  - 🇮🇩 Bahasa Indonesia (Tiếng Indonesia)
+  - 🇸🇦 العربية (Tiếng Ả Rập)
+  - ... và 70+ ngôn ngữ khác
+
+  ### 7. 🧩 Local Open-source LLM — QWEN 1.5B
 
   - Giới thiệu: Ngoài việc dùng Gemini và các dịch vụ đám mây, AI Agent còn hỗ trợ chạy mô hình open-source cỡ nhỏ/nhỏ-vừa tại local. Hiện repo có hướng dẫn tích hợp với `QWEN 1.5B` (một mô hình ngôn ngữ nhẹ, phù hợp để chạy thử trên máy cá nhân có GPU hoặc CPU mạnh).
 

@@ -205,6 +205,37 @@ export const speechAPI = {
   },
 };
 
+// ASR (Automatic Speech Recognition) API
+export const asrAPI = {
+  /**
+   * Transcribe audio using Whisper model
+   * @param {object} params - Transcription parameters
+   * @param {File} params.audio - Audio file to transcribe
+   * @param {string} params.language - Language code (e.g., 'vi', 'en') or null for auto-detect
+   * @param {string} params.task - 'transcribe' or 'translate'
+   * @param {string} params.model_name - Whisper model name
+   * @returns {Promise} Response data with transcription
+   */
+  transcribe: async (params) => {
+    const formData = new FormData();
+    formData.append('audio', params.audio);
+    
+    if (params.language) {
+      formData.append('language', params.language);
+    }
+    
+    formData.append('task', params.task || 'transcribe');
+    formData.append('model_name', params.model_name || 'large-v3');
+
+    const response = await apiClient.post('/api/asr/transcribe', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+};
+
 // Unified API object
 export const api = {
   chat: chatAPI.sendMessage,
@@ -218,6 +249,7 @@ export const api = {
   uploadImage: visionAPI.uploadImage,
   visionAnalysis: visionAPI.analyze,
   speechToText: speechAPI.transcribe,
+  asrTranscribe: asrAPI.transcribe,
 };
 
 // Export default API client for custom requests

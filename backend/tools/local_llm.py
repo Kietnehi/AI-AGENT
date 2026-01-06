@@ -1,4 +1,4 @@
-"""Local LLM Tool with Qwen 2.5B and Gemini API Support"""
+"""Local LLM Tool with Qwen 1.5B and Gemini API Support"""
 from transformers import AutoTokenizer, AutoModelForCausalLM, pipeline, BitsAndBytesConfig
 import torch
 from typing import Optional, Dict, Any
@@ -14,7 +14,7 @@ import json
 import random
 
 class LocalLLM:
-    """Local Language Model using Qwen 2.5B with 4-bit quantization"""
+    """Local Language Model using Qwen 1.5B with 4-bit quantization"""
     
     def __init__(self, model_name: str = "Qwen/Qwen2.5-1.5B-Instruct"):
         """

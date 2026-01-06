@@ -156,7 +156,7 @@ const LocalLLMFeature = () => {
             }}
           />
           <HardDrive size={22} style={{ marginRight: '10px', color: '#8fa3ff' }} />
-          <span style={{ color: '#000000', fontSize: '16px', fontWeight: '500' }}>Local LLM (Qwen 2.5B)</span>
+          <span style={{ color: '#000000', fontSize: '16px', fontWeight: '500' }}>Local LLM (Qwen 1.5B)</span>
         </label>
         
         <label style={{ 

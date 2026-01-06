@@ -7,7 +7,7 @@
 - Sử dụng gTTS (Google Text-to-Speech) để chuyển văn bản thành giọng nói
 - Hỗ trợ tiếng Việt
 
-### 2. 🖥️ Local LLM với Qwen 2.5B
+### 2. 🖥️ Local LLM với Qwen 1.5B
 - Cho phép người dùng chạy mô hình AI local trên máy
 - Không cần internet sau khi tải model
 - Sử dụng Qwen 2.5-1.5B-Instruct (phiên bản nhẹ hơn)
@@ -55,7 +55,7 @@ Không cần cài thêm gì, frontend đã có sẵn các component mới.
 3. Click nút **"Nghe"** để nghe AI đọc kết quả
 4. Audio sẽ tự động phát
 
-### Local LLM (Qwen 2.5B)
+### Local LLM (Qwen 1.5B)
 1. Click vào tab **"Local LLM"** trong menu
 2. Nhập tin nhắn của bạn
 3. Click **"Gửi"**
@@ -237,7 +237,7 @@ python -c "from transformers import AutoModel; AutoModel.from_pretrained('model_
 
 ## 📊 So Sánh Models
 
-| Feature | API (Gemini) | Local (Qwen 2.5B) |
+| Feature | API (Gemini) | Local (Qwen 1.5B) |
 |---------|--------------|-------------------|
 | Tốc độ | ⚡⚡⚡ Nhanh | 🐌 Chậm |
 | Offline | ❌ Cần internet | ✅ Không cần |

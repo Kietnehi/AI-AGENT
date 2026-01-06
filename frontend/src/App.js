@@ -6,8 +6,9 @@ import MathFeature from './components/MathFeature';
 import DataAnalysisFeature from './components/DataAnalysisFeature';
 import VisionFeature from './components/VisionFeature';
 import LocalLLMFeature from './components/LocalLLMFeature';
+import ASRFeature from './components/ASRFeature';
 import AnimatedBackground from './components/AnimatedBackground';
-import { Sparkles, Search, Calculator, BarChart3, Bot, Zap, Eye, Cpu } from 'lucide-react';
+import { Sparkles, Search, Calculator, BarChart3, Bot, Zap, Eye, Cpu, Mic } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -29,7 +30,8 @@ function App() {
     { id: 'math', name: 'Tính Toán', icon: Calculator, component: MathFeature, color: '#4facfe' },
     { id: 'data', name: 'Phân Tích Dữ Liệu', icon: BarChart3, component: DataAnalysisFeature, color: '#43e97b' },
     { id: 'vision', name: 'Vision AI', icon: Eye, component: VisionFeature, color: '#fa709a' },
-    { id: 'local-llm', name: 'Local LLM hoặc API LLM ( Có thể tạo Slide thuyết trình )', icon: Cpu, component: LocalLLMFeature, color: '#30cfd0' }
+    { id: 'local-llm', name: 'Local LLM hoặc API LLM ( Có thể tạo Slide thuyết trình )', icon: Cpu, component: LocalLLMFeature, color: '#30cfd0' },
+    { id: 'asr', name: 'Speech Recognition (Whisper)', icon: Mic, component: ASRFeature, color: '#a78bfa' }
   ];
 
   const ActiveComponent = features.find(f => f.id === activeFeature)?.component;
@@ -75,7 +77,7 @@ function App() {
           }}
           style={{ display: 'inline-block' }}
         >
-          <Bot size={60} style={{ marginBottom: '10px', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }} />
+          <Bot size={40} style={{ marginBottom: '5px', filter: 'drop-shadow(0 4px 8px rgba(0,0,0,0.3))' }} />
         </motion.div>
         <motion.h1
           initial={{ opacity: 0, scale: 0.5 }}
@@ -89,7 +91,7 @@ function App() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <Zap size={20} style={{ display: 'inline', marginRight: '8px' }} />
+          <Zap size={16} style={{ display: 'inline', marginRight: '6px' }} />
           Trợ Lý Thông Minh Đa Năng
         </motion.p>
       </motion.header>
@@ -111,10 +113,10 @@ function App() {
                 className={`feature-btn ${activeFeature === feature.id ? 'active' : ''}`}
                 onClick={() => setActiveFeature(feature.id)}
                 whileHover={{ 
-                  scale: 1.05,
-                  boxShadow: `0 8px 30px ${feature.color}40`
+                  scale: 1.03,
+                  boxShadow: `0 6px 20px ${feature.color}40`
                 }}
-                whileTap={{ scale: 0.95 }}
+                whileTap={{ scale: 0.97 }}
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1 }}
@@ -122,7 +124,7 @@ function App() {
                 <motion.div
                   animate={activeFeature === feature.id ? {
                     rotate: [0, 10, -10, 0],
-                    scale: [1, 1.2, 1]
+                    scale: [1, 1.15, 1]
                   } : {}}
                   transition={{ duration: 0.5 }}
                 >

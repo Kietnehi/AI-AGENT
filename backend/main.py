@@ -19,6 +19,7 @@ from tools.vision_tools import vision_tools
 from tools.local_llm import get_local_llm, get_gemini_api
 from tools.summarization_tool import get_summarization_tool
 from tools.speech_to_text import get_speech_tool
+from tools.asr_tool import get_asr_tool
 from config import Config
 
 # For TTS
@@ -559,7 +560,7 @@ async def text_to_speech(request: TextToSpeechRequest):
 @app.post("/local-llm")
 async def local_llm_chat(request: LocalLLMRequest):
     """
-    Chat using local LLM (Qwen 2.5B) or Gemini API
+    Chat using local LLM (Qwen 1.5B) or Gemini API
     """
     try:
         if request.use_api:
@@ -831,6 +832,79 @@ async def speech_to_text(
         if temp_file_path and os.path.exists(temp_file_path):
             os.unlink(temp_file_path)
         error_msg = f"Speech-to-text error: {str(e)}"
+        print(f"❌ Error: {error_msg}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=error_msg)
+
+
+# ============== ASR (Automatic Speech Recognition) Endpoints ==============
+
+class ASRRequest(BaseModel):
+    """Request model for ASR"""
+    language: Optional[str] = None  # e.g., 'vi', 'en', None for auto-detect
+    task: str = "transcribe"  # 'transcribe' or 'translate'
+    model_name: Optional[str] = "large-v3"
+
+@app.post("/api/asr/transcribe")
+async def asr_transcribe(
+    audio: UploadFile = File(...),
+    language: Optional[str] = Form(None),
+    task: str = Form("transcribe"),
+    model_name: str = Form("large-v3")
+):
+    """
+    Transcribe audio using Whisper model
+    """
+    temp_file_path = None
+    try:
+        print(f"📝 ASR Transcription request - Language: {language}, Task: {task}, Model: {model_name}")
+        
+        # Save uploaded file temporarily
+        temp_file_path = f"temp_{audio.filename}"
+        with open(temp_file_path, "wb") as f:
+            content = await audio.read()
+            f.write(content)
+        
+        print(f"💾 Audio file saved: {temp_file_path}")
+        
+        # Get ASR tool
+        asr_tool = get_asr_tool(model_name=model_name)
+        
+        # Transcribe
+        result = asr_tool.transcribe_audio(
+            audio_path=temp_file_path,
+            language=language,
+            task=task
+        )
+        
+        print(f"✅ ASR result: {result}")
+        
+        # Clean up temp file
+        if temp_file_path and os.path.exists(temp_file_path):
+            os.unlink(temp_file_path)
+        
+        if result["success"]:
+            return {
+                "transcription": result["transcription"],
+                "language": result["language"],
+                "task": result["task"],
+                "model": result["model"],
+                "device": result["device"],
+                "status": "success"
+            }
+        else:
+            error_msg = result.get("error", "ASR transcription failed")
+            print(f"❌ ASR failed: {error_msg}")
+            raise HTTPException(status_code=400, detail=error_msg)
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        # Clean up temp file on error
+        if temp_file_path and os.path.exists(temp_file_path):
+            os.unlink(temp_file_path)
+        error_msg = f"ASR error: {str(e)}"
         print(f"❌ Error: {error_msg}")
         import traceback
         traceback.print_exc()
