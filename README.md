@@ -1050,7 +1050,7 @@ Nếu gặp vấn đề hoặc có câu hỏi:
 <h3>🚀 Trương Phú Kiệt</h3>
 
 <a href="https://github.com/Kietnehi">
-  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=236AD3&background=00000000&center=true&vCenter=true&width=435&lines=Student+@+Sai+Gon+University;Fullstack+Dev+%26+AI+Researcher;Building+RAG+%26+Docker+Systems" alt="Typing SVG" />
+  <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=236AD3&background=00000000&center=true&vCenter=true&width=435&lines=Student+@+Sai+Gon+University;Fullstack+Dev+%26+AI+Researcher;Building+AI-AGENT+%26+Docker+Systems" alt="Typing SVG" />
 </a>
 
 <br/><br/>
