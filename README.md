@@ -1003,17 +1003,35 @@ ngrok http 3000 --host-header="localhost:3000"
 
 > **Ghi chú bảo mật:** Khi chia sẻ link, chỉ mở các route cần thiết và hạn chế lộ các endpoint nhạy cảm.
 
+---
 ## 📄 License
 
-MIT License - Tự do sử dụng và chỉnh sửa
+**MIT License** – Bạn có thể tự do **sử dụng, chỉnh sửa và chia sẻ** dự án này.  
+> 💡 Nhớ giữ lại thông báo bản quyền gốc khi phát hành lại nhé!
+
+---
 
 ## 🤝 Đóng Góp
 
-Mọi đóng góp đều được hoan nghênh! Hãy tạo Pull Request hoặc Issues.
+Chúng tôi hoan nghênh mọi đóng góp!  
+Bạn có thể:
+
+- 🛠 Tạo **Pull Request** để thêm tính năng hoặc sửa lỗi
+- 🐛 Tạo **Issue** để báo lỗi hoặc gợi ý cải tiến
+- 💬 Tham gia thảo luận và chia sẻ ý tưởng
+
+> Mọi góp ý đều quý giá, giúp dự án ngày càng tốt hơn! ✨
+
+---
 
 ## 📞 Liên Hệ
 
-Nếu có vấn đề hoặc câu hỏi, hãy tạo Issue trên GitHub.
+Nếu gặp vấn đề hoặc có câu hỏi:  
+
+- 📨 Tạo **Issue** trên [GitHub](https://github.com/Kietnehi/AI-AGENT/issues)  
+- 💌 Hoặc gửi email đến: `truongquockiet1211@gmail.com` (tuỳ bạn muốn)
+
+> Tôi sẽ phản hồi sớm nhất có thể!
 
 ---
 
