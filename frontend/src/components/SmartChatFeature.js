@@ -3,6 +3,7 @@ import { smartChatAPI } from '../api';
 import api from '../api';
 import ReactMarkdown from 'react-markdown';
 import { Sparkles, Volume2 } from 'lucide-react';
+import MicrophoneButton from './MicrophoneButton';
 
 function SmartChatFeature() {
   const [messages, setMessages] = useState([]);
@@ -287,30 +288,49 @@ function SmartChatFeature() {
           <div ref={messagesEndRef} />
         </div>
 
-        <div className="input-area">
-          <textarea
-            placeholder="Hỏi bất cứ điều gì... AI sẽ tự động tìm kiếm nếu cần"
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyPress={handleKeyPress}
-            disabled={loading}
-            rows={2}
-            style={{
-              width: '100%',
-              padding: '12px',
-              borderRadius: '10px',
-              border: '2px solid #e0e0e0',
-              fontSize: '1rem',
-              resize: 'none',
-              fontFamily: 'inherit'
-            }}
-          />
+        <div className="input-area" style={{ width: '100%' }}>
+          <div style={{ 
+            display: 'flex', 
+            gap: '10px', 
+            alignItems: 'flex-end',
+            width: '100%'
+          }}>
+            <textarea
+              placeholder="Hỏi bất cứ điều gì... AI sẽ tự động tìm kiếm nếu cần"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyPress={handleKeyPress}
+              disabled={loading}
+              rows={2}
+              style={{
+                flex: 1,
+                padding: '12px',
+                borderRadius: '10px',
+                border: '2px solid #e0e0e0',
+                fontSize: '1rem',
+                resize: 'none',
+                fontFamily: 'inherit',
+                minWidth: 0  // Prevent flex overflow
+              }}
+            />
+            <MicrophoneButton
+              onTranscript={(text) => setInput(text)}
+              language="vi"
+              disabled={loading}
+            />
+          </div>
           <button 
             className="send-btn" 
             onClick={handleSend}
             disabled={loading || !input.trim()}
             style={{
               marginTop: '10px',
+              alignSelf: 'flex-end',
+              width: 'auto',
+              maxWidth: '300px',
+              padding: '8px 14px',
+              borderRadius: '8px',
+              fontSize: '0.95rem',
               background: loading ? '#ccc' : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
               cursor: loading ? 'not-allowed' : 'pointer'
             }}

@@ -19,6 +19,13 @@ duckduckgo-search==8.1.1
 # Text-to-Speech
 gTTS==2.5.4
 
+# Speech-to-Text
+SpeechRecognition==3.10.4
+openai-whisper==20250625
+pyaudio==0.2.14
+pydub==0.25.1
+setuptools-rust==1.12.0
+
 # PowerPoint creation
 python-pptx==1.0.2
 
@@ -38,3 +45,4 @@ diffusers>=0.21.0
 paddleocr
 paddlex[ocr]
 easyocr==1.7.2
+datasets[audio]

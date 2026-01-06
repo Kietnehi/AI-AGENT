@@ -4,6 +4,7 @@ import ReactMarkdown from 'react-markdown';
 import { motion, AnimatePresence } from 'framer-motion';
 import LoadingAnimation from './LoadingAnimation';
 import AudioButton from './AudioButton';
+import MicrophoneButton from './MicrophoneButton';
 import { Send, Sparkles } from 'lucide-react';
 
 function SearchFeature() {
@@ -134,6 +135,7 @@ function SearchFeature() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
+          style={{ display: 'flex', gap: '10px', alignItems: 'flex-end', width: '100%' }}
         >
           <input
             type="text"
@@ -142,6 +144,12 @@ function SearchFeature() {
             onKeyPress={handleKeyPress}
             placeholder="Nhập câu hỏi tìm kiếm..."
             disabled={loading}
+            style={{ flex: 1, minWidth: 0 }}
+          />
+          <MicrophoneButton
+            onTranscript={(text) => setInput(text)}
+            language="vi"
+            disabled={loading}
           />
           <motion.button
             className="send-btn"
@@ -149,6 +157,7 @@ function SearchFeature() {
             disabled={loading || !input.trim()}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
+            style={{ flexShrink: 0 }}
           >
             <Send size={20} />
           </motion.button>

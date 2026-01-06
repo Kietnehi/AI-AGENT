@@ -18,6 +18,7 @@ from tools.data_analysis import DataAnalysisTool
 from tools.vision_tools import vision_tools
 from tools.local_llm import get_local_llm, get_gemini_api
 from tools.summarization_tool import get_summarization_tool
+from tools.speech_to_text import get_speech_tool
 from config import Config
 
 # For TTS
@@ -134,6 +135,13 @@ class SummarizationRequest(BaseModel):
     max_length: int = 130
     min_length: int = 30
     do_sample: bool = False
+
+
+class SpeechToTextRequest(BaseModel):
+    method: str = "auto"  # "auto", "whisper", or "google"
+    language: Optional[str] = "vi"  # Language code
+    translate_to_english: bool = False  # For Whisper only
+    openai_api_key: Optional[str] = None  # OpenAI API key for Whisper
 
 
 @app.get("/")
@@ -745,6 +753,88 @@ async def summarize_text(request: SummarizationRequest):
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Summarization error: {str(e)}")
+
+
+@app.post("/speech-to-text")
+async def speech_to_text(
+    file: UploadFile = File(...),
+    method: str = Form("auto"),
+    language: str = Form("vi"),
+    translate_to_english: bool = Form(False),
+    openai_api_key: Optional[str] = Form(None)
+):
+    """
+    Speech-to-Text endpoint supporting multiple methods:
+    - OpenAI Whisper: High accuracy, can translate to English
+    - Google Speech Recognition: Free, supports multiple languages
+    
+    Args:
+        file: Audio file (wav, mp3, m4a, webm, etc.)
+        method: "auto", "whisper", or "google"
+        language: Language code (e.g., 'vi', 'en', 'vi-VN', 'en-US')
+        translate_to_english: If True, translate to English (Whisper only)
+        openai_api_key: Optional OpenAI API key for Whisper
+    """
+    temp_file_path = None
+    
+    try:
+        print(f"📥 Received speech-to-text request: method={method}, language={language}")
+        
+        # Save uploaded file temporarily
+        suffix = Path(file.filename).suffix or '.wav'
+        print(f"📄 File: {file.filename}, suffix: {suffix}")
+        
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as temp_file:
+            content = await file.read()
+            temp_file.write(content)
+            temp_file_path = temp_file.name
+            print(f"💾 Saved to: {temp_file_path}, size: {len(content)} bytes")
+        
+        # Validate file size
+        if len(content) == 0:
+            raise HTTPException(status_code=400, detail="Audio file is empty")
+        
+        # Get speech tool and transcribe
+        speech_tool = get_speech_tool(openai_api_key=openai_api_key)
+        print(f"🎤 Starting transcription with method: {method}")
+        
+        result = speech_tool.transcribe(
+            audio_file_path=temp_file_path,
+            method=method,
+            language=language,
+            translate_to_english=translate_to_english
+        )
+        
+        print(f"✅ Transcription result: {result}")
+        
+        # Clean up temp file
+        if temp_file_path and os.path.exists(temp_file_path):
+            os.unlink(temp_file_path)
+        
+        if result["success"]:
+            return {
+                "text": result["text"],
+                "method": result["method"],
+                "language": result.get("language"),
+                "translated": result.get("translated", False),
+                "status": "success"
+            }
+        else:
+            error_msg = result.get("error", "Transcription failed")
+            print(f"❌ Transcription failed: {error_msg}")
+            raise HTTPException(status_code=400, detail=error_msg)
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        # Clean up temp file on error
+        if temp_file_path and os.path.exists(temp_file_path):
+            os.unlink(temp_file_path)
+        error_msg = f"Speech-to-text error: {str(e)}"
+        print(f"❌ Error: {error_msg}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=error_msg)
 
 
 if __name__ == "__main__":

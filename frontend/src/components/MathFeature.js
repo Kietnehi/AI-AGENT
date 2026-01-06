@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { chatAPI } from '../api';
 import ReactMarkdown from 'react-markdown';
 import AudioButton from './AudioButton';
+import MicrophoneButton from './MicrophoneButton';
 
 function MathFeature() {
   const [messages, setMessages] = useState([]);
@@ -279,13 +280,26 @@ function MathFeature() {
           {loading && <div className="loading">⏳ Đang tính toán...</div>}
         </div>
 
-        <div className="input-area">
+        <div className="input-area" style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
           <input
             type="text"
             placeholder="Nhập phép tính của bạn (thử 'plot y = x^2' để vẽ biểu đồ)..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
+            disabled={loading}
+            style={{ flex: 1, minWidth: 0 }}
+          />
+          <MicrophoneButton
+            evaluateMath={true}
+            onTranscript={(text) => setInput(text)}
+            onMathResult={({ input: spoken, expression, result }) => {
+              // Optionally update input to evaluated result or keep spoken expression
+              // Here we set input to the evaluated result for convenience
+              if (result !== undefined && !Number.isNaN(result)) {
+                setInput(String(result));
+              }
+            }}
             disabled={loading}
           />
           <button 

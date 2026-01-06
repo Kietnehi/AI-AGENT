@@ -953,6 +953,64 @@ SEARCH_ENGINE = "duckduckgo"  # hoặc "serpapi"
    - Giới hạn mặc định là 100MB
    - Tăng `MAX_CSV_SIZE_MB` trong config nếu cần
 
+## Public ID bằng ngrok (Expose ứng dụng ra mạng)
+
+1. Tải và Cài đặt
+
+Tải về: Vào https://ngrok.com/download, chọn phiên bản cho Windows.
+
+Giải nén: Bạn sẽ nhận được 1 file tên là `ngrok.exe`.
+
+Mẹo: Để chạy lệnh `ngrok` ở bất cứ đâu trong terminal, hãy copy file `ngrok.exe` này bỏ vào thư mục `C:\Windows\System32` (nếu lười setup biến môi trường).
+
+2. Lấy API Key (Authtoken)
+
+Đây là bước xác thực tài khoản (chỉ cần làm 1 lần duy nhất trong đời).
+
+Đăng nhập vào: https://dashboard.ngrok.com/get-started/your-authtoken
+
+Nhìn mục "Your Authtoken" (bắt đầu bằng 2A... hoặc số, không phải `ak_`).
+
+Bấm nút Copy.
+
+3. Config Token vào máy (Xác thực)
+
+Mở Terminal (CMD/PowerShell/Git Bash) và chạy lệnh sau (dán mã vừa copy vào):
+
+```bash
+ngrok config add-authtoken <DÁN_TOKEN_CỦA_BẠN_VÀO_ĐÂY>
+```
+
+Nếu báo "Authtoken saved..." là thành công.
+
+4. Chạy Public ID (Expose ra mạng)
+
+Giả sử dự án của bạn đang chạy ở Port 3000 (React/NodeJS/Python).
+
+Cách chạy chuẩn nhất (Tránh lỗi Invalid Host Header): Dùng lệnh này để server không chặn kết nối từ ngrok:
+
+```bash
+ngrok http 3000 --host-header="localhost:3000"
+```
+
+(Thay số `3000` bằng cổng thực tế của bạn)
+
+5. Kết quả & Debug
+
+Lấy Link: Copy dòng `https://...ngrok-free.dev` gửi cho mọi người.
+
+Debug API: Mở trình duyệt vào `http://localhost:4040` để xem chi tiết request (Header, Body) mà người khác gửi đến máy bạn.
+
+Hình: terminal khi chạy thành công ngrok
+
+![ngrok terminal](./image/ngrokhttp.png)
+
+Hình: giao diện debug API (ngrok web UI)
+
+![ngrok web UI](./image/ngrok.png)
+
+Ghi chú: Khi chia sẻ links với nhiều người, lưu ý bảo mật endpoints (không để lộ các route gây rủi ro), và chỉ mở port cho các service cần thiết.
+
 ## 📄 License
 
 MIT License - Tự do sử dụng và chỉnh sửa

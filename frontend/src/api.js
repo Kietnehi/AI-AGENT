@@ -174,8 +174,39 @@ export const visionAPI = {
   },
 };
 
+// Speech-to-Text API
+export const speechAPI = {
+  /**
+   * Convert speech to text
+   * @param {Blob} audioBlob - Audio blob from recording
+   * @param {string} method - 'auto', 'whisper', or 'google'
+   * @param {string} language - Language code (e.g., 'vi', 'en')
+   * @param {boolean} translateToEnglish - Translate to English (Whisper only)
+   * @param {string} openaiApiKey - OpenAI API key (optional)
+   * @returns {Promise} Response data with transcribed text
+   */
+  transcribe: async (audioBlob, method = 'auto', language = 'vi', translateToEnglish = false, openaiApiKey = null) => {
+    const formData = new FormData();
+    formData.append('file', audioBlob, 'recording.wav');
+    formData.append('method', method);
+    formData.append('language', language);
+    formData.append('translate_to_english', translateToEnglish);
+    
+    if (openaiApiKey) {
+      formData.append('openai_api_key', openaiApiKey);
+    }
+
+    const response = await apiClient.post('/speech-to-text', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    return response.data;
+  },
+};
+
 // Unified API object
-const api = {
+export const api = {
   chat: chatAPI.sendMessage,
   smartChat: smartChatAPI.sendSmartMessage,
   uploadCSV: dataAPI.uploadCSV,
@@ -186,6 +217,7 @@ const api = {
   createSlides: localLLMAPI.createSlides,
   uploadImage: visionAPI.uploadImage,
   visionAnalysis: visionAPI.analyze,
+  speechToText: speechAPI.transcribe,
 };
 
 // Export default API client for custom requests

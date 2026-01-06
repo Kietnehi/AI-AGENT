@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Cpu, Send, Loader, AlertCircle, Info, Key, Cloud, HardDrive, Presentation, Download } from 'lucide-react';
 import LoadingAnimation from './LoadingAnimation';
 import AudioButton from './AudioButton';
+import MicrophoneButton from './MicrophoneButton';
 import api from '../api';
 
 const LocalLLMFeature = () => {
@@ -339,28 +340,35 @@ const LocalLLMFeature = () => {
       {mode === 'chat' && (
         <div style={{ animation: 'fadeIn 0.3s ease-in' }}>
           <form onSubmit={handleSubmit} style={{ marginBottom: '24px' }}>
-            <textarea
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Nhập tin nhắn của bạn..."
-              rows="4"
-              style={{
-                width: '100%',
-                padding: '14px',
-                borderRadius: '10px',
-                border: '2px solid rgba(102, 126, 234, 0.4)',
-                background: '#ffffff',
-                color: '#000000',
-                fontSize: '15px',
-                marginBottom: '14px',
-                resize: 'vertical',
-                outline: 'none',
-                transition: 'border-color 0.3s ease',
-                lineHeight: '1.5'
-              }}
-              onFocus={(e) => e.target.style.borderColor = '#667eea'}
-              onBlur={(e) => e.target.style.borderColor = 'rgba(102, 126, 234, 0.4)'}
-            />
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-end', marginBottom: '14px', width: '100%' }}>
+              <textarea
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Nhập tin nhắn của bạn..."
+                rows="4"
+                style={{
+                  flex: 1,
+                  padding: '14px',
+                  borderRadius: '10px',
+                  border: '2px solid rgba(102, 126, 234, 0.4)',
+                  background: '#ffffff',
+                  color: '#000000',
+                  fontSize: '15px',
+                  resize: 'vertical',
+                  outline: 'none',
+                  transition: 'border-color 0.3s ease',
+                  lineHeight: '1.5',
+                  minWidth: 0
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#667eea'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(102, 126, 234, 0.4)'}
+              />
+              <MicrophoneButton
+                onTranscript={(text) => setMessage(text)}
+                language="vi"
+                disabled={loading}
+              />
+            </div>
 
             <button
               type="submit"
@@ -468,26 +476,33 @@ const LocalLLMFeature = () => {
               Tạo Slides Thuyết Trình
             </h3>
             
-            <input
-              type="text"
-              value={slideTopic}
-              onChange={(e) => setSlideTopic(e.target.value)}
-              placeholder="Nhập chủ đề cho slides (VD: Trí tuệ nhân tạo)"
-              style={{
-                width: '100%',
-                padding: '14px',
-                borderRadius: '8px',
-                border: '2px solid rgba(118, 75, 162, 0.4)',
-                background: '#ffffff',
-                color: '#000000',
-                fontSize: '15px',
-                marginBottom: '14px',
-                outline: 'none',
-                transition: 'border-color 0.3s ease'
-              }}
-              onFocus={(e) => e.target.style.borderColor = '#764ba2'}
-              onBlur={(e) => e.target.style.borderColor = 'rgba(118, 75, 162, 0.4)'}
-            />
+            <div style={{ display: 'flex', gap: '10px', alignItems: 'flex-end', marginBottom: '14px', width: '100%' }}>
+              <input
+                type="text"
+                value={slideTopic}
+                onChange={(e) => setSlideTopic(e.target.value)}
+                placeholder="Nhập chủ đề cho slides (VD: Trí tuệ nhân tạo)"
+                style={{
+                  flex: 1,
+                  padding: '14px',
+                  borderRadius: '8px',
+                  border: '2px solid rgba(118, 75, 162, 0.4)',
+                  background: '#ffffff',
+                  color: '#000000',
+                  fontSize: '15px',
+                  outline: 'none',
+                  transition: 'border-color 0.3s ease',
+                  minWidth: 0
+                }}
+                onFocus={(e) => e.target.style.borderColor = '#764ba2'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(118, 75, 162, 0.4)'}
+              />
+              <MicrophoneButton
+                onTranscript={(text) => setSlideTopic(text)}
+                language="vi"
+                disabled={slideLoading}
+              />
+            </div>
             
             <div style={{ marginBottom: '14px', display: 'flex', alignItems: 'center' }}>
               <label style={{ color: '#000000', marginRight: '12px', fontWeight: '600', fontSize: '15px' }}>
