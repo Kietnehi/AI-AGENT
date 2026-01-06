@@ -688,29 +688,64 @@ for line in result[0]:
   - Để có kết quả tốt, ảnh đầu vào nên có độ phân giải cao, rõ nét
   - Hỗ trợ xử lý batch để OCR nhiều ảnh cùng lúc
   - Có thể tùy chỉnh threshold confidence để lọc kết quả
+---
 
-### 9. 🖼️ Text to Image (Clipdrop)
+## 🖼️ Text to Image (Clipdrop API)
 
-- Giới thiệu: Hỗ trợ sinh ảnh từ văn bản bằng API Clipdrop. Thêm `CLIPDROP_API_KEY` vào file `.env` trong `backend/`.
+### 📌 Giới thiệu
+Tính năng **Text to Image** cho phép sinh hình ảnh từ mô tả văn bản bằng cách sử dụng **Clipdrop API**.  
+Phù hợp cho các use case như:
+- Sinh ảnh AI từ prompt
+- Prototype nhanh giao diện
+- Hỗ trợ sáng tạo nội dung (design, marketing, art, v.v.)
 
-- Cấu hình (file `.env` trong `backend/`):
+---
+
+### 🔐 Cấu hình môi trường
+
+Thêm biến môi trường `CLIPDROP_API_KEY` vào file `.env` trong thư mục `backend/`:
 
 ```env
 CLIPDROP_API_KEY=your_clipdrop_api_key_here
 ```
 
-- Ví dụ curl (lấy ảnh kết quả `result.png`):
+> ⚠️ **Lưu ý:**  
+> - Không commit file `.env` lên Git
+> - API Key lấy tại trang chính thức của Clipdrop
+
+---
+
+### 🚀 Ví dụ sử dụng với `curl`
+
+Ví dụ dưới đây gửi request sinh ảnh từ prompt văn bản  
+và lưu kết quả ra file **`result.png`**:
 
 ```bash
 curl -X POST https://clipdrop-api.co/text-to-image/v1 \
-     -H 'x-api-key: YOUR_API_KEY' \
-     -F 'prompt=shot of vaporwave fashion dog in miami'
-     -o result.png
+  -H "x-api-key: YOUR_API_KEY" \
+  -F "prompt=shot of vaporwave fashion dog in miami" \
+  -o result.png
 ```
 
+---
+
+### 🖼️ Kết quả minh họa
+
 <div align="center">
-  <img src="./image/texttoimage.png" width="45%" alt="Text to Image - prompt"/>
+  <img 
+    src="./image/texttoimage.png" 
+    alt="Text to Image - Clipdrop Prompt Result"
+  />
 </div>
+
+---
+
+### 🧠 Ghi chú thêm
+- Prompt càng chi tiết → ảnh sinh ra càng chính xác
+- Có thể kết hợp thêm style, lighting, mood trong prompt
+- Phù hợp để tích hợp backend service hoặc tool nội bộ
+
+---
 
 ## 📦 Cài Đặt
 
