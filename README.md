@@ -223,6 +223,15 @@ docker ps
   - Frontend sẽ gọi API `/text-to-speech` để nhận về file audio (MPEG) rồi tạo URL tạm thời (`URL.createObjectURL`) và phát bằng thẻ `Audio` của trình duyệt.
   - Nếu muốn thay voices hoặc tham số TTS, chỉnh ở `backend/main.py` nơi gọi `gTTS` (hoặc thay thế bằng dịch vụ TTS khác).
 
+  ### Speech-to-Text (Voice Input)
+
+  - Mô tả ngắn: Ghi âm từ microphone, chuyển giọng nói thành text và tự động điền vào ô chat.
+
+  - Vị trí: `frontend/src/components/MicrophoneButton.js`, `backend/tools/speech_to_text.py`, endpoint `/speech-to-text` trong `backend/main.py`.
+
+  - Hướng dẫn nhanh: Click micro → nói → dừng → kiểm tra/ chỉnh sửa text → gửi.
+
+  - Lưu ý: Trình duyệt cần hỗ trợ `MediaRecorder`; muốn nâng cao chất lượng, cấu hình backend dùng Whisper hoặc STT cloud.
   ### 6. 🧩 Local Open-source LLM — QWEN 1.5B
 
   - Giới thiệu: Ngoài việc dùng Gemini và các dịch vụ đám mây, AI Agent còn hỗ trợ chạy mô hình open-source cỡ nhỏ/nhỏ-vừa tại local. Hiện repo có hướng dẫn tích hợp với `QWEN 1.5B` (một mô hình ngôn ngữ nhẹ, phù hợp để chạy thử trên máy cá nhân có GPU hoặc CPU mạnh).
