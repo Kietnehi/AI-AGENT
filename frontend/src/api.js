@@ -236,6 +236,22 @@ export const asrAPI = {
   },
 };
 
+// Image Generation API
+export const imageGenAPI = {
+  /**
+   * Generate image from text prompt
+   * @param {object} params - Generation parameters
+   * @param {string} params.prompt - Text description of the image
+   * @param {number} params.width - Image width (default: 1024)
+   * @param {number} params.height - Image height (default: 1024)
+   * @returns {Promise} Response data with image URL
+   */
+  textToImage: async (params) => {
+    const response = await apiClient.post('/text-to-image', params);
+    return response.data;
+  },
+};
+
 // Unified API object
 export const api = {
   chat: chatAPI.sendMessage,
@@ -250,6 +266,7 @@ export const api = {
   visionAnalysis: visionAPI.analyze,
   speechToText: speechAPI.transcribe,
   asrTranscribe: asrAPI.transcribe,
+  textToImage: imageGenAPI.textToImage,
 };
 
 // Export default API client for custom requests

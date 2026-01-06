@@ -12,6 +12,7 @@ class Config:
     GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
     WOLFRAM_APP_ID = os.getenv("WOLFRAM_APP_ID")
     SERPAPI_KEY = os.getenv("SERPAPI_KEY")
+    CLIPDROP_API_KEY = os.getenv("CLIPDROP_API_KEY")
     
     # Search Engine Configuration
     SEARCH_ENGINE = os.getenv("SEARCH_ENGINE", "duckduckgo")  # duckduckgo or serpapi

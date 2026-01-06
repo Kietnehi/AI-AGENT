@@ -689,6 +689,30 @@ for line in result[0]:
   - Hỗ trợ xử lý batch để OCR nhiều ảnh cùng lúc
   - Có thể tùy chỉnh threshold confidence để lọc kết quả
 
+### 9. 🖼️ Text to Image (Clipdrop)
+
+- Giới thiệu: Hỗ trợ sinh ảnh từ văn bản bằng API Clipdrop. Thêm `CLIPDROP_API_KEY` vào file `.env` trong `backend/`.
+
+- Cấu hình (file `.env` trong `backend/`):
+
+```env
+CLIPDROP_API_KEY=your_clipdrop_api_key_here
+```
+
+- Ví dụ curl (lấy ảnh kết quả `result.png`):
+
+```bash
+curl -X POST https://clipdrop-api.co/text-to-image/v1 \
+     -H 'x-api-key: YOUR_API_KEY' \
+     -F 'prompt=shot of vaporwave fashion dog in miami'
+     -o result.png
+```
+
+<div align="center">
+  <img src="./image/texttoimage.png" width="45%" alt="Text to Image - prompt"/>
+  <img src="./image/texttoimage2.png" width="45%" alt="Text to Image - result"/>
+</div>
+
 ## 📦 Cài Đặt
 
 ### 1. Clone hoặc tải project

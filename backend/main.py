@@ -20,6 +20,7 @@ from tools.local_llm import get_local_llm, get_gemini_api
 from tools.summarization_tool import get_summarization_tool
 from tools.speech_to_text import get_speech_tool
 from tools.asr_tool import get_asr_tool
+from tools.image_generation import get_image_generation_tool
 from config import Config
 
 # For TTS
@@ -143,6 +144,12 @@ class SpeechToTextRequest(BaseModel):
     language: Optional[str] = "vi"  # Language code
     translate_to_english: bool = False  # For Whisper only
     openai_api_key: Optional[str] = None  # OpenAI API key for Whisper
+
+
+class TextToImageRequest(BaseModel):
+    prompt: str
+    width: int = 1024
+    height: int = 1024
 
 
 @app.get("/")
@@ -908,6 +915,44 @@ async def asr_transcribe(
         print(f"❌ Error: {error_msg}")
         import traceback
         traceback.print_exc()
+        raise HTTPException(status_code=500, detail=error_msg)
+
+
+# ==================== IMAGE GENERATION ENDPOINT ====================
+
+@app.post("/text-to-image")
+async def text_to_image(request: TextToImageRequest):
+    """
+    Generate image from text prompt using Clipdrop API
+    """
+    try:
+        print(f"🎨 Text-to-Image request - Prompt: {request.prompt}")
+        
+        # Get image generation tool
+        img_tool = get_image_generation_tool(Config.CLIPDROP_API_KEY)
+        
+        # Generate image
+        result = img_tool.text_to_image(
+            prompt=request.prompt,
+            width=request.width,
+            height=request.height
+        )
+        
+        if result["status"] == "success":
+            print(f"✅ Image generated: {result['image_path']}")
+            return {
+                "status": "success",
+                "message": result["message"],
+                "image_url": f"/output/{Path(result['image_path']).name}"
+            }
+        else:
+            raise HTTPException(status_code=400, detail=result["message"])
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        error_msg = f"Text-to-Image error: {str(e)}"
+        print(f"❌ Error: {error_msg}")
         raise HTTPException(status_code=500, detail=error_msg)
 
 
