@@ -1071,10 +1071,10 @@ Nếu gặp vấn đề hoặc có câu hỏi:
 
 <h3>🌟 AI Agent Using Multimodal Open-Source Models & APIs </h3>
 <p align="center">
-  <a href="https://github.com/Kietnehi/RAG">
-    <img src="https://img.shields.io/github/stars/Kietnehi/RAG?style=for-the-badge&color=yellow" alt="Stars"/>
-    <img src="https://img.shields.io/github/forks/Kietnehi/RAG?style=for-the-badge&color=orange" alt="Forks"/>
-    <img src="https://img.shields.io/github/issues/Kietnehi/RAG?style=for-the-badge&color=red" alt="Issues"/>
+  <a href="https://github.com/Kietnehi/AI-AGENT">
+    <img src="https://img.shields.io/github/stars/Kietnehi/AI-AGENT?style=for-the-badge&color=yellow" alt="Stars"/>
+    <img src="https://img.shields.io/github/forks/Kietnehi/AI-AGENT?style=for-the-badge&color=orange" alt="Forks"/>
+    <img src="https://img.shields.io/github/issues/Kietnehi/AI-AGENT?style=for-the-badge&color=red" alt="Issues"/>
   </a>
 </p>
 <!-- Quote động -->
