@@ -1294,14 +1294,13 @@ ngrok http 3000 --host-header="localhost:3000"
 
 - Copy URL công khai (ví dụ `https://xxxx.ngrok-free.dev`) và chia sẻ.
 - Xem chi tiết request/response tại ngrok web UI: `http://localhost:4040`.
-
-<figure>
-  <img src="./image/ngrokhttp.png" alt="Ngrok terminal" />
+<figure style="display: inline-block; text-align: center; margin: 20px;">
+  <img src="./image/ngrokhttp.png" alt="Ngrok terminal" style="width: 500px; height: auto; display: block; margin: 0 auto;" />
   <figcaption><strong>Hình 1:</strong> Terminal khi chạy ngrok thành công</figcaption>
 </figure>
 
-<figure>
-  <img src="./image/ngrok.png" alt="Ngrok web UI" />
+<figure style="display: inline-block; text-align: center; margin: 20px;">
+  <img src="./image/ngrok.png" alt="Ngrok web UI" style="width: 500px; height: auto; display: block; margin: 0 auto;" />
   <figcaption><strong>Hình 2:</strong> Giao diện debug API của ngrok (http://localhost:4040)</figcaption>
 </figure>
 
