@@ -21,6 +21,8 @@
 > 
 > Trong tương lai sẽ sử dụng thêm nhiều API để test và build trong lúc thời gian rảnh rỗi, nên đừng quá khắt khe nhé! 😊
 > 
+>Repository này dùng test và khám phá thêm các chức năng nên nó **không nằm trong 1 phạm vi cụ thể**. Chỉ đơn giản là **khám phá những thứ tò mò chưa làm bao giờ thôi**.
+>
 > **⭐ Nếu thấy hay thì hãy ủng hộ bằng cách cho repo một Star nhé!**
 
 AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học, và phân tích dữ liệu, sử dụng Gemini API làm LLM chính.
