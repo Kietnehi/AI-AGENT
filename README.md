@@ -718,18 +718,17 @@ for line in result[0]:
   - Có thể tùy chỉnh threshold confidence để lọc kết quả
 
 ---
-
 ## 🌍 Google Translator
 
 ### 📌 Giới thiệu
-Tính năng **Google Translator** cho phép dịch văn bản giữa 100+ ngôn ngữ một cách nhanh chóng và chính xác. Sử dụng thư viện **googletrans** - một thư viện Python miễn phí triển khai Google Translate API.
+**Google Translator** là công cụ dịch văn bản mạnh mẽ, hỗ trợ hơn 100 ngôn ngữ, giúp bạn dịch nhanh chóng và chính xác. Dự án sử dụng thư viện **googletrans**, một thư viện Python miễn phí triển khai Google Translate API.
 
-\u003cdiv align=\"center\"\u003e
+<div align="center">
 
-![Google Translator](./image/translatetext.png)
-*Giao diện Google Translator với khả năng tự động phát hiện ngôn ngữ và dịch ngay lập tức*
+![Google Translator](./image/translatetext.png)  
+*Giao diện Google Translator với khả năng tự động nhận diện ngôn ngữ và dịch tức thì.*
 
-\u003c/div\u003e
+</div>
 
 ### ✨ Tính năng chính
 - **Tự động phát hiện ngôn ngữ**: Tự động nhận diện ngôn ngữ nguồn
