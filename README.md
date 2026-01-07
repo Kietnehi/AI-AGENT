@@ -1,4 +1,8 @@
 <div align="center">
+  <img src="./image/fullpipeline.png" alt="Full Pipeline" style="width:100%; max-width:900px;" />
+</div>
+
+<div align="center">
 
 ![AI Agent](./image/readme/aiagent.jpg)
 
@@ -1252,12 +1256,7 @@ SEARCH_ENGINE = "duckduckgo"  # hoặc "serpapi"
    - Giới hạn mặc định là 100MB
    - Tăng `MAX_CSV_SIZE_MB` trong config nếu cần
 
-## **PUBLIC ID (EXPOSE ỨNG DỤNG RA MẠNG) — 2 CÁCH: Ngrok hoặc Cloudflare**
-
-Có 2 cách chính để public (expose) ứng dụng local ra Internet:
-
-- **Ngrok**: nhanh, dễ dùng cho testing và demo — xem phần Ngrok bên dưới.
-- **Cloudflare Tunnel (cloudflared)**: ổn định, chuyên nghiệp, phù hợp khi cần production-like tunnel (xem phần "Sử dụng Cloudflare Tunnel" ở dưới).
+## **PUBLIC ID BẰNG NGROK (EXPOSE ỨNG DỤNG RA MẠNG)**
 
 1. **Tải và cài đặt**
 
