@@ -14,30 +14,26 @@
   <img src="./image/readme/duckduckgo.png" width="200" alt="DuckDuckGo"/>
   <img src="./image/readme/langchain.jpg" width="200" alt="LangChain"/>
 </p>
-
 ---
 
-# 🤖 AI Agent - Trợ Lý Thông Minh Đa Năng
+# 🤖 AI Agent - Multi-purpose Intelligent Assistant
 
-## 📌 Giới Thiệu
+## 📌 Introduction
 
-> **⚠️ Lưu ý:** Repo này được tạo ra để **test và xài thử các API** đồng thời **thử vibe coding một con AI Agent đơn giản**.
+> **⚠️ Note:** This repository is created to **test and experiment with various APIs**, as well as to **try out vibe coding for a simple AI Agent**.
 > 
-> Trong tương lai sẽ sử dụng thêm nhiều API để test và build trong lúc thời gian rảnh rỗi, nên đừng quá khắt khe nhé! 😊
+> In the future, more APIs will be added for testing and building during free time, so please don’t be too strict about it! 😊
 > 
->Repository này dùng test và khám phá thêm các chức năng nên nó **không nằm trong 1 phạm vi cụ thể**. Chỉ đơn giản là **khám phá những thứ tò mò chưa làm bao giờ thôi**.
+> This repository is used for testing and exploring additional functionalities, therefore it **does not belong to any specific scope**. It is simply about **exploring curious things that I have never done before**.
 >
-> **⭐ Nếu thấy hay thì hãy ủng hộ bằng cách cho repo một Star nhé!**
-
+> **⭐ If you find this interesting, please support it by giving the repository a Star!**
 <div align="center">
 
 ![Demo](./output.gif)
 
 </div>
-AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học, và phân tích dữ liệu, sử dụng Gemini API làm LLM chính.
 
-
-
+A powerful AI Agent with web search, mathematical computation, and data analysis capabilities, using the Gemini API as the primary LLM.
 
 ## Full Pipeline
 
@@ -45,25 +41,25 @@ AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học,
   <img src="./image/fullpipeline.png" alt="Full Pipeline" style="width:100%; max-width:900px;" />
 </div>
 
-- **1. Tầng giao diện người dùng (User Interface):** Hỗ trợ nhiều hình thức đầu vào: văn bản, hình ảnh, âm thanh. Đầu ra hiển thị đa dạng: văn bản, hình ảnh, video, biểu đồ, âm thanh. Có tích hợp `ngrok` để tunneling, nâng cao bảo mật và khả năng truy cập từ xa.
+- **1. User Interface Layer:** Supports multiple input modalities: text, images, audio. Output is displayed in various formats: text, images, video, charts, audio. Integrated with `ngrok` for tunneling, enhancing security and remote accessibility.
 
-- **2. Tầng xử lý chính (Core Framework & Backend):** Sử dụng `FastAPI` làm framework chính, kèm `Pydantic` để validate dữ liệu. API server tiếp nhận và xử lý yêu cầu. `Smart Router` / Decision Maker định tuyến yêu cầu đến dịch vụ AI phù hợp.
+- **2. Core Framework & Backend Layer:** Uses `FastAPI` as the main framework, along with `Pydantic` for data validation. The API server receives and processes requests. A `Smart Router` / Decision Maker routes requests to the appropriate AI service.
 
-- **3. Tầng AI & Xử lý chuyên sâu:** Hệ thống tích hợp nhiều công cụ AI theo lĩnh vực:
+- **3. AI & Advanced Processing Layer:** The system integrates multiple AI tools by domain:
   - **LLM & Logic:** Google Gemini, Local LLM (Transformers, Ollama, ...)
-  - **Xử lý hình ảnh (Vision AI):** Salesforce BLIP, OCR (EasyOCR / PaddleOCR)
-  - **Xử lý âm thanh:** Speech-to-Text (Whisper), Text-to-Speech (gTTS)
-  - **Tìm kiếm & tri thức:** DuckDuckGo, SerpAPI, WolframAlpha
-  - **Phân tích dữ liệu:** Pandas, NumPy, Matplotlib, Plotly
-  - **Tạo phương tiện đa phương tiện:** Text-to-Image (Clipdrop), Text-to-Video, Slide/Presentation generator
+  - **Image Processing (Vision AI):** Salesforce BLIP, OCR (EasyOCR / PaddleOCR)
+  - **Audio Processing:** Speech-to-Text (Whisper), Text-to-Speech (gTTS)
+  - **Search & Knowledge:** DuckDuckGo, SerpAPI, WolframAlpha
+  - **Data Analysis:** Pandas, NumPy, Matplotlib, Plotly
+  - **Multimedia Generation:** Text-to-Image (Clipdrop), Text-to-Video, Slide/Presentation generator
 
-## 🐳 Cài Đặt & Chạy với Docker
+## 🐳 Installation & Running with Docker
 
-> **💡 Khuyến nghị:** Sử dụng Docker để triển khai nhanh chóng, tránh các vấn đề về môi trường và dependencies!
+> **💡 Recommendation:** Use Docker for fast deployment and to avoid environment and dependency issues!
 
 ### 📦 Docker Images & Containers
 
-Sau khi build thành công, hệ thống sẽ có các Docker images và containers như sau:
+After a successful build, the system will have the following Docker images and containers:
 
 <p align="center">
   <img src="./image/dockerimage.png" width="45%" alt="Docker Image"/>
@@ -74,23 +70,23 @@ Sau khi build thành công, hệ thống sẽ có các Docker images và contain
 </p>
 
 <p align="center">
-  <em>Hình: Docker image (trên) và Docker container (dưới) của hệ thống AI Agent</em>
+  <em>Figure: Docker image (top) and Docker container (bottom) of the AI Agent system</em>
 </p>
 
-### 🚀 Quick Start với Docker
+### 🚀 Quick Start with Docker
 
-#### **Bước 1: Cài đặt Docker**
+#### **Step 1: Install Docker**
 
-- **Windows/Mac**: Tải [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- **Windows/Mac**: Download [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - **Linux**: 
   ```bash
   curl -fsSL https://get.docker.com -o get-docker.sh
   sudo sh get-docker.sh
   ```
 
-#### **Bước 2: Cấu hình API Keys**
+#### **Step 2: Configure API Keys**
 
-Tạo file `.env` trong thư mục `backend/`:
+Create a `.env` file in the `backend/` directory:
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key_here
@@ -99,42 +95,41 @@ SERPAPI_KEY=your_serpapi_key_here
 SEARCH_ENGINE=duckduckgo
 ```
 
-#### **Bước 3: Build và Chạy**
+#### **Step 3: Build and Run**
 
 ```bash
-# Build và start tất cả services
+# Build and start all services
 docker-compose up --build
 
-# Hoặc chạy background
+# Or run in the background
 docker-compose up -d --build
 ```
 
-#### **Bước 4: Truy cập ứng dụng**
+#### **Step 4: Access the Application**
 
 - 🌐 **Frontend**: http://localhost:3000
 - 🔧 **Backend API**: http://localhost:8000
 - 📚 **API Docs**: http://localhost:8000/docs
-
-#### **Các lệnh Docker hữu ích:**
+#### **Useful Docker Commands:**
 
 ```bash
-# Xem logs
+# View logs
 docker-compose logs -f
 
-# Dừng services
+# Stop services
 docker-compose down
 
-# Rebuild một service cụ thể
+# Rebuild a specific service
 docker-compose up -d --build frontend
 docker-compose up -d --build backend
 
-# Xem trạng thái containers
+# View container status
 docker ps
 ```
 
-### 💡 Tối ưu hóa Docker
+### 💡 Docker Optimization
 
-- **BuildKit**: Build nhanh hơn 2-3 lần
+- **BuildKit**: Build 2–3x faster
   ```bash
   # Windows PowerShell
   $env:DOCKER_BUILDKIT=1
@@ -144,36 +139,36 @@ docker ps
   DOCKER_BUILDKIT=1 docker-compose build
   ```
 
-- **Models Cache**: Models sẽ được lưu trong Docker volumes, không cần download lại:
-  - `huggingface_cache`: Chứa Qwen, BLIP models (~2-3GB)
-  - `paddleocr_cache`: Chứa PaddleOCR models (~10MB)  
-  - `easyocr_cache`: Chứa EasyOCR models (~100MB)
+- **Models Cache**: Models are stored in Docker volumes, no need to re-download:
+  - `huggingface_cache`: Contains Qwen, BLIP models (~2–3GB)
+  - `paddleocr_cache`: Contains PaddleOCR models (~10MB)  
+  - `easyocr_cache`: Contains EasyOCR models (~100MB)
 
-📖 **Chi tiết về tối ưu hóa Docker**: Xem [README_DOCKER.md](README_DOCKER.md) để tìm hiểu thêm về multi-stage build, layer caching, và các mẹo tối ưu.
+📖 **Docker optimization details**: See [README_DOCKER.md](README_DOCKER.md) to learn more about multi-stage builds, layer caching, and optimization tips.
 
 ---
 
-## ✨ Tính Năng
+## ✨ Features
 
 ### 🌟 Smart Chat AI (Real-time)
-- **Chat thông minh** với AI tự động quyết định khi nào cần tìm kiếm
-- **Phân tích câu hỏi** và tự động search thông tin real-time nếu cần
-- **Tổng hợp & tư vấn** dựa trên kết quả tìm kiếm
-- **Trò chuyện tự nhiên** bằng tiếng Việt
-- **📸 Upload/Paste hình ảnh**: Gửi hình ảnh cùng tin nhắn để AI phân tích (tối đa 5 ảnh/lần)
-  - **Paste trực tiếp**: Copy hình (Ctrl+C) → Paste vào khung chat (Ctrl+V)
-  - **Drag & Drop**: Kéo thả file hình vào textarea
-  - **Click upload**: Nhấn nút 📷 để chọn file từ máy
+- **Intelligent chat** with AI that automatically decides when to search
+- **Question analysis** and automatic real-time information search when needed
+- **Synthesis & recommendations** based on search results
+- **Natural conversation** in Vietnamese
+- **📸 Image Upload/Paste**: Send images along with messages for AI analysis (maximum 5 images per message)
+  - **Direct paste**: Copy image (Ctrl+C) → Paste into chat box (Ctrl+V)
+  - **Drag & Drop**: Drag and drop image files into the textarea
+  - **Click upload**: Click the 📷 button to select files from your device
 
 <div align="center">
 
 <table style="width:100%; border-collapse:collapse;">
   <tr>
     <th style="width:50%; padding:16px; font-size:18px;">
-      Giao diện Smart Chat AI
+      Smart Chat AI Interface
     </th>
     <th style="width:50%; padding:16px; font-size:18px;">
-      Tính năng Paste/Upload Hình ảnh
+      Paste/Upload Image Feature
     </th>
   </tr>
   <tr>
@@ -191,123 +186,122 @@ docker ps
 </table>
 
 <p style="margin-top:12px; font-style:italic; font-size:15px;">
-  Hình: (Trái) Giao diện Smart Chat với tự động tìm kiếm real-time — (Phải) Paste/Upload hình ảnh (tối đa 5 ảnh) hỗ trợ multimodal AI
+  Figure: (Left) Smart Chat interface with automatic real-time search — (Right) Paste/Upload images (up to 5 images) supporting multimodal AI
 </p>
 
 </div>
 
-### 1. 🔍 Tìm Kiếm Web
-- **DuckDuckGo**: Tìm kiếm miễn phí, bảo mật
-- **SerpAPI**: Tìm kiếm Google với API key
-- Người dùng có thể chọn công cụ tìm kiếm phù hợp
+### 1. 🔍 Web Search
+- **DuckDuckGo**: Free and privacy-focused search
+- **SerpAPI**: Google Search with API key
+- Users can choose the appropriate search engine
 
 <p align="center">
   <img src="./image/duckduckgo.png" width="45%" alt="DuckDuckGo Search"/>
   <img src="./image/serpapi.png" width="45%" alt="SerpAPI Search"/>
 </p>
 
-### 2. 🧮 Tính Toán Toán Học
-- Sử dụng **Wolfram Alpha API**
-- Giải toán phức tạp, tích phân, đạo hàm
-- Tính toán khoa học, thống kê
-- Giải phương trình
-- **Vẽ đồ thị hàm số** trực tiếp từ Wolfram Alpha
+### 2. 🧮 Mathematical Computation
+- Uses **Wolfram Alpha API**
+- Solve complex math problems, integrals, derivatives
+- Scientific and statistical calculations
+- Equation solving
+- **Function plotting** directly from Wolfram Alpha
 
 <div align="center">
 
 ![Plot Function](./image/plotdothi.png)
-*Đồ thị hàm số được tạo bằng Wolfram Alpha API*
+*Function plot generated by Wolfram Alpha API*
 
 </div>
 
-**Tính năng vẽ đồ thị nâng cao:** AI Agent tích hợp trực tiếp với Wolfram Alpha API để tạo ra các đồ thị toán học chính xác và đẹp mắt. Chỉ cần nhập lệnh như "plot y = x^2" hoặc "graph sin(x) from -π to π", hệ thống sẽ tự động gửi yêu cầu đến Wolfram Alpha, nhận về hình ảnh đồ thị chất lượng cao và hiển thị ngay lập tức trong giao diện. Wolfram Alpha xử lý các phép vẽ phức tạp bao gồm hàm số nhiều biến, đồ thị 3D, biểu đồ phân cực, và các hàm đặc biệt, giúp người dùng trực quan hóa toán học một cách dễ dàng và chuyên nghiệp.
+**Advanced plotting feature:** The AI Agent integrates directly with the Wolfram Alpha API to generate accurate and visually appealing mathematical plots. Simply enter commands such as "plot y = x^2" or "graph sin(x) from -π to π", and the system will automatically send requests to Wolfram Alpha, receive high-quality plot images, and display them instantly in the interface. Wolfram Alpha handles complex visualizations including multivariable functions, 3D plots, polar charts, and special functions, helping users visualize mathematics easily and professionally.
 
-### 3. 📊 Phân Tích Dữ Liệu
-- Đọc và phân tích file CSV
-- Thống kê mô tả chi tiết
-- Tạo nhiều loại biểu đồ:
-  - Bar chart (biểu đồ cột)
-  - Line chart (biểu đồ đường)
-  - Scatter plot (biểu đồ phân tán)
-  - Histogram (biểu đồ tần suất)
-  - Pie chart (biểu đồ tròn)
+### 3. 📊 Data Analysis
+- Read and analyze CSV files
+- Detailed descriptive statistics
+- Generate multiple types of charts:
+  - Bar chart
+  - Line chart
+  - Scatter plot
+  - Histogram
+  - Pie chart
   - Box plot
-  - Heatmap (bản đồ nhiệt)
+  - Heatmap
 
 <div style="display: flex; justify-content: center; gap: 20px;">
   <div style="flex: 1; text-align: center;">
     <img src="./image/aiagent.png" style="width: 100%; height: auto;">
-    <p><em>Giao diện phân tích dữ liệu</em></p>
+    <p><em>Data analysis interface</em></p>
   </div>
 
   <div style="flex: 1; text-align: center;">
     <img src="./image/cot.png" style="width: 100%; height: auto;">
-    <p><em>Tự động tạo biểu đồ cột</em></p>
+    <p><em>Automatically generated bar chart</em></p>
   </div>
 </div>
 
-
 ### 4. 🧠 Gemini LLM
-- Sử dụng Google Gemini API
-- Trả lời câu hỏi thông minh
-- Hiểu ngữ cảnh hội thoại
-- Tương tác tự nhiên bằng tiếng Việt
+- Uses the Google Gemini API
+- Intelligent question answering
+- Understands conversational context
+- Natural interaction in Vietnamese
 
 ### 5. 🔊 Audio Player (Text-to-Speech)
 
-- Giới thiệu: AI Agent hiện hỗ trợ chuyển văn bản thành giọng nói (Text-to-Speech) và phát trực tiếp trên giao diện web. Tính năng này giúp bạn nghe nội dung trả lời, các ghi chú, hoặc kết quả phân tích dữ liệu mà không cần đọc tay.
+- **Overview:** The AI Agent currently supports Text-to-Speech (TTS) and plays audio directly in the web interface. This feature allows you to listen to answers, notes, or data analysis results without reading manually.
 
-- Tính năng chính:
-  - Play / Pause: bật/tạm dừng audio.
-  - Seek (tua): click vào thanh tiến trình để tua tới vị trí mong muốn.
-  - Time display: hiển thị thời gian hiện tại và tổng thời lượng (ví dụ: 0:10 / 2:27).
-  - Restart: nút phát lại từ đầu.
-  - Giao diện thân thiện, có chỉ dẫn khi hover để người dùng biết có thể tua.
+- **Main features:**
+  - Play / Pause: start or pause audio playback.
+  - Seek: click on the progress bar to jump to a desired position.
+  - Time display: shows current time and total duration (e.g., 0:10 / 2:27).
+  - Restart: replay audio from the beginning.
+  - User-friendly UI with hover hints indicating seek capability.
 
-- Vị trí code:
+- **Code locations:**
   - Frontend component: [frontend/src/components/AudioButton.js](frontend/src/components/AudioButton.js)
   - Backend endpoint (text-to-speech): [backend/main.py](backend/main.py#L465)
 
-- Cách sử dụng nhanh:
-  1. Tại bất kỳ chỗ nào hiển thị nút "Nghe" hoặc biểu tượng âm lượng, click để tải và phát audio.
-  2. Dùng thanh progress để tua đến vị trí mong muốn (click) hoặc dùng nút Tạm dừng/Tiếp tục.
-  3. Nhấn nút ↻ để phát lại từ đầu.
+- **Quick usage guide:**
+  1. Wherever the "Listen" button or speaker icon appears, click it to download and play the audio.
+  2. Use the progress bar to seek (click) or use Pause/Resume.
+  3. Press the ↻ button to restart playback.
 
-- Ghi chú kỹ thuật:
-  - Frontend sẽ gọi API `/text-to-speech` để nhận về file audio (MPEG) rồi tạo URL tạm thời (`URL.createObjectURL`) và phát bằng thẻ `Audio` của trình duyệt.
-  - Nếu muốn thay voices hoặc tham số TTS, chỉnh ở `backend/main.py` nơi gọi `gTTS` (hoặc thay thế bằng dịch vụ TTS khác).
+- **Technical notes:**
+  - The frontend calls the `/text-to-speech` API to receive an audio file (MPEG), creates a temporary URL (`URL.createObjectURL`), and plays it using the browser’s `Audio` element.
+  - To change voices or TTS parameters, modify the TTS configuration in `backend/main.py` where `gTTS` is called (or replace it with another TTS service).
 
-  ### Speech-to-Text (Voice Input)
+### Speech-to-Text (Voice Input)
 
-  - Mô tả ngắn: Ghi âm từ microphone, chuyển giọng nói thành text và tự động điền vào ô chat.
+- **Short description:** Record audio from the microphone, convert speech to text, and automatically fill it into the chat input.
 
-  - Vị trí: `frontend/src/components/MicrophoneButton.js`, `backend/tools/speech_to_text.py`, endpoint `/speech-to-text` trong `backend/main.py`.
+- **Locations:** `frontend/src/components/MicrophoneButton.js`, `backend/tools/speech_to_text.py`, endpoint `/speech-to-text` in `backend/main.py`.
 
-  - Hướng dẫn nhanh: Click micro → nói → dừng → kiểm tra/ chỉnh sửa text → gửi.
+- **Quick guide:** Click the microphone → speak → stop → review/edit text → send.
 
-  - Lưu ý: Trình duyệt cần hỗ trợ `MediaRecorder`; muốn nâng cao chất lượng, cấu hình backend dùng Whisper hoặc STT cloud.
+- **Notes:** The browser must support `MediaRecorder`. For higher accuracy, configure the backend to use Whisper or a cloud-based STT service.
 
-### 6. 🎤 Automatic Speech Recognition (ASR) - Whisper AI
+### 6. 🎤 Automatic Speech Recognition (ASR) — Whisper AI
 
-- Giới thiệu: AI Agent tích hợp **OpenAI Whisper** - một mô hình ASR mạnh mẽ với khả năng tự động nhận diện ngôn ngữ và chuyển đổi giọng nói thành văn bản chính xác. Whisper hỗ trợ hơn 90 ngôn ngữ và có thể tự động dịch sang tiếng Anh, phù hợp cho các ứng dụng đa ngôn ngữ.
+- **Overview:** The AI Agent integrates **OpenAI Whisper**, a powerful ASR model capable of automatic language detection and accurate speech-to-text conversion. Whisper supports 90+ languages and can automatically translate speech into English, making it suitable for multilingual applications.
 
-- Tính năng chính:
-  - **Automatic Transcription**: Tự động nhận diện ngôn ngữ và chuyển đổi giọng nói thành văn bản
-  - **Multi-language Support**: Hỗ trợ 90+ ngôn ngữ (Tiếng Việt, Anh, Nhật, Hàn, Trung, Pháp, Đức...)
-  - **Auto-translate to English**: Tự động dịch mọi ngôn ngữ sang tiếng Anh
-  - **High Accuracy**: Độ chính xác cao ngay cả với giọng địa phương, nhiễu nền
-  - **Multiple Model Sizes**: Hỗ trợ nhiều kích thước model (tiny, base, small, medium, large)
-  - **Real-time Processing**: Xử lý nhanh chóng với streaming audio
+- **Key features:**
+  - **Automatic Transcription:** Automatically detects the spoken language and converts speech to text
+  - **Multi-language Support:** Supports 90+ languages (Vietnamese, English, Japanese, Korean, Chinese, French, German, etc.)
+  - **Auto-translate to English:** Automatically translates any language into English
+  - **High Accuracy:** Performs well even with accents and background noise
+  - **Multiple Model Sizes:** Supports multiple model sizes (tiny, base, small, medium, large)
+  - **Real-time Processing:** Fast processing with streaming audio
 
 <div align="center">
 
 <table style="width:100%; border-collapse:collapse;">
   <tr>
     <th style="width:50%; padding:16px; font-size:18px;">
-      Auto Transcribe (Mọi ngôn ngữ)
+      Auto Transcribe (All Languages)
     </th>
     <th style="width:50%; padding:16px; font-size:18px;">
-      Translate sang Tiếng Anh
+      Translate to English
     </th>
   </tr>
   <tr>
@@ -325,98 +319,96 @@ docker ps
 </table>
 
 <p style="margin-top:12px; font-style:italic; font-size:15px;">
-  Hình: (Trái) Tự động transcribe mọi ngôn ngữ — (Phải) Transcribe và dịch sang tiếng Anh
+  Figure: (Left) Automatic transcription for all languages — (Right) Transcription with English translation
 </p>
 
 </div>
 
-- Các chế độ hoạt động:
+- **Operating modes:**
 
-  **1. Auto Transcribe Mode (Chế độ Phiên âm Tự động)**
-  - Tự động nhận diện ngôn ngữ đang nói
-  - Chuyển đổi giọng nói thành văn bản bằng ngôn ngữ gốc
-  - Phù hợp: Ghi chú, phụ đề, phiên âm cuộc họp
+  **1. Auto Transcribe Mode**
+  - Automatically detects the spoken language
+  - Converts speech to text in the original language
+  - Suitable for notes, subtitles, meeting transcription
 
-  **2. Translate Mode (Chế độ Dịch)**
-  - Nhận diện ngôn ngữ gốc
-  - Phiên âm và tự động dịch sang tiếng Anh
-  - Phù hợp: Dịch thuật real-time, giao tiếp quốc tế
+  **2. Translate Mode**
+  - Detects the source language
+  - Transcribes and automatically translates into English
+  - Suitable for real-time translation and international communication
 
-- So sánh các model Whisper:
+- **Whisper model comparison:**
 
-| Model | Size | Tốc độ | Độ chính xác | RAM/VRAM | Use case |
-|-------|------|--------|--------------|----------|----------|
-| **tiny** | ~40MB | ⭐⭐⭐⭐⭐ Rất nhanh | ⭐⭐⭐ Trung bình | ~1GB | Demo, testing |
-| **base** | ~75MB | ⭐⭐⭐⭐ Nhanh | ⭐⭐⭐⭐ Tốt | ~1GB | Production nhẹ |
-| **small** | ~240MB | ⭐⭐⭐ Trung bình | ⭐⭐⭐⭐ Tốt | ~2GB | Khuyến nghị |
-| **medium** | ~770MB | ⭐⭐ Chậm | ⭐⭐⭐⭐⭐ Rất tốt | ~5GB | Chất lượng cao |
-| **large** | ~1.5GB | ⭐ Rất chậm | ⭐⭐⭐⭐⭐ Tốt nhất | ~10GB | Professional |
+| Model | Size | Speed | Accuracy | RAM/VRAM | Use case |
+|------|------|-------|----------|----------|----------|
+| **tiny** | ~40MB | ⭐⭐⭐⭐⭐ Very fast | ⭐⭐⭐ Medium | ~1GB | Demo, testing |
+| **base** | ~75MB | ⭐⭐⭐⭐ Fast | ⭐⭐⭐⭐ Good | ~1GB | Lightweight production |
+| **small** | ~240MB | ⭐⭐⭐ Medium | ⭐⭐⭐⭐ Good | ~2GB | Recommended |
+| **medium** | ~770MB | ⭐⭐ Slow | ⭐⭐⭐⭐⭐ Very good | ~5GB | High quality |
+| **large** | ~1.5GB | ⭐ Very slow | ⭐⭐⭐⭐⭐ Best | ~10GB | Professional |
 
-- Ví dụ sử dụng với Python:
+- **Python usage example:**
 
 ```python
 import whisper
 
-# Load model (chọn size phù hợp với tài nguyên)
+# Load model (choose size based on resources)
 model = whisper.load_model("base")  # tiny, base, small, medium, large
 
-# 1. Auto Transcribe (giữ nguyên ngôn ngữ)
+# 1. Auto Transcribe (keep original language)
 result = model.transcribe("audio.mp3")
 print(f"Detected Language: {result['language']}")
 print(f"Text: {result['text']}")
 
-# 2. Translate to English (dịch sang tiếng Anh)
+# 2. Translate to English
 result = model.transcribe("audio.mp3", task="translate")
 print(f"English Translation: {result['text']}")
 
-# 3. Với streaming audio
+# 3. Streaming audio example
 import sounddevice as sd
 import numpy as np
 
-# Record audio (5 seconds)
 duration = 5  # seconds
-fs = 16000  # Sample rate
+fs = 16000
 audio = sd.rec(int(duration * fs), samplerate=fs, channels=1)
 sd.wait()
 
-# Transcribe
 result = model.transcribe(audio.flatten())
 print(result['text'])
 ```
 
-- Use cases thực tế:
-  - **Phiên âm hội nghị**: Ghi lại và chuyển đổi cuộc họp đa ngôn ngữ
-  - **Phụ đề video**: Tự động tạo phụ đề cho video YouTube, TikTok
-  - **Hỗ trợ người khiếm thính**: Chuyển đổi giọng nói thành text real-time
-  - **Học ngoại ngữ**: Luyện phát âm và so sánh với bản phiên âm chuẩn
-  - **Dịch vụ khách hàng**: Ghi lại và phân tích cuộc gọi
-  - **Ghi chú y tế**: Phiên âm chẩn đoán và ghi chú bệnh án
-  - **Phỏng vấn & báo chí**: Tự động ghi chú và phiên âm
+- **Real-world use cases:**
+  - **Conference transcription:** Multilingual meeting transcription
+  - **Video subtitles:** Automatic subtitles for YouTube, TikTok
+  - **Accessibility:** Real-time speech-to-text for the hearing impaired
+  - **Language learning:** Pronunciation practice and transcription comparison
+  - **Customer support:** Call recording and analysis
+  - **Medical notes:** Transcribing diagnoses and clinical notes
+  - **Interviews & journalism:** Automatic note-taking and transcription
 
-- Vị trí code:
+- **Code locations:**
   - Backend tool: [backend/tools/asr_tool.py](backend/tools/asr_tool.py)
-  - Backend endpoint: [backend/main.py](backend/main.py) - `/asr-transcribe`, `/asr-translate`
+  - Backend endpoints: [backend/main.py](backend/main.py) — `/asr-transcribe`, `/asr-translate`
   - Frontend component: [frontend/src/components/ASRFeature.js](frontend/src/components/ASRFeature.js)
 
-- Lưu ý kỹ thuật:
-  - **GPU Acceleration**: Whisper chạy nhanh hơn 5-10 lần trên GPU (CUDA)
-  - **Model Loading**: Lần đầu sử dụng sẽ tải model về (~40MB - 1.5GB tùy size)
-  - **Audio Format**: Hỗ trợ MP3, WAV, M4A, FLAC, OGG...
-  - **Max Audio Length**: Không giới hạn, nhưng chia nhỏ cho audio dài (>30 phút)
-  - **Noise Handling**: Whisper xử lý tốt tiếng ồn nền, nhưng audio chất lượng cao cho kết quả tốt hơn
-  - **Fine-tuning**: Có thể fine-tune cho giọng địa phương hoặc domain đặc biệt
-  - **API Alternative**: Sử dụng OpenAI Whisper API nếu không muốn chạy local
+- **Technical notes:**
+  - **GPU Acceleration:** Whisper runs 5–10x faster on GPU (CUDA)
+  - **Model Loading:** First use downloads the model (~40MB–1.5GB depending on size)
+  - **Audio Formats:** Supports MP3, WAV, M4A, FLAC, OGG
+  - **Max Audio Length:** Unlimited, but long audio (>30 minutes) should be chunked
+  - **Noise Handling:** Handles background noise well; high-quality audio yields better results
+  - **Fine-tuning:** Can be fine-tuned for specific accents or domains
+  - **API Alternative:** Use OpenAI Whisper API if you do not want to run locally
 
-- Tối ưu hóa hiệu năng:
+- **Performance optimization:**
 
 ```python
-# 1. Sử dụng faster-whisper (nhanh hơn 4x)
+# 1. Use faster-whisper (up to 4x faster)
 from faster_whisper import WhisperModel
 
 model = WhisperModel("base", device="cuda", compute_type="int8")
 segments, info = model.transcribe("audio.mp3")
 
-# 2. Batch processing cho nhiều file
+# 2. Batch processing for multiple files
 import concurrent.futures
 
 def process_audio(file_path):
@@ -425,243 +417,238 @@ def process_audio(file_path):
 with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
     results = executor.map(process_audio, audio_files)
 
-# 3. Streaming cho real-time
+# 3. Streaming for real-time use
 from faster_whisper import WhisperModel
 
 model = WhisperModel("base", device="cuda")
-# Stream audio chunks và transcribe realtime
+# Stream audio chunks and transcribe in real time
 ```
 
-- Ngôn ngữ được hỗ trợ (Top 20):
-  - 🇻🇳 Tiếng Việt (Vietnamese)
-  - 🇺🇸 English (Tiếng Anh)
-  - 🇨🇳 中文 (Tiếng Trung)
-  - 🇯🇵 日本語 (Tiếng Nhật)
-  - 🇰🇷 한국어 (Tiếng Hàn)
-  - 🇫🇷 Français (Tiếng Pháp)
-  - 🇩🇪 Deutsch (Tiếng Đức)
-  - 🇪🇸 Español (Tiếng Tây Ban Nha)
-  - 🇷🇺 Русский (Tiếng Nga)
-  - 🇮🇹 Italiano (Tiếng Ý)
-  - 🇵🇹 Português (Tiếng Bồ Đào Nha)
-  - 🇹🇭 ไทย (Tiếng Thái)
-  - 🇮🇳 हिन्दी (Hindi)
-  - 🇹🇷 Türkçe (Tiếng Thổ Nhĩ Kỳ)
-  - 🇵🇱 Polski (Tiếng Ba Lan)
-  - 🇳🇱 Nederlands (Tiếng Hà Lan)
-  - 🇸🇪 Svenska (Tiếng Thụy Điển)
-  - 🇮🇩 Bahasa Indonesia (Tiếng Indonesia)
-  - 🇸🇦 العربية (Tiếng Ả Rập)
-  - ... và 70+ ngôn ngữ khác
+- **Supported languages (Top 20):**
+  - 🇻🇳 Vietnamese
+  - 🇺🇸 English
+  - 🇨🇳 Chinese
+  - 🇯🇵 Japanese
+  - 🇰🇷 Korean
+  - 🇫🇷 French
+  - 🇩🇪 German
+  - 🇪🇸 Spanish
+  - 🇷🇺 Russian
+  - 🇮🇹 Italian
+  - 🇵🇹 Portuguese
+  - 🇹🇭 Thai
+  - 🇮🇳 Hindi
+  - 🇹🇷 Turkish
+  - 🇵🇱 Polish
+  - 🇳🇱 Dutch
+  - 🇸🇪 Swedish
+  - 🇮🇩 Indonesian
+  - 🇸🇦 Arabic
+  - ... and 70+ more languages
 
-  ### 7. 🧩 Local Open-source LLM — QWEN 1.5B
+### 7. 🧩 Local Open-source LLM — QWEN 1.5B
 
-  - Giới thiệu: Ngoài việc dùng Gemini và các dịch vụ đám mây, AI Agent còn hỗ trợ chạy mô hình open-source cỡ nhỏ/nhỏ-vừa tại local. Hiện repo có hướng dẫn tích hợp với `QWEN 1.5B` (một mô hình ngôn ngữ nhẹ, phù hợp để chạy thử trên máy cá nhân có GPU hoặc CPU mạnh).
+- **Overview:** In addition to Gemini and cloud services, the AI Agent supports running small to medium open-source LLMs locally. The repository currently provides guidance for integrating `QWEN 1.5B`, a lightweight language model suitable for local experimentation on machines with a GPU or a strong CPU.
 
-  - Tính năng khi dùng QWEN 1.5B:
-    - Chạy local LLM để trả lời câu hỏi offline (không cần API key bên thứ ba).
-    - Hỗ trợ trả lời ngôn ngữ tiếng Việt cơ bản và xử lý prompt tùy chỉnh.
-    - Phù hợp để thử nghiệm Local LLM, fine-tune nhỏ hoặc làm prototyping.
+- **Features when using QWEN 1.5B:**
+  - Run a local LLM for offline question answering (no third-party API key required).
+  - Basic Vietnamese language support and customizable prompt handling.
+  - Suitable for Local LLM experimentation, lightweight fine-tuning, and prototyping.
 
-  ### 7. 📝 Text Summarization
+### 8. 📝 Text Summarization
 
-  - Giới thiệu: AI Agent hỗ trợ tóm tắt văn bản tiếng Anh sử dụng mô hình `facebook/bart-large-cnn`. Tính năng này giúp bạn nhanh chóng nắm bắt nội dung chính từ các đoạn văn bản dài.
+- **Overview:** The AI Agent supports English text summarization using the `facebook/bart-large-cnn` model. This feature helps you quickly grasp key points from long documents.
 
-  - Tính năng chính:
-    - Tóm tắt văn bản tiếng Anh tự động
-    - Hiển thị tỷ lệ nén (compression ratio)
-    - Hiển thị độ dài văn bản gốc và văn bản tóm tắt
-    - Hỗ trợ Text-to-Speech cho kết quả tóm tắt
-    - Tự động xử lý văn bản dài (truncate nếu vượt quá giới hạn)
+- **Key features:**
+  - Automatic English text summarization
+  - Displays compression ratio
+  - Shows original and summarized text lengths
+  - Supports Text-to-Speech for summarized output
+  - Automatically handles long text (truncates if exceeding limits)
 
-  - Minh họa (ảnh):
+- **Demo (image):**
 
-    ![Summarization Demo](./image/summarization.png)
+  ![Summarization Demo](./image/summarization.png)
 
-  - Vị trí code:
-    - Backend tool: [backend/tools/summarization_tool.py](backend/tools/summarization_tool.py)
-    - Backend endpoint: [backend/main.py](backend/main.py) - `/summarization`
-    - Frontend component: [frontend/src/components/SummarizationFeature.js](frontend/src/components/SummarizationFeature.js)
+- **Code locations:**
+  - Backend tool: [backend/tools/summarization_tool.py](backend/tools/summarization_tool.py)
+  - Backend endpoint: [backend/main.py](backend/main.py) — `/summarization`
+  - Frontend component: [frontend/src/components/SummarizationFeature.js](frontend/src/components/SummarizationFeature.js)
 
-  - Cách sử dụng:
-    1. Nhập văn bản tiếng Anh (tối thiểu 50 ký tự)
-    2. Nhấn nút "Summarize" để tạo tóm tắt
-    3. Xem kết quả với thống kê chi tiết
-    4. Sử dụng nút "Nghe" để nghe tóm tắt
+- **How to use:**
+  1. Enter English text (minimum 50 characters)
+  2. Click the "Summarize" button
+  3. View the summarized result with detailed statistics
+  4. Use the "Listen" button to hear the summary
 
-  - Minh họa (ảnh):
+- **Demo (images):**
 
-    ![Local LLM Demo](image/localllm.png)
+  ![Local LLM Demo](image/localllm.png)
 
-    ![Local LLM Response](./image/localllm_response.png)
-    *Local LLM Response — Ví dụ phản hồi từ Local LLM (QWEN 1.5B).*
+  ![Local LLM Response](./image/localllm_response.png)
+  *Local LLM Response — Example output from the Local LLM (QWEN 1.5B).*
 
-  - Cách dùng nhanh:
-    1. Chuẩn bị môi trường (Python >=3.8, virtualenv). Cài thêm thư viện mô hình local (ví dụ: `transformers`, `accelerate`, hoặc runtime tương ứng với backend bạn muốn dùng).
-    2. Tải trọng lượng QWEN 1.5B hoặc dùng một bản mirror tương thích (theo hướng dẫn của nhà phát triển QWEN).
-    3. Chạy service local (ví dụ một script nhỏ hoặc FastAPI endpoint) để load model và trả lời prompt.
+- **Quick start guide:**
+  1. Prepare the environment (Python ≥ 3.8, virtualenv). Install local model libraries (e.g., `transformers`, `accelerate`, or a suitable runtime).
+  2. Download QWEN 1.5B weights or use a compatible mirror as instructed by QWEN developers.
+  3. Run a local service (e.g., a small script or FastAPI endpoint) to load the model and respond to prompts.
 
-    Ví dụ minh họa (tối giản):
+  Minimal example:
 
-    ```python
-    # pseudo-example: load với transformers (thực tế có thể cần xử lý cấu hình chi tiết)
-    from transformers import AutoModelForCausalLM, AutoTokenizer
+  ```python
+  # pseudo-example: loading with transformers (actual setup may require additional configuration)
+  from transformers import AutoModelForCausalLM, AutoTokenizer
 
-    tokenizer = AutoTokenizer.from_pretrained('qwen/Qwen2.5-1.5B')
-    model = AutoModelForCausalLM.from_pretrained('qwen/Qwen2.5-1.5B')
+  tokenizer = AutoTokenizer.from_pretrained('qwen/Qwen2.5-1.5B')
+  model = AutoModelForCausalLM.from_pretrained('qwen/Qwen2.5-1.5B')
 
-    def ask_local(prompt):
-        inputs = tokenizer(prompt, return_tensors='pt')
-        outputs = model.generate(**inputs, max_length=512)
-        return tokenizer.decode(outputs[0], skip_special_tokens=True)
-    ```
+  def ask_local(prompt):
+      inputs = tokenizer(prompt, return_tensors='pt')
+      outputs = model.generate(**inputs, max_length=512)
+      return tokenizer.decode(outputs[0], skip_special_tokens=True)
+  ```
 
-  **Lưu ý về chất lượng kết quả:**
+- **Notes on output quality:**
+  - When using small open-source models or low-bit quantization (e.g., 4-bit) to reduce model size and VRAM usage, output quality (accuracy, coherence, context understanding) may degrade compared to larger models or higher-precision inference.
+  - If results are unsatisfactory, consider using a larger model, higher precision (FP16/FP32), or lower quantization levels if resources allow.
 
-  - Khi sử dụng các mô hình open-source cỡ nhỏ (số lượng tham số ít) hoặc khi áp dụng quantization ở mức thấp như 4-bit để giảm kích thước và tiêu thụ VRAM, chất lượng đầu ra (độ chính xác, độ mạch lạc, khả năng hiểu ngữ cảnh) có thể bị suy giảm so với các mô hình lớn hơn hoặc chạy ở độ chính xác cao hơn.
-  - Nếu kết quả trả về không tốt, nguyên nhân rất có thể là do sử dụng model nhỏ và/hoặc quantization 4-bit; để cải thiện, cân nhắc dùng model có kích thước lớn hơn, chạy ở FP16/FP32, hoặc giảm mức quantization (nếu tài nguyên cho phép).
+### Slide Generation
 
+- **Description:** Automatic slide generation from a user-provided topic, using a Local LLM or an LLM API to generate content for each slide and export a presentation file.
+- **Frontend location:** [frontend/src/components/LocalLLMFeature.js](frontend/src/components/LocalLLMFeature.js)
+- **Backend:** The frontend calls a slide-generation endpoint (see `backend/main.py` for endpoint details and how the backend returns the PPTX file).
 
-  ### Tạo Slides (Slide Generation)
+**Quick guide:**
 
-  - Mô tả: Tính năng tạo slide tự động từ chủ đề do người dùng nhập, sử dụng Local LLM hoặc API LLM để sinh nội dung từng slide và xuất file trình chiếu.
-  - Vị trí frontend: [frontend/src/components/LocalLLMFeature.js](frontend/src/components/LocalLLMFeature.js)
-  - Backend: Frontend sẽ gọi endpoint tạo slides (xem `backend/main.py` để biết chi tiết endpoint và cách backend trả về file PPTX).
+1. Open the `Local LLM` interface in the web app.
+2. Click the **Create Slides** button.
+3. Enter the **topic** and desired **number of slides**.
+4. Click **Create Slides** — wait for slide generation to finish, then click **Download Slides** to get the PPTX file.
 
-  Hướng dẫn nhanh:
-
-  1. Mở giao diện `Local LLM` trong webapp.
-  2. Chọn nút **Tạo Slides**.
-  3. Nhập **chủ đề** và **số lượng slides** mong muốn.
-  4. Nhấn **Tạo Slides** — đợi quá trình sinh slide hoàn tất, sau đó nhấn **Tải xuống Slides** để lấy file PPTX.
-
-  Minh họa giao diện (ví dụ):
+**UI illustration (example):**
 
 <div align="center">
 
-  <!-- Giao diện tạo Slides (in riêng) -->
+  <!-- Slide Generation UI (standalone) -->
   <div style="margin-bottom:24px; max-width:900px;">
-    <h3 style="margin-bottom:12px;">Giao diện tạo Slides</h3>
+    <h3 style="margin-bottom:12px;">Slide Generation Interface</h3>
     <img src="./image/createslides.png"
          style="width:100%; height:auto;"
-         alt="Tạo Slides giao diện"/>
+         alt="Slide Generation UI"/>
   </div>
 
-  <!-- Bảng 2 cột -->
+  <!-- Two-column table -->
   <table style="width:100%; border-collapse:collapse;">
     <tr>
       <th style="width:50%; padding:16px; font-size:18px;">
-        File PPTX ví dụ
+        Example PPTX File
       </th>
       <th style="width:50%; padding:16px; font-size:18px;">
-        Slides được tạo
+        Generated Slides
       </th>
     </tr>
     <tr>
       <td style="padding:16px;">
         <img src="./image/slidesppt.png"
              style="width:100%; height:auto;"
-             alt="Slides PPT ví dụ"/>
+             alt="Example PPT Slides"/>
       </td>
       <td style="padding:16px;">
         <img src="./image/slideduoctaotullm.png"
              style="width:100%; height:auto;"
-             alt="Slides tạo từ chức năng tạo slide"/>
+             alt="Slides generated from slide creation feature"/>
       </td>
     </tr>
   </table>
 
   <p style="margin-top:12px; font-style:italic; font-size:15px;">
-    Hình: (1) Giao diện tạo Slides — (2) Ví dụ file PPTX — (3) Slides sinh bởi chức năng
+    Figure: (1) Slide generation interface — (2) Example PPTX file — (3) Slides generated by the feature
   </p>
 
 </div>
 
+- **Technical & performance notes:**
+  - `QWEN 1.5B` requires significant RAM/VRAM to load; without a strong GPU, CPU mode can be used but will be slow.
+  - For better performance, consider using `bitsandbytes` with `8-bit`/`4-bit` quantization or deploying on a GPU-enabled machine.
+  - When running locally, manage resources carefully and limit batch size and prompt length to avoid OOM errors.
 
-  </div>
-
-  - Lưu ý kỹ thuật & hiệu năng:
-    - `QWEN 1.5B` cần nhiều RAM/VRAM để load; nếu không có GPU mạnh, có thể dùng chế độ CPU nhưng chậm.
-    - Để có hiệu năng tốt, cân nhắc dùng `bitsandbytes` + `8-bit`/`4-bit` quantization hoặc triển khai trên máy có GPU.
-    - Khi chạy local, nhớ kiểm soát resource và hạn chế kích thước batch/prompt để tránh OOM.
-
-   - Vị trí code gợi ý để tích hợp: thêm endpoint FastAPI trong `backend/` để gọi model local, và tạo frontend feature tương ứng ở `frontend/src/components/LocalLLMFeature.js`.
+- **Suggested integration locations:** Add a FastAPI endpoint in `backend/` to call the local model, and create a corresponding frontend feature in `frontend/src/components/LocalLLMFeature.js`.
 
 ### 7. 👁️ Visual Question Answering (VQA)
 
-- Giới thiệu: AI Agent hỗ trợ tính năng Visual Question Answering - khả năng trả lời câu hỏi dựa trên nội dung hình ảnh. Sử dụng mô hình BLIP (Bootstrapping Language-Image Pre-training) từ Salesforce, hệ thống có thể hiểu và phân tích nội dung ảnh để đưa ra câu trả lời chính xác cho các câu hỏi của người dùng.
+- **Overview:** The AI Agent supports Visual Question Answering — the ability to answer questions based on image content. Using Salesforce’s BLIP (Bootstrapping Language-Image Pre-training) model, the system can understand and analyze images to provide accurate answers to user questions.
 
-- Tính năng chính:
-  - Trả lời câu hỏi về nội dung hình ảnh (số lượng đối tượng, màu sắc, vị trí, hoạt động...)
-  - Nhận diện và mô tả các yếu tố trong ảnh
-  - Hỗ trợ nhiều loại câu hỏi: "What", "How many", "Where", "What color"...
-  - Xử lý cả ảnh local và ảnh từ URL
+- **Key features:**
+  - Answer questions about image content (object count, colors, positions, activities, etc.)
+  - Detect and describe elements within images
+  - Support multiple question types: “What”, “How many”, “Where”, “What color”, etc.
+  - Process both local images and images from URLs
 
 <div align="center">
 
 ![Visual Question Answering](./image/vqa.png)
-*Giao diện Visual Question Answering với khả năng phân tích và trả lời câu hỏi về hình ảnh*
+*Visual Question Answering interface with image analysis and question answering capabilities*
 
 </div>
 
-- Mô hình sử dụng:
-  - **BLIP-VQA-Base**: Mô hình vision-language được huấn luyện trên nhiều dataset lớn
-  - **Processor**: BlipProcessor để xử lý cả ảnh và text input
-  - **Model**: BlipForQuestionAnswering cho task VQA
+- **Models used:**
+  - **BLIP-VQA-Base:** Vision-language model trained on large datasets
+  - **Processor:** BlipProcessor for handling both image and text inputs
+  - **Model:** BlipForQuestionAnswering for the VQA task
 
-- Ví dụ sử dụng:
+- **Usage example:**
 
 ```python
 from PIL import Image
 from transformers import BlipProcessor, BlipForQuestionAnswering
 
-# Load model và processor
+# Load model and processor
 processor = BlipProcessor.from_pretrained("Salesforce/blip-vqa-base")
 model = BlipForQuestionAnswering.from_pretrained("Salesforce/blip-vqa-base")
 
-# Load ảnh
+# Load image
 image = Image.open("example.jpg").convert('RGB')
 
-# Đặt câu hỏi
+# Ask a question
 question = "How many people are in the image?"
 inputs = processor(image, question, return_tensors="pt")
 
-# Trả lời
+# Get answer
 output = model.generate(**inputs)
 answer = processor.decode(output[0], skip_special_tokens=True)
 print(f"Answer: {answer}")
 ```
 
-- Use cases thực tế:
-  - Phân tích ảnh sản phẩm trong e-commerce
-  - Hỗ trợ người khiếm thị hiểu nội dung hình ảnh
-  - Kiểm tra chất lượng và đếm số lượng sản phẩm
-  - Phân tích hình ảnh y tế, giáo dục
-  - Tự động gắn thẻ và phân loại ảnh
+- **Real-world use cases:**
+  - Product image analysis in e-commerce
+  - Assisting visually impaired users in understanding images
+  - Quality inspection and object counting
+  - Medical and educational image analysis
+  - Automatic image tagging and classification
 
-- Vị trí code:
+- **Code locations:**
   - Backend endpoint: [backend/tools/vision_tools.py](backend/tools/vision_tools.py)
   - Frontend component: [frontend/src/components/VisionFeature.js](frontend/src/components/VisionFeature.js)
 
-- Lưu ý kỹ thuật:
-  - Yêu cầu GPU để xử lý nhanh (có thể chạy trên CPU nhưng chậm hơn)
-  - Cần cài đặt thư viện: `transformers`, `Pillow`, `torch`
-  - Model size: ~990MB, cần download lần đầu sử dụng
-  - Hỗ trợ batch processing để xử lý nhiều ảnh cùng lúc
+- **Technical notes:**
+  - GPU recommended for fast processing (CPU supported but slower)
+  - Required libraries: `transformers`, `Pillow`, `torch`
+  - Model size: ~990MB, downloaded on first use
+  - Supports batch processing for multiple images
 
-### 8. 📷 Image to Text - OCR (Optical Character Recognition)
+### 8. 📷 Image to Text — OCR (Optical Character Recognition)
 
-- Giới thiệu: AI Agent tích hợp hai công nghệ OCR mạnh mẽ để trích xuất văn bản từ hình ảnh: **EasyOCR** và **PaddleOCR**. Tính năng này giúp bạn chuyển đổi văn bản trong ảnh thành text có thể chỉnh sửa, hỗ trợ nhiều ngôn ngữ bao gồm tiếng Việt, tiếng Anh, và hàng chục ngôn ngữ khác.
+- **Overview:** The AI Agent integrates two powerful OCR technologies to extract text from images: **EasyOCR** and **PaddleOCR**. This feature converts text in images into editable text and supports many languages including Vietnamese, English, and dozens more.
 
-- Tính năng chính:
-  - **Hai engine OCR mạnh mẽ**: 
-    - **EasyOCR**: Dễ sử dụng, hỗ trợ 80+ ngôn ngữ
-    - **PaddleOCR**: Tốc độ nhanh, độ chính xác cao
-  - Trích xuất văn bản từ ảnh với độ chính xác cao
-  - Hỗ trợ tiếng Việt và nhiều ngôn ngữ khác
-  - Xử lý cả ảnh có nhiều ngôn ngữ đan xen
-  - Nhận diện văn bản in và viết tay (tùy model)
-  - Xử lý ảnh từ file local hoặc URL
+- **Key features:**
+  - **Two powerful OCR engines:**
+    - **EasyOCR:** Easy to use, supports 80+ languages
+    - **PaddleOCR:** Fast and highly accurate
+  - High-accuracy text extraction from images
+  - Supports Vietnamese and many other languages
+  - Handles mixed-language images
+  - Recognizes printed and handwritten text (model-dependent)
+  - Processes images from local files or URLs
 
 <div align="center">
 
@@ -670,51 +657,51 @@ print(f"Answer: {answer}")
   <img src="./image/paddleocr.png" width="45%" alt="PaddleOCR Demo"/>
 </p>
 
-*Giao diện OCR với hai engine: EasyOCR (trái) và PaddleOCR (phải)*
+*OCR interface with two engines: EasyOCR (left) and PaddleOCR (right)*
 
 </div>
 
-- So sánh EasyOCR vs PaddleOCR:
+- **EasyOCR vs PaddleOCR comparison:**
 
-| Tiêu chí | EasyOCR | PaddleOCR |
-|----------|---------|-----------|
-| **Dễ sử dụng** | ⭐⭐⭐⭐⭐ Rất dễ | ⭐⭐⭐⭐ Dễ |
-| **Tốc độ** | ⭐⭐⭐ Trung bình | ⭐⭐⭐⭐⭐ Rất nhanh |
-| **Độ chính xác** | ⭐⭐⭐⭐ Cao | ⭐⭐⭐⭐⭐ Rất cao |
-| **Ngôn ngữ hỗ trợ** | 80+ ngôn ngữ | 80+ ngôn ngữ |
-| **Tiếng Việt** | ✅ Tốt | ✅ Rất tốt |
-| **Kích thước model** | ~100MB | ~10MB |
-| **Cài đặt** | Đơn giản | Đơn giản |
+| Criteria | EasyOCR | PaddleOCR |
+|--------|---------|-----------|
+| **Ease of use** | ⭐⭐⭐⭐⭐ Very easy | ⭐⭐⭐⭐ Easy |
+| **Speed** | ⭐⭐⭐ Medium | ⭐⭐⭐⭐⭐ Very fast |
+| **Accuracy** | ⭐⭐⭐⭐ High | ⭐⭐⭐⭐⭐ Very high |
+| **Language support** | 80+ languages | 80+ languages |
+| **Vietnamese** | ✅ Good | ✅ Very good |
+| **Model size** | ~100MB | ~10MB |
+| **Installation** | Simple | Simple |
 
-- Ví dụ sử dụng EasyOCR:
+- **EasyOCR usage example:**
 
 ```python
 import easyocr
 
-# Khởi tạo reader với tiếng Việt và tiếng Anh
+# Initialize reader with Vietnamese and English
 reader = easyocr.Reader(['vi', 'en'], gpu=True)
 
-# Đọc văn bản từ ảnh
+# Read text from image
 results = reader.readtext('image.jpg')
 
-# Hiển thị kết quả
+# Display results
 for (bbox, text, confidence) in results:
     print(f"Text: {text}")
     print(f"Confidence: {confidence:.2f}")
 ```
 
-- Ví dụ sử dụng PaddleOCR:
+- **PaddleOCR usage example:**
 
 ```python
 from paddleocr import PaddleOCR
 
-# Khởi tạo OCR với tiếng Việt
+# Initialize OCR with Vietnamese
 ocr = PaddleOCR(lang='vi', use_angle_cls=True)
 
-# Đọc văn bản từ ảnh
+# Read text from image
 result = ocr.ocr('image.jpg', cls=True)
 
-# Hiển thị kết quả
+# Display results
 for line in result[0]:
     text = line[1][0]
     confidence = line[1][1]
@@ -722,95 +709,95 @@ for line in result[0]:
     print(f"Confidence: {confidence:.2f}")
 ```
 
-- Use cases thực tế:
-  - Số hóa tài liệu, hóa đơn, biên lai
-  - Trích xuất thông tin từ danh thiếp, CCCD, CMND
-  - Đọc văn bản từ biển báo, bảng hiệu
-  - Chuyển đổi sách, báo giấy thành văn bản số
-  - Hỗ trợ người khiếm thị đọc văn bản
-  - Tự động nhập liệu từ form, phiếu giấy
+- **Real-world use cases:**
+  - Document digitization, invoices, receipts
+  - Extracting information from business cards and ID cards
+  - Reading text from signs and banners
+  - Converting printed books and newspapers into digital text
+  - Assisting visually impaired users
+  - Automated data entry from forms
 
-- Vị trí code:
+- **Code locations:**
   - Backend tool: [backend/tools/vision_tools.py](backend/tools/vision_tools.py)
-  - Backend endpoint: [backend/main.py](backend/main.py) - `/ocr`
+  - Backend endpoint: [backend/main.py](backend/main.py) — `/ocr`
   - Frontend component: [frontend/src/components/VisionFeature.js](frontend/src/components/VisionFeature.js)
 
-- Lưu ý kỹ thuật:
-  - **EasyOCR**: Yêu cầu PyTorch, tốt nhất là có GPU (CUDA)
-  - **PaddleOCR**: Nhẹ hơn, chạy tốt trên CPU, có hỗ trợ GPU
-  - Lần đầu chạy sẽ tải model về (EasyOCR ~100MB, PaddleOCR ~10MB)
-  - Để có kết quả tốt, ảnh đầu vào nên có độ phân giải cao, rõ nét
-  - Hỗ trợ xử lý batch để OCR nhiều ảnh cùng lúc
-  - Có thể tùy chỉnh threshold confidence để lọc kết quả
+- **Technical notes:**
+  - **EasyOCR:** Requires PyTorch; GPU (CUDA) recommended
+  - **PaddleOCR:** Lightweight, runs well on CPU, GPU supported
+  - First run downloads models (EasyOCR ~100MB, PaddleOCR ~10MB)
+  - Best results with high-resolution, clear images
+  - Supports batch OCR for multiple images
+  - Confidence threshold can be adjusted to filter results
 
 ---
 ## 🌍 Google Translator
 
-### 📌 Giới thiệu
-**Google Translator** là công cụ dịch văn bản mạnh mẽ, hỗ trợ hơn 100 ngôn ngữ, giúp bạn dịch nhanh chóng và chính xác. Dự án sử dụng thư viện **googletrans**, một thư viện Python miễn phí triển khai Google Translate API.
+### 📌 Overview
+**Google Translator** is a powerful text translation tool supporting 100+ languages, enabling fast and accurate translation. The project uses **googletrans**, a free Python library that wraps the Google Translate API.
 
 <div align="center">
 
 ![Google Translator](./image/translatetext.png)  
-*Giao diện Google Translator với khả năng tự động nhận diện ngôn ngữ và dịch tức thì.*
+*Google Translator interface with automatic language detection and instant translation.*
 
 </div>
 
-### ✨ Tính năng chính
-- **Tự động phát hiện ngôn ngữ**: Tự động nhận diện ngôn ngữ nguồn
-- **100+ ngôn ngữ**: Hỗ trợ dịch giữa hơn 100 ngôn ngữ
-- **Giao diện thân thiện**: Searchable language selector với cờ quốc gia
-- **Text-to-Speech**: Nghe phát âm văn bản đã dịch
-- **Voice Input**: Nhập văn bản bằng giọng nói
-- **Swap Languages**: Đổi nhanh ngôn ngữ nguồn và đích
+### ✨ Key features
+- **Automatic language detection**
+- **100+ languages supported**
+- **User-friendly interface** with searchable language selector and country flags
+- **Text-to-Speech** for translated text
+- **Voice Input** for speech-based text entry
+- **Swap Languages** to quickly switch source and target languages
 
-### 🔧 Công nghệ
-- **Backend**: Sử dụng thư viện `googletrans` (Python) - một wrapper miễn phí cho Google Translate API
-- **Frontend**: React với UI components hiện đại, searchable language dropdown
+### 🔧 Technology
+- **Backend:** `googletrans` (Python) — a free wrapper for Google Translate
+- **Frontend:** React with modern UI components and searchable language dropdown
 
-### 📝 Cách sử dụng
-1. Chọn ngôn ngữ nguồn (hoặc để "Auto Detect")
-2. Chọn ngôn ngữ đích
-3. Nhập hoặc nói văn bản cần dịch
-4. Nhấn "Translate" để xem kết quả
-5. Sử dụng nút "Nghe" để nghe bản dịch
+### 📝 How to use
+1. Select the source language (or choose “Auto Detect”)
+2. Select the target language
+3. Enter or speak the text to translate
+4. Click “Translate” to view the result
+5. Use the “Listen” button to hear the translation
 
-### 💡 Lưu ý
-- Thư viện `googletrans` hoạt động bằng cách gọi API Google Translate miễn phí
-- Không cần API key, phù hợp cho mục đích học tập và thử nghiệm
-- Đối với production, khuyến nghị sử dụng Google Cloud Translation API chính thức
+### 💡 Notes
+- `googletrans` uses the free Google Translate service
+- No API key required; suitable for learning and experimentation
+- For production, the official Google Cloud Translation API is recommended
 
 ---
 
 ## 🖼️ Text to Image (Clipdrop API)
 
-### 📌 Giới thiệu
-Tính năng **Text to Image** cho phép sinh hình ảnh từ mô tả văn bản bằng cách sử dụng **Clipdrop API**.  
-Phù hợp cho các use case như:
-- Sinh ảnh AI từ prompt
-- Prototype nhanh giao diện
-- Hỗ trợ sáng tạo nội dung (design, marketing, art, v.v.)
+### 📌 Overview
+The **Text to Image** feature generates images from textual descriptions using the **Clipdrop API**.  
+Suitable for use cases such as:
+- AI image generation from prompts
+- Rapid UI prototyping
+- Creative content support (design, marketing, art, etc.)
 
 ---
 
-### 🔐 Cấu hình môi trường
+### 🔐 Environment Configuration
 
-Thêm biến môi trường `CLIPDROP_API_KEY` vào file `.env` trong thư mục `backend/`:
+Add the `CLIPDROP_API_KEY` environment variable to the `.env` file in the `backend/` directory:
 
 ```env
 CLIPDROP_API_KEY=your_clipdrop_api_key_here
 ```
 
-> ⚠️ **Lưu ý:**  
-> - Không commit file `.env` lên Git
-> - API Key lấy tại trang chính thức của Clipdrop
+> ⚠️ **Notes:**
+> - Do not commit the `.env` file to Git
+> - Obtain the API key from Clipdrop’s official website
 
 ---
 
-### 🚀 Ví dụ sử dụng với `curl`
+### 🚀 Example usage with `curl`
 
-Ví dụ dưới đây gửi request sinh ảnh từ prompt văn bản  
-và lưu kết quả ra file **`result.png`**:
+The example below sends a request to generate an image from a text prompt  
+and saves the result as **`result.png`**:
 
 ```bash
 curl -X POST https://clipdrop-api.co/text-to-image/v1 \
@@ -821,11 +808,11 @@ curl -X POST https://clipdrop-api.co/text-to-image/v1 \
 
 ---
 
-### 🖼️ Kết quả minh họa
+### 🖼️ Example output
 
 <div align="center">
 
-**📸 Ảnh được sinh từ prompt văn bản bằng Clipdrop API**
+**📸 Image generated from a text prompt using the Clipdrop API**
 
 <br/>
   <img 
@@ -836,22 +823,22 @@ curl -X POST https://clipdrop-api.co/text-to-image/v1 \
 
 ---
 
-### 🧠 Ghi chú thêm
-- Prompt càng chi tiết → ảnh sinh ra càng chính xác
-- Có thể kết hợp thêm style, lighting, mood trong prompt
-- Phù hợp để tích hợp backend service hoặc tool nội bộ
+### 🧠 Additional notes
+- More detailed prompts → more accurate images
+- You can include style, lighting, and mood in prompts
+- Suitable for backend services or internal tool integration
 
 ---
 
-## 📦 Cài Đặt
+## 📦 Installation
 
-### 1. Clone hoặc tải project
+### 1. Clone or download the project
 
 ```bash
 cd "AI Agent"
 ```
 
-### 2. Tạo môi trường ảo (khuyến nghị)
+### 2. Create a virtual environment (recommended)
 
 ```bash
 python -m venv venv
@@ -863,203 +850,202 @@ venv\Scripts\activate
 source venv/bin/activate
 ```
 
-### 3. Cài đặt dependencies
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Cấu hình API Keys
+### 4. Configure API keys
 
-Sao chép file `.env.example` thành `.env`:
+Copy `.env.example` to `.env`:
 
 ```bash
 copy .env.example .env
 ```
 
-Chỉnh sửa file `.env` và điền các API keys:
+Edit `.env` and fill in the API keys:
 
 ```env
-# Bắt buộc
+# Required
 GEMINI_API_KEY=your_gemini_api_key_here
 
-# Tùy chọn (cho tính toán Wolfram)
+# Optional (for Wolfram computation)
 WOLFRAM_APP_ID=your_wolfram_app_id_here
 
-# Tùy chọn (nếu dùng SerpAPI)
+# Optional (if using SerpAPI)
 SERPAPI_KEY=your_serpapi_key_here
 
-# Chọn công cụ tìm kiếm mặc định
+# Default search engine
 SEARCH_ENGINE=duckduckgo
 
 CLIPDROP_API_KEY=your_clipdrop_api_key
 ```
+### 📝 Get API Keys
 
-### 📝 Lấy API Keys
+1. **Gemini API** (Required):
+   - Visit: https://makersuite.google.com/app/apikey
+   - Sign in with your Google account
+   - Create a free API key
 
-1. **Gemini API** (Bắt buộc):
-   - Truy cập: https://makersuite.google.com/app/apikey
-   - Đăng nhập với Google account
-   - Tạo API key miễn phí
+2. **Wolfram Alpha** (Optional):
+   - Visit: https://products.wolframalpha.com/api/
+   - Register an account
+   - Get an App ID (free tier available)
 
-2. **Wolfram Alpha** (Tùy chọn):
-   - Truy cập: https://products.wolframalpha.com/api/
-   - Đăng ký tài khoản
-   - Lấy App ID (có gói miễn phí)
+3. **SerpAPI** (Optional):
+   - Visit: https://serpapi.com/
+   - Register an account
+   - Get an API key (100 free searches/month)
 
-3. **SerpAPI** (Tùy chọn):
-   - Truy cập: https://serpapi.com/
-   - Đăng ký tài khoản
-   - Lấy API key (có 100 searches/tháng miễn phí)
+## 🚀 Detailed Running Guide
 
-## 🚀 Hướng Dẫn Chạy Chi Tiết
+### 🎯 Method 1: Manual Run (Recommended)
 
-### 🎯 Cách 1: Chạy Thủ Công (Khuyến nghị)
-
-#### **Bước 1: Cài đặt Python Dependencies**
+#### **Step 1: Install Python Dependencies**
 
 ```bash
-# Đảm bảo bạn đang ở thư mục gốc của project
+# Make sure you are in the project root directory
 cd "AI Agent"
 
-# Cài đặt tất cả các thư viện cần thiết
+# Install all required libraries
 pip install -r requirements.txt
 ```
 
-**Kiểm tra cài đặt thành công:**
+**Verify successful installation:**
 ```bash
 pip list | grep google-genai
 pip list | grep fastapi
 ```
 
-#### **Bước 2: Tạo và Cấu hình File .env**
+#### **Step 2: Create and Configure the .env File**
 
 ```bash
-# Sao chép file mẫu
+# Copy the example file
 copy .env.example .env     # Windows
-# hoặc
+# or
 cp .env.example .env       # Linux/Mac
 ```
 
-**Chỉnh sửa file `.env`** bằng text editor yêu thích:
+**Edit the `.env` file** using your favorite text editor:
 
 ```env
-# Bắt buộc - Gemini AI (Lấy tại: https://makersuite.google.com/app/apikey)
+# Required - Gemini AI (Get from: https://makersuite.google.com/app/apikey)
 GEMINI_API_KEY=your_actual_key_here
 
-# Tùy chọn - Wolfram Alpha (Lấy tại: https://products.wolframalpha.com/api/)
+# Optional - Wolfram Alpha (Get from: https://products.wolframalpha.com/api/)
 WOLFRAM_APP_ID=XXXXX-XXXXXXXXXX
 
-# Tùy chọn - SerpAPI (Lấy tại: https://serpapi.com/)
+# Optional - SerpAPI (Get from: https://serpapi.com/)
 SERPAPI_KEY=your_serpapi_key_here
 
-# Công cụ tìm kiếm mặc định
+# Default search engine
 SEARCH_ENGINE=duckduckgo
 ```
 
-#### **Bước 3: Chạy CLI Agent (Phiên bản Command Line)**
+#### **Step 3: Run CLI Agent (Command Line Version)**
 
 ```bash
-# Chạy agent tương tác trong terminal
+# Run interactive agent in terminal
 python agent.py
 ```
 
-**Bạn sẽ thấy:**
+**You will see:**
 ```
-🤖 AI Agent đã được khởi tạo!
-📡 Công cụ tìm kiếm: DuckDuckGo
+🤖 AI Agent has been initialized!
+📡 Search Engine: DuckDuckGo
 🧮 Wolfram Alpha: ✓
 
 ============================================================
 🤖 AI AGENT - Interactive Mode
 ============================================================
 
-Lệnh đặc biệt:
-  /search <engine> - Đổi công cụ tìm kiếm (duckduckgo/serpapi)
-  /clear - Xóa lịch sử hội thoại
-  /exit hoặc /quit - Thoát
+Special commands:
+  /search <engine> - Change search engine (duckduckgo/serpapi)
+  /clear - Clear conversation history
+  /exit or /quit - Exit
 ...
-👤 Bạn: _
+👤 You: _
 ```
 
-**Ví dụ sử dụng:**
+**Usage examples:**
 ```
-👤 Bạn: Tìm kiếm thông tin về AI
-👤 Bạn: Tính tích phân của x^2 từ 0 đến 10
-👤 Bạn: Phân tích file data.csv
+👤 You: Search for information about AI
+👤 You: Calculate the integral of x^2 from 0 to 10
+👤 You: Analyze the file data.csv
 ```
 
 ---
 
-### 🌐 Cách 2: Chạy Web Application (React + FastAPI)
+### 🌐 Method 2: Run Web Application (React + FastAPI)
 
-#### **Bước 1: Chạy Backend (FastAPI)**
+#### **Step 1: Run Backend (FastAPI)**
 
-Mở **Terminal 1**:
+Open **Terminal 1**:
 
 ```bash
-# Di chuyển vào thư mục backend
+# Navigate to backend directory
 cd backend
 
-# Cài đặt dependencies (chỉ cần làm 1 lần)
+# Install dependencies (only once)
 pip install -r requirements.txt
 
-# Chạy backend server
+# Run backend server
 python main.py
 ```
 
-**✅ Backend sẽ chạy tại:** `http://localhost:8000`
+**✅ Backend will run at:** `http://localhost:8000`
 
-**Kiểm tra backend hoạt động:**
-- Truy cập: http://localhost:8000
-- Hoặc: http://localhost:8000/health
+**Check backend status:**
+- Visit: http://localhost:8000
+- Or: http://localhost:8000/health
 
-Bạn sẽ thấy:
+You will see:
 ```
 INFO:     Uvicorn running on http://0.0.0.0:8000
 INFO:     Started server process
 ```
 
-#### **Bước 2: Chạy Frontend (React)**
+#### **Step 2: Run Frontend (React)**
 
-Mở **Terminal 2** (giữ terminal backend đang chạy):
+Open **Terminal 2** (keep backend terminal running):
 
 ```bash
-# Di chuyển vào thư mục frontend
+# Navigate to frontend directory
 cd frontend
 
-# Cài đặt Node.js dependencies (chỉ cần làm 1 lần)
+# Install Node.js dependencies (only once)
 npm install
 
-# Chạy React development server
+# Run React development server
 npm start
 ```
 
-**✅ Frontend sẽ tự động mở tại:** `http://localhost:3000`
+**✅ Frontend will automatically open at:** `http://localhost:3000`
 
-Browser sẽ tự động mở ứng dụng web!
+The browser will automatically open the web application!
 
-#### **Bước 3: Sử Dụng Web Application**
+#### **Step 3: Use the Web Application**
 
-Giao diện web có 3 tabs chính:
+The web interface has 3 main tabs:
 
-1. **🔍 Tìm Kiếm Web**
-   - Chọn DuckDuckGo hoặc SerpAPI
-   - Nhập câu hỏi và nhận câu trả lời từ AI
+1. **🔍 Web Search**
+   - Choose DuckDuckGo or SerpAPI
+   - Enter a question and receive answers from AI
 
-2. **🧮 Tính Toán**
-   - Nhập phép tính toán học
-   - Wolfram Alpha xử lý và AI giải thích
+2. **🧮 Calculation**
+   - Enter mathematical expressions
+   - Wolfram Alpha processes and AI explains
 
-3. **📊 Phân Tích Dữ Liệu**
-   - Kéo thả file CSV
-   - Xem thống kê và tạo biểu đồ
+3. **📊 Data Analysis**
+   - Drag & drop CSV files
+   - View statistics and generate charts
 
 ---
 
-### 🚀 Cách 3: Chạy Tự Động (Sử dụng Script)
+### 🚀 Method 3: Automatic Run (Using Script)
 
-Nếu muốn chạy cả backend và frontend cùng lúc:
+If you want to run both backend and frontend at the same time:
 
 ```bash
 # Windows
@@ -1070,47 +1056,47 @@ chmod +x start.sh
 ./start.sh
 ```
 
-Script sẽ tự động:
-- ✅ Kiểm tra và copy file .env
-- ✅ Cài đặt dependencies
-- ✅ Chạy backend (port 8000)
-- ✅ Chạy frontend (port 3000)
+The script will automatically:
+- ✅ Check and copy the .env file
+- ✅ Install dependencies
+- ✅ Run backend (port 8000)
+- ✅ Run frontend (port 3000)
 
 ---
 
-## 🛑 Dừng Ứng Dụng
+## 🛑 Stop the Application
 
-### Dừng CLI Agent:
+### Stop CLI Agent:
 ```
-Nhấn Ctrl + C trong terminal
-hoặc gõ: /exit
+Press Ctrl + C in terminal
+or type: /exit
 ```
 
-### Dừng Web Application:
-- **Backend:** Nhấn `Ctrl + C` trong terminal backend
-- **Frontend:** Nhấn `Ctrl + C` trong terminal frontend
+### Stop Web Application:
+- **Backend:** Press `Ctrl + C` in backend terminal
+- **Frontend:** Press `Ctrl + C` in frontend terminal
 
 ---
 
-## 🔍 Kiểm Tra và Xử Lý Lỗi
+## 🔍 Troubleshooting & Debugging
 
-### Kiểm tra Backend đang chạy:
+### Check if Backend is running:
 ```bash
-# Truy cập trong browser
+# Open in browser
 http://localhost:8000/health
 
-# Hoặc dùng curl
+# Or use curl
 curl http://localhost:8000/health
 ```
 
-### Kiểm tra Frontend đang chạy:
+### Check if Frontend is running:
 ```bash
 http://localhost:3000
 ```
 
-### Lỗi: "Port 8000 already in use"
+### Error: "Port 8000 already in use"
 ```bash
-# Windows - Tìm và kill process
+# Windows - Find and kill process
 netstat -ano | findstr :8000
 taskkill /PID <PID_NUMBER> /F
 
@@ -1118,216 +1104,216 @@ taskkill /PID <PID_NUMBER> /F
 lsof -ti:8000 | xargs kill -9
 ```
 
-### Lỗi: "GEMINI_API_KEY is required"
+### Error: "GEMINI_API_KEY is required"
 ```bash
-# Kiểm tra file .env tồn tại
+# Check if .env file exists
 ls .env          # Linux/Mac
 dir .env         # Windows
 
-# Kiểm tra nội dung
+# Check content
 cat .env         # Linux/Mac
 type .env        # Windows
 ```
 
-### Lỗi: "Module not found"
+### Error: "Module not found"
 ```bash
-# Cài lại dependencies
+# Reinstall dependencies
 pip install -r requirements.txt          # Backend
 cd frontend && npm install               # Frontend
 ```
 
 ---
 
-## 🚀 Sử Dụng
+## 🚀 Usage
 
-### Chạy Agent ở chế độ tương tác (CLI)
+### Run Agent in Interactive Mode (CLI)
 
 ```bash
 python agent.py
 ```
 
-### Ví dụ sử dụng
+### Usage Examples
 
-#### 1. Tìm kiếm thông tin
-
-```
-👤 Bạn: Tìm kiếm thông tin về trí tuệ nhân tạo
-🤖 Agent: [Sẽ tìm kiếm và trả về kết quả từ DuckDuckGo/SerpAPI]
-```
-
-#### 2. Tính toán toán học
+#### 1. Information Search
 
 ```
-👤 Bạn: Tính tích phân của x^2 từ 0 đến 10
-🤖 Agent: [Sẽ dùng Wolfram Alpha để tính toán]
+👤 You: Search for information about artificial intelligence
+🤖 Agent: [Will search and return results from DuckDuckGo/SerpAPI]
 ```
 
-```
-👤 Bạn: Giải phương trình x^2 + 5x + 6 = 0
-🤖 Agent: [Kết quả từ Wolfram Alpha]
-```
-
-#### 3. Phân tích dữ liệu CSV
+#### 2. Mathematical Calculation
 
 ```
-👤 Bạn: Phân tích file sales_data.csv của tôi
-🤖 Agent: [Load file và hiển thị thống kê]
+👤 You: Calculate the integral of x^2 from 0 to 10
+🤖 Agent: [Will use Wolfram Alpha for calculation]
 ```
 
 ```
-👤 Bạn: Tạo biểu đồ cột cho doanh số theo tháng
-🤖 Agent: [Tạo bar chart và lưu vào thư mục charts/]
+👤 You: Solve the equation x^2 + 5x + 6 = 0
+🤖 Agent: [Result from Wolfram Alpha]
 ```
 
-### Lệnh đặc biệt
+#### 3. CSV Data Analysis
 
-- `/search duckduckgo` - Chuyển sang DuckDuckGo
-- `/search serpapi` - Chuyển sang SerpAPI
-- `/clear` - Xóa lịch sử hội thoại
-- `/exit` hoặc `/quit` - Thoát chương trình
+```
+👤 You: Analyze my file sales_data.csv
+🤖 Agent: [Load file and display statistics]
+```
 
-## 📁 Cấu Trúc Project
+```
+👤 You: Create a bar chart for monthly sales
+🤖 Agent: [Create bar chart and save to charts/ directory]
+```
+
+### Special Commands
+
+- `/search duckduckgo` - Switch to DuckDuckGo
+- `/search serpapi` - Switch to SerpAPI
+- `/clear` - Clear conversation history
+- `/exit` or `/quit` - Exit the program
+
+## 📁 Project Structure
 
 ```
 AI Agent/
 │
-├── agent.py                 # File chính để chạy agent
-├── config.py               # Cấu hình và quản lý API keys
-├── requirements.txt        # Các thư viện cần thiết
-├── .env.example           # Mẫu file cấu hình
-├── .env                   # File cấu hình thực (không commit)
+├── agent.py                 # Main file to run agent
+├── config.py               # Configuration and API key management
+├── requirements.txt        # Required libraries
+├── .env.example           # Example configuration file
+├── .env                   # Actual configuration file (do not commit)
 │
-├── tools/                 # Thư mục chứa các công cụ
+├── tools/                 # Tools directory
 │   ├── __init__.py
-│   ├── web_search.py     # Công cụ tìm kiếm web
-│   ├── wolfram_tool.py   # Công cụ tính toán Wolfram
-│   └── data_analysis.py  # Công cụ phân tích dữ liệu
+│   ├── web_search.py     # Web search tool
+│   ├── wolfram_tool.py   # Wolfram calculation tool
+│   └── data_analysis.py  # Data analysis tool
 │
-└── charts/               # Thư mục lưu biểu đồ (tự động tạo)
+└── charts/               # Chart output directory (auto-created)
 ```
 
-## 🎯 Các Lệnh Nội Bộ Agent
+## 🎯 Internal Agent Commands
 
-Agent tự động nhận diện và thực thi các lệnh sau:
+The agent automatically detects and executes the following commands:
 
-### Tìm kiếm
+### Search
 ```
-[SEARCH: <truy vấn tìm kiếm>]
-```
-
-### Tính toán
-```
-[WOLFRAM: <phép tính>]
+[SEARCH: <search query>]
 ```
 
-### Phân tích CSV
+### Calculation
 ```
-[LOAD_CSV: <đường dẫn file>]
+[WOLFRAM: <calculation>]
+```
+
+### CSV Analysis
+```
+[LOAD_CSV: <file path>]
 [CSV_INFO]
-[CSV_ANALYZE: <tên cột>]
-[CREATE_CHART: type=bar, x=month, y=sales, title=Doanh số theo tháng]
+[CSV_ANALYZE: <column name>]
+[CREATE_CHART: type=bar, x=month, y=sales, title=Monthly Sales]
 ```
 
 ## 💡 Tips
 
-1. **Tìm kiếm chính xác hơn**: Hãy cụ thể trong câu hỏi
-   - ❌ "Tìm kiếm Python"
-   - ✅ "Tìm kiếm tutorial Python cho người mới bắt đầu"
+1. **More accurate searching**: Be specific in your questions
+   - ❌ "Search Python"
+   - ✅ "Search Python tutorial for beginners"
 
-2. **Tính toán phức tạp**: Wolfram Alpha rất mạnh
-   - Tích phân, đạo hàm
-   - Giải phương trình
-   - Thống kê
-   - Vẽ đồ thị toán học
+2. **Complex calculations**: Wolfram Alpha is very powerful
+   - Integrals, derivatives
+   - Equation solving
+   - Statistics
+   - Mathematical plotting
 
-3. **Phân tích dữ liệu**: Chuẩn bị file CSV tốt
-   - Đặt tên cột rõ ràng
-   - Dữ liệu sạch, không có lỗi
-   - Format chuẩn
+3. **Data analysis**: Prepare clean CSV files
+   - Clear column names
+   - Clean data, no errors
+   - Standard formatting
 
-## 🔧 Cấu Hình Nâng Cao
+## 🔧 Advanced Configuration
 
-### Thay đổi trong `config.py`
+### Modify in `config.py`
 
 ```python
-# Giới hạn kích thước file CSV (MB)
+# Maximum CSV file size (MB)
 MAX_CSV_SIZE_MB = 100
 
-# Thư mục lưu biểu đồ
+# Chart output directory
 CHART_OUTPUT_DIR = "charts"
 
-# Công cụ tìm kiếm mặc định
-SEARCH_ENGINE = "duckduckgo"  # hoặc "serpapi"
+# Default search engine
+SEARCH_ENGINE = "duckduckgo"  # or "serpapi"
 ```
 
-## 🐛 Xử Lý Lỗi
+## 🐛 Error Handling
 
-### Lỗi thường gặp:
+### Common errors:
 
 1. **"GEMINI_API_KEY is required"**
-   - Kiểm tra file `.env` có tồn tại không
-   - Đảm bảo API key đã được nhập đúng
+   - Check if the `.env` file exists
+   - Make sure the API key is entered correctly
 
-2. **"Wolfram Alpha không khả dụng"**
-   - Kiểm tra WOLFRAM_APP_ID trong `.env`
-   - Tính năng tính toán sẽ bị tắt nếu không có
+2. **"Wolfram Alpha is unavailable"**
+   - Check WOLFRAM_APP_ID in `.env`
+   - Calculation features will be disabled if missing
 
-3. **"File CSV quá lớn"**
-   - Giới hạn mặc định là 100MB
-   - Tăng `MAX_CSV_SIZE_MB` trong config nếu cần
+3. **"CSV file too large"**
+   - Default limit is 100MB
+   - Increase `MAX_CSV_SIZE_MB` in config if needed
 
-## **PUBLIC ID BẰNG NGROK (EXPOSE ỨNG DỤNG RA MẠNG)**
+## **PUBLIC ID USING NGROK (EXPOSE APPLICATION TO THE INTERNET)**
 
-1. **Tải và cài đặt**
+1. **Download and install**
 
-- Truy cập: https://ngrok.com/download và chọn bản Windows.
-- Giải nén sẽ tạo file `ngrok.exe`.
-- Mẹo: để chạy `ngrok` ở bất kỳ đâu, copy `ngrok.exe` vào `C:\Windows\System32` hoặc thêm vào `PATH`.
+- Visit: https://ngrok.com/download and choose the Windows version.
+- Extract to get `ngrok.exe`.
+- Tip: To run `ngrok` anywhere, copy `ngrok.exe` to `C:\Windows\System32` or add it to `PATH`.
 
-2. **Lấy API Key (Authtoken)**
+2. **Get API Key (Authtoken)**
 
-- Đăng nhập: https://dashboard.ngrok.com/get-started/your-authtoken
-- Copy giá trị trong mục "Your Authtoken".
+- Login: https://dashboard.ngrok.com/get-started/your-authtoken
+- Copy the value under "Your Authtoken".
 
-3. **Cấu hình token (xác thực)**
+3. **Configure token (authentication)**
 
-Mở CMD/PowerShell/Git Bash và chạy:
+Open CMD/PowerShell/Git Bash and run:
 
 ```bash
-ngrok config add-authtoken <DÁN_TOKEN_CỦA_BẠN_VÀO_ĐÂY>
+ngrok config add-authtoken <PASTE_YOUR_TOKEN_HERE>
 ```
 
-Kết quả thành công sẽ hiển thị: "Authtoken saved...".
+Successful output will show: "Authtoken saved...".
 
-4. **Expose ứng dụng (chạy public tunnel)**
+4. **Expose application (public tunnel)**
 
-- Giả sử app chạy trên port `3000`. Để tránh lỗi `Invalid Host Header`, dùng:
+- Assume the app runs on port `3000`. To avoid `Invalid Host Header`, use:
 
 ```bash
 ngrok http 3000 --host-header="localhost:3000"
 ```
 
-(Thay `3000` bằng port thực tế của bạn.)
+(Replace `3000` with your actual port.)
 
-5. **Lấy link và debug**
+5. **Get link and debug**
 
-- Copy URL công khai (ví dụ `https://xxxx.ngrok-free.dev`) và chia sẻ.
-- Xem chi tiết request/response tại ngrok web UI: `http://localhost:4040`.
+- Copy the public URL (e.g. `https://xxxx.ngrok-free.dev`) and share.
+- View request/response details at ngrok web UI: `http://localhost:4040`.
 <figure style="display: inline-block; text-align: center; margin: 20px;">
   <img src="./image/ngrokhttp.png" alt="Ngrok terminal" style="width: 500px; height: auto; display: block; margin: 0 auto;" />
-  <figcaption><strong>Hình 1:</strong> Terminal khi chạy ngrok thành công</figcaption>
+  <figcaption><strong>Figure 1:</strong> Terminal when ngrok runs successfully</figcaption>
 </figure>
 
 <figure style="display: inline-block; text-align: center; margin: 20px;">
   <img src="./image/ngrok.png" alt="Ngrok web UI" style="width: 500px; height: auto; display: block; margin: 0 auto;" />
-  <figcaption><strong>Hình 2:</strong> Giao diện debug API của ngrok (http://localhost:4040)</figcaption>
+  <figcaption><strong>Figure 2:</strong> Ngrok API debug interface (http://localhost:4040)</figcaption>
 </figure>
 
-> **Ghi chú bảo mật:** Khi chia sẻ link, chỉ mở các route cần thiết và hạn chế lộ các endpoint nhạy cảm.
+> **Security note:** When sharing links, only expose necessary routes and avoid leaking sensitive endpoints.
 
-## 🌐 Sử dụng Cloudflare Tunnel (cloudflared)
+## 🌐 Using Cloudflare Tunnel (cloudflared)
 
-Ngoài việc sử dụng Ngrok, bạn cũng có thể sử dụng Cloudflare Tunnel để expose ứng dụng local (trên máy bạn) ra Internet một cách an toàn, tương tự LocalTunnel nhưng chuyên nghiệp và ổn định hơn.
+Besides Ngrok, you can also use Cloudflare Tunnel to securely expose your local application (on your machine) to the Internet, similar to LocalTunnel but more professional and stable.
 
 <div align="center">
 
@@ -1336,47 +1322,47 @@ Ngoài việc sử dụng Ngrok, bạn cũng có thể sử dụng Cloudflare Tu
 
 </div>
 
-Đây là lệnh ví dụ để chạy Cloudflare tunnel:
+Here is an example command to run a Cloudflare tunnel:
 
 ```bash
 cloudflared tunnel --url http://127.0.0.1:3000 --http-host-header "localhost"
 ```
 
-Lưu ý: thay `3000` bằng port ứng dụng của bạn nếu cần.
+Note: Replace `3000` with your application port if needed.
 
 ---
 ## 📄 License
 
-**MIT License** – Bạn có thể tự do **sử dụng, chỉnh sửa và chia sẻ** dự án này.  
-> 💡 Nhớ giữ lại thông báo bản quyền gốc khi phát hành lại nhé!
+**MIT License** – You are free to **use, modify, and share** this project.  
+> 💡 Remember to keep the original copyright notice when redistributing.
 
 ---
 
-## 🤝 Đóng Góp
+## 🤝 Contributing
 
-Chúng tôi hoan nghênh mọi đóng góp!  
-Bạn có thể:
+We welcome all contributions!  
+You can:
 
-- 🛠 Tạo **Pull Request** để thêm tính năng hoặc sửa lỗi
-- 🐛 Tạo **Issue** để báo lỗi hoặc gợi ý cải tiến
-- 💬 Tham gia thảo luận và chia sẻ ý tưởng
+- 🛠 Create a **Pull Request** to add features or fix bugs
+- 🐛 Create an **Issue** to report bugs or suggest improvements
+- 💬 Join discussions and share ideas
 
-> Mọi góp ý đều quý giá, giúp dự án ngày càng tốt hơn! ✨
-
----
-
-## 📞 Liên Hệ
-
-Nếu gặp vấn đề hoặc có câu hỏi:  
-
-- 📨 Tạo **Issue** trên [GitHub](https://github.com/Kietnehi/AI-AGENT/issues)  
-- 💌 Hoặc gửi email đến: `truongquockiet1211@gmail.com` (tuỳ bạn muốn)
-
-> Tôi sẽ phản hồi sớm nhất có thể!
+> Every contribution is valuable and helps improve the project! ✨
 
 ---
 
-## 🔗 GitHub của tác giả
+## 📞 Contact
+
+If you encounter issues or have questions:
+
+- 📨 Create an **Issue** on [GitHub](https://github.com/Kietnehi/AI-AGENT/issues)  
+- 💌 Or send an email to: `truongquockiet1211@gmail.com` (optional)
+
+> I will respond as soon as possible!
+
+---
+
+## 🔗 Author's GitHub
 
 <div align="center">
 
@@ -1384,11 +1370,11 @@ Nếu gặp vấn đề hoặc có câu hỏi:
 
 <p align="center">
   <a href="https://github.com/Kietnehi">
-    <img src="https://github.com/Kietnehi.png" width="140" height="140" style="border-radius: 50%; border: 4px solid #A371F7;" alt="Avatar Trương Phú Kiệt"/>
+    <img src="https://github.com/Kietnehi.png" width="140" height="140" style="border-radius: 50%; border: 4px solid #A371F7;" alt="Avatar Truong Phu Kiet"/>
   </a>
 </p>
 
-<h3>🚀 Trương Phú Kiệt</h3>
+<h3>🚀 Truong Phu Kiet</h3>
 
 <a href="https://github.com/Kietnehi">
   <img src="https://readme-typing-svg.herokuapp.com?font=Fira+Code&pause=1000&color=236AD3&background=00000000&center=true&vCenter=true&width=435&lines=Student+@+Sai+Gon+University;Fullstack+Dev+%26+AI+Researcher;Building+AI-AGENT+%26+Docker+Systems" alt="Typing SVG" />
@@ -1418,15 +1404,14 @@ Nếu gặp vấn đề hoặc có câu hỏi:
     <img src="https://img.shields.io/github/issues/Kietnehi/AI-AGENT?style=for-the-badge&color=red" alt="Issues"/>
   </a>
 </p>
-<!-- Quote động -->
+<!-- Dynamic quote -->
 <p align="center">
   <img src="https://quotes-github-readme.vercel.app/api?type=horizontal&theme=dark" alt="Daily Quote"/>
 </p>
 <p align="center">
-  <i>Cảm ơn bạn đã ghé thăm! Đừng quên nhấn <b>⭐️ Star</b> để ủng hộ mình nhé.</i>
+  <i>Thank you for visiting! Don’t forget to click <b>⭐️ Star</b> to support the project.</i>
 </p>
 
 <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&height=80&section=footer"/>
-
 
 </div>
