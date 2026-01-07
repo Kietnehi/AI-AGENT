@@ -1252,7 +1252,12 @@ SEARCH_ENGINE = "duckduckgo"  # hoặc "serpapi"
    - Giới hạn mặc định là 100MB
    - Tăng `MAX_CSV_SIZE_MB` trong config nếu cần
 
-## **PUBLIC ID BẰNG NGROK (EXPOSE ỨNG DỤNG RA MẠNG)**
+## **PUBLIC ID (EXPOSE ỨNG DỤNG RA MẠNG) — 2 CÁCH: Ngrok hoặc Cloudflare**
+
+Có 2 cách chính để public (expose) ứng dụng local ra Internet:
+
+- **Ngrok**: nhanh, dễ dùng cho testing và demo — xem phần Ngrok bên dưới.
+- **Cloudflare Tunnel (cloudflared)**: ổn định, chuyên nghiệp, phù hợp khi cần production-like tunnel (xem phần "Sử dụng Cloudflare Tunnel" ở dưới).
 
 1. **Tải và cài đặt**
 
@@ -1301,6 +1306,25 @@ ngrok http 3000 --host-header="localhost:3000"
 </figure>
 
 > **Ghi chú bảo mật:** Khi chia sẻ link, chỉ mở các route cần thiết và hạn chế lộ các endpoint nhạy cảm.
+
+## 🌐 Sử dụng Cloudflare Tunnel (cloudflared)
+
+Ngoài việc sử dụng Ngrok, bạn cũng có thể sử dụng Cloudflare Tunnel để expose ứng dụng local (trên máy bạn) ra Internet một cách an toàn, tương tự LocalTunnel nhưng chuyên nghiệp và ổn định hơn.
+
+<div align="center">
+
+  <img src="./image/cloudfare_giaodien.png" style="width:45%; height:auto;" alt="Cloudflare UI"/>
+  <img src="./image/console_cloudfare.png" style="width:45%; height:auto;" alt="Cloudflare Console"/>
+
+</div>
+
+Đây là lệnh ví dụ để chạy Cloudflare tunnel:
+
+```bash
+cloudflared tunnel --url http://127.0.0.1:3000 --http-host-header "localhost"
+```
+
+Lưu ý: thay `3000` bằng port ứng dụng của bạn nếu cần.
 
 ---
 ## 📄 License
