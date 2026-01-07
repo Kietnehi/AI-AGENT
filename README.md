@@ -29,13 +29,33 @@
 >
 > **⭐ Nếu thấy hay thì hãy ủng hộ bằng cách cho repo một Star nhé!**
 
-AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học, và phân tích dữ liệu, sử dụng Gemini API làm LLM chính.
-
 <div align="center">
 
 ![Demo](./output.gif)
 
 </div>
+AI Agent mạnh mẽ với khả năng tìm kiếm web, tính toán toán học, và phân tích dữ liệu, sử dụng Gemini API làm LLM chính.
+
+
+
+
+## Full Pipeline
+
+<div align="center">
+  <img src="./image/fullpipeline.png" alt="Full Pipeline" style="width:100%; max-width:900px;" />
+</div>
+
+- **1. Tầng giao diện người dùng (User Interface):** Hỗ trợ nhiều hình thức đầu vào: văn bản, hình ảnh, âm thanh. Đầu ra hiển thị đa dạng: văn bản, hình ảnh, video, biểu đồ, âm thanh. Có tích hợp `ngrok` để tunneling, nâng cao bảo mật và khả năng truy cập từ xa.
+
+- **2. Tầng xử lý chính (Core Framework & Backend):** Sử dụng `FastAPI` làm framework chính, kèm `Pydantic` để validate dữ liệu. API server tiếp nhận và xử lý yêu cầu. `Smart Router` / Decision Maker định tuyến yêu cầu đến dịch vụ AI phù hợp.
+
+- **3. Tầng AI & Xử lý chuyên sâu:** Hệ thống tích hợp nhiều công cụ AI theo lĩnh vực:
+  - **LLM & Logic:** Google Gemini, Local LLM (Transformers, Ollama, ...)
+  - **Xử lý hình ảnh (Vision AI):** Salesforce BLIP, OCR (EasyOCR / PaddleOCR)
+  - **Xử lý âm thanh:** Speech-to-Text (Whisper), Text-to-Speech (gTTS)
+  - **Tìm kiếm & tri thức:** DuckDuckGo, SerpAPI, WolframAlpha
+  - **Phân tích dữ liệu:** Pandas, NumPy, Matplotlib, Plotly
+  - **Tạo phương tiện đa phương tiện:** Text-to-Image (Clipdrop), Text-to-Video, Slide/Presentation generator
 
 ## 🐳 Cài Đặt & Chạy với Docker
 
