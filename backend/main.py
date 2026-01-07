@@ -96,6 +96,7 @@ class DataAnalysisRequest(BaseModel):
 class SmartChatRequest(BaseModel):
     message: str
     search_engine: str = "google"  # "duckduckgo", "serpapi", "google"
+    image_filenames: Optional[List[str]] = []  # Optional list of uploaded image filenames
 
 
 class SmartChatResponse(BaseModel):
@@ -266,10 +267,24 @@ async def smart_chat(request: SmartChatRequest):
     """
     Smart chat endpoint that automatically decides when to search for information
     AI will analyze the query and determine if web search is needed
+    Supports multimodal input with images
     """
     try:
-        # First, ask AI if search is needed
-        decision_prompt = f"""Phân tích câu hỏi sau và quyết định xem có cần tìm kiếm thông tin trên web không.
+        # Prepare images if any
+        image_parts = []
+        if request.image_filenames:
+            from PIL import Image as PILImage
+            for filename in request.image_filenames:
+                image_path = UPLOAD_DIR / filename
+                if image_path.exists():
+                    # Load image and convert to Gemini format
+                    img = PILImage.open(str(image_path))
+                    image_parts.append(img)
+        
+        # First, ask AI if search is needed (only if no images)
+        need_search = False
+        if not image_parts:
+            decision_prompt = f"""Phân tích câu hỏi sau và quyết định xem có cần tìm kiếm thông tin trên web không.
 
 Câu hỏi: {request.message}
 
@@ -288,31 +303,56 @@ KHÔNG cần tìm kiếm (need_search: false) khi:
 - Câu hỏi mang tính triết lý, ý kiến cá nhân
 - Lời khuyên chung không cần dữ liệu cụ thể"""
 
-        decision_response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=decision_prompt
-        )
-        
-        # Parse decision
-        import json
-        decision_text = decision_response.text.strip()
-        
-        # Extract JSON from response (handle markdown code blocks)
-        if "```json" in decision_text:
-            decision_text = decision_text.split("```json")[1].split("```")[0].strip()
-        elif "```" in decision_text:
-            decision_text = decision_text.split("```")[1].split("```")[0].strip()
-        
-        try:
-            decision = json.loads(decision_text)
-            need_search = decision.get("need_search", False)
-        except:
-            # Fallback: check for keywords
-            search_keywords = ["tin tức", "hiện tại", "hôm nay", "giá", "cập nhật", "mới nhất", "thời tiết"]
-            need_search = any(keyword in request.message.lower() for keyword in search_keywords)
+            decision_response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=decision_prompt
+            )
+            
+            # Parse decision
+            import json
+            decision_text = decision_response.text.strip()
+            
+            # Extract JSON from response (handle markdown code blocks)
+            if "```json" in decision_text:
+                decision_text = decision_text.split("```json")[1].split("```")[0].strip()
+            elif "```" in decision_text:
+                decision_text = decision_text.split("```")[1].split("```")[0].strip()
+            
+            try:
+                decision = json.loads(decision_text)
+                need_search = decision.get("need_search", False)
+            except:
+                # Fallback: check for keywords
+                search_keywords = ["tin tức", "hiện tại", "hôm nay", "giá", "cập nhật", "mới nhất", "thời tiết"]
+                need_search = any(keyword in request.message.lower() for keyword in search_keywords)
         
         search_performed = False
         search_engine_used = None
+        
+        # If we have images, handle them with vision capabilities
+        if image_parts:
+            # Create multimodal content with images
+            content_parts = []
+            
+            # Add text message if present
+            if request.message:
+                content_parts.append(request.message)
+            
+            # Add all images
+            content_parts.extend(image_parts)
+            
+            # Generate response with vision
+            final_response = client.models.generate_content(
+                model="gemini-2.5-flash",
+                contents=content_parts
+            )
+            
+            return SmartChatResponse(
+                response=final_response.text,
+                status="success",
+                search_performed=False,
+                search_engine=None
+            )
         
         if need_search:
             # Use the search engine specified by user

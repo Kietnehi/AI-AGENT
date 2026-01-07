@@ -134,11 +134,39 @@ docker ps
 - **Phân tích câu hỏi** và tự động search thông tin real-time nếu cần
 - **Tổng hợp & tư vấn** dựa trên kết quả tìm kiếm
 - **Trò chuyện tự nhiên** bằng tiếng Việt
+- **📸 Upload/Paste hình ảnh**: Gửi hình ảnh cùng tin nhắn để AI phân tích (tối đa 5 ảnh/lần)
+  - **Paste trực tiếp**: Copy hình (Ctrl+C) → Paste vào khung chat (Ctrl+V)
+  - **Drag & Drop**: Kéo thả file hình vào textarea
+  - **Click upload**: Nhấn nút 📷 để chọn file từ máy
 
 <div align="center">
 
-![Smart Chat AI](./image/smartchat.png)
-*Giao diện Smart Chat AI với khả năng tự động tìm kiếm real-time*
+<table style="width:100%; border-collapse:collapse;">
+  <tr>
+    <th style="width:50%; padding:16px; font-size:18px;">
+      Giao diện Smart Chat AI
+    </th>
+    <th style="width:50%; padding:16px; font-size:18px;">
+      Tính năng Paste/Upload Hình ảnh
+    </th>
+  </tr>
+  <tr>
+    <td style="padding:16px;">
+      <img src="./image/smartchat.png"
+           style="width:100%; height:auto;"
+           alt="Smart Chat AI"/>
+    </td>
+    <td style="padding:16px;">
+      <img src="./image/pasteimage.png"
+           style="width:100%; height:auto;"
+           alt="Paste Image Feature"/>
+    </td>
+  </tr>
+</table>
+
+<p style="margin-top:12px; font-style:italic; font-size:15px;">
+  Hình: (Trái) Giao diện Smart Chat với tự động tìm kiếm real-time — (Phải) Paste/Upload hình ảnh (tối đa 5 ảnh) hỗ trợ multimodal AI
+</p>
 
 </div>
 

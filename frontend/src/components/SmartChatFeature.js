@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { smartChatAPI } from '../api';
 import api from '../api';
 import ReactMarkdown from 'react-markdown';
-import { Sparkles, Volume2 } from 'lucide-react';
+import { Sparkles, Volume2, Image as ImageIcon, X } from 'lucide-react';
 import MicrophoneButton from './MicrophoneButton';
 
 function SmartChatFeature() {
@@ -11,8 +11,10 @@ function SmartChatFeature() {
   const [loading, setLoading] = useState(false);
   const [searchEngine, setSearchEngine] = useState('google');
   const [playingAudio, setPlayingAudio] = useState(null);
+  const [selectedImages, setSelectedImages] = useState([]);
   const messagesEndRef = useRef(null);
   const audioRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -23,12 +25,42 @@ function SmartChatFeature() {
   }, [messages]);
 
   const handleSend = async () => {
-    if (!input.trim() || loading) return;
+    if ((!input.trim() && selectedImages.length === 0) || loading) return;
 
-    const userMessage = { role: 'user', content: input };
+    // Prepare user message
+    const userMessage = { 
+      role: 'user', 
+      content: input,
+      images: selectedImages.map(img => img.preview)
+    };
     setMessages(prev => [...prev, userMessage]);
     const userQuery = input;
     setInput('');
+    
+    // Upload images first if any
+    let uploadedImageFilenames = [];
+    if (selectedImages.length > 0) {
+      try {
+        const uploadPromises = selectedImages.map(async (img) => {
+          const response = await api.uploadImage(img.file);
+          return response.filename;
+        });
+        uploadedImageFilenames = await Promise.all(uploadPromises);
+      } catch (error) {
+        console.error('Image upload error:', error);
+        const errorMessage = { 
+          role: 'agent', 
+          content: `❌ Lỗi upload hình ảnh: ${error.message}` 
+        };
+        setMessages(prev => [...prev, errorMessage]);
+        setLoading(false);
+        setSelectedImages([]);
+        return;
+      }
+    }
+    
+    // Clear selected images
+    setSelectedImages([]);
     setLoading(true);
 
     // Add thinking message
@@ -41,7 +73,11 @@ function SmartChatFeature() {
     }]);
 
     try {
-      const response = await smartChatAPI.sendSmartMessage(userQuery, searchEngine);
+      const response = await smartChatAPI.sendSmartMessage(
+        userQuery, 
+        searchEngine,
+        uploadedImageFilenames
+      );
       
       // Remove thinking message
       setMessages(prev => prev.filter(msg => msg.id !== thinkingId));
@@ -113,6 +149,101 @@ function SmartChatFeature() {
       setPlayingAudio(null);
       alert('Lỗi chuyển đổi text-to-speech');
     }
+  };
+
+  const handleImageSelect = (e) => {
+    const files = Array.from(e.target.files);
+    const imageFiles = files.filter(file => file.type.startsWith('image/'));
+    
+    if (imageFiles.length === 0) {
+      alert('Vui lòng chọn file hình ảnh');
+      return;
+    }
+
+    // Check total count (current + new)
+    if (selectedImages.length + imageFiles.length > 5) {
+      alert('Tối đa 5 hình ảnh mỗi lần chat');
+      return;
+    }
+
+    const newImages = imageFiles.map(file => ({
+      file,
+      preview: URL.createObjectURL(file)
+    }));
+
+    setSelectedImages(prev => [...prev, ...newImages]);
+  };
+
+  const handleRemoveImage = (index) => {
+    setSelectedImages(prev => {
+      const newImages = [...prev];
+      URL.revokeObjectURL(newImages[index].preview);
+      newImages.splice(index, 1);
+      return newImages;
+    });
+  };
+
+  const handlePaste = (e) => {
+    // Get clipboard data
+    const items = e.clipboardData?.items;
+    if (!items) return;
+
+    // Look for image items
+    const imageItems = [];
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (item.type.indexOf('image') !== -1) {
+        const file = item.getAsFile();
+        if (file) {
+          imageItems.push(file);
+        }
+      }
+    }
+
+    if (imageItems.length === 0) return;
+
+    // Check limit
+    if (selectedImages.length + imageItems.length > 5) {
+      e.preventDefault();
+      alert('Tối đa 5 hình ảnh mỗi lần chat');
+      return;
+    }
+
+    e.preventDefault();
+    const newImages = imageItems.map(file => ({
+      file,
+      preview: URL.createObjectURL(file)
+    }));
+    
+    setSelectedImages(prev => [...prev, ...newImages]);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const files = Array.from(e.dataTransfer.files);
+    const imageFiles = files.filter(file => file.type.startsWith('image/'));
+    
+    if (imageFiles.length === 0) return;
+
+    // Check limit
+    if (selectedImages.length + imageFiles.length > 5) {
+      alert('Tối đa 5 hình ảnh mỗi lần chat');
+      return;
+    }
+
+    const newImages = imageFiles.map(file => ({
+      file,
+      preview: URL.createObjectURL(file)
+    }));
+
+    setSelectedImages(prev => [...prev, ...newImages]);
   };
 
   return (
@@ -251,6 +382,30 @@ function SmartChatFeature() {
                         }
                       </div>
                     )}
+                    {/* Display images if present */}
+                    {msg.images && msg.images.length > 0 && (
+                      <div style={{ 
+                        display: 'flex', 
+                        flexWrap: 'wrap', 
+                        gap: '10px', 
+                        marginBottom: '10px' 
+                      }}>
+                        {msg.images.map((imgSrc, imgIdx) => (
+                          <img 
+                            key={imgIdx}
+                            src={imgSrc} 
+                            alt={`Uploaded ${imgIdx + 1}`}
+                            style={{
+                              maxWidth: '200px',
+                              maxHeight: '200px',
+                              borderRadius: '8px',
+                              objectFit: 'cover',
+                              border: '2px solid #e0e0e0'
+                            }}
+                          />
+                        ))}
+                      </div>
+                    )}
                     <ReactMarkdown>{msg.content}</ReactMarkdown>
                     
                     {/* Audio Button for AI responses */}
@@ -285,6 +440,79 @@ function SmartChatFeature() {
               </div>
             </div>
           ))}
+          
+          {/* Image Preview Area - Show selected images before sending */}
+          {selectedImages.length > 0 && (
+            <div style={{ 
+              padding: '15px',
+              margin: '10px 0',
+              background: 'linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%)',
+              borderRadius: '15px',
+              border: '2px dashed #667eea'
+            }}>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                marginBottom: '10px',
+                color: '#667eea',
+                fontWeight: '600',
+                fontSize: '0.9rem'
+              }}>
+                <ImageIcon size={18} />
+                <span>{selectedImages.length}/5 hình đã chọn</span>
+              </div>
+              <div style={{ 
+                display: 'flex', 
+                flexWrap: 'wrap', 
+                gap: '10px'
+              }}>
+                {selectedImages.map((img, idx) => (
+                  <div key={idx} style={{ position: 'relative' }}>
+                    <img 
+                      src={img.preview} 
+                      alt={`Preview ${idx + 1}`}
+                      style={{
+                        width: '100px',
+                        height: '100px',
+                        objectFit: 'cover',
+                        borderRadius: '10px',
+                        border: '3px solid white',
+                        boxShadow: '0 4px 8px rgba(0,0,0,0.1)'
+                      }}
+                    />
+                    <button
+                      onClick={() => handleRemoveImage(idx)}
+                      style={{
+                        position: 'absolute',
+                        top: '-8px',
+                        right: '-8px',
+                        width: '28px',
+                        height: '28px',
+                        borderRadius: '50%',
+                        background: 'linear-gradient(135deg, #f5576c 0%, #f093fb 100%)',
+                        color: 'white',
+                        border: '2px solid white',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '14px',
+                        fontWeight: 'bold',
+                        boxShadow: '0 2px 8px rgba(245,87,108,0.4)',
+                        transition: 'transform 0.2s'
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.1)'}
+                      onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                    >
+                      <X size={16} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          
           <div ref={messagesEndRef} />
         </div>
 
@@ -295,11 +523,51 @@ function SmartChatFeature() {
             alignItems: 'flex-end',
             width: '100%'
           }}>
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageSelect}
+              style={{ display: 'none' }}
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={loading}
+              style={{
+                padding: '12px',
+                borderRadius: '10px',
+                border: '2px solid #667eea',
+                background: 'white',
+                color: '#667eea',
+                cursor: loading ? 'not-allowed' : 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.3s',
+                opacity: loading ? 0.5 : 1
+              }}
+              onMouseEnter={(e) => {
+                if (!loading) {
+                  e.currentTarget.style.background = '#667eea';
+                  e.currentTarget.style.color = 'white';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'white';
+                e.currentTarget.style.color = '#667eea';
+              }}
+            >
+              <ImageIcon size={20} />
+            </button>
             <textarea
-              placeholder="Hỏi bất cứ điều gì... AI sẽ tự động tìm kiếm nếu cần"
+              placeholder="Nhập tin nhắn... (Paste/kéo thả hình vào đây, tối đa 5 ảnh)"
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyPress={handleKeyPress}
+              onPaste={handlePaste}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
               disabled={loading}
               rows={2}
               style={{
@@ -322,7 +590,7 @@ function SmartChatFeature() {
           <button 
             className="send-btn" 
             onClick={handleSend}
-            disabled={loading || !input.trim()}
+            disabled={loading || (!input.trim() && selectedImages.length === 0)}
             style={{
               marginTop: '10px',
               alignSelf: 'flex-end',

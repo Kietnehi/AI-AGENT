@@ -79,12 +79,14 @@ export const smartChatAPI = {
    * Send a message to the smart chat API
    * @param {string} message - The message to send
    * @param {string} searchEngine - The search engine to use
+   * @param {string[]} imageFilenames - Optional array of uploaded image filenames
    * @returns {Promise} Response data
    */
-  sendSmartMessage: async (message, searchEngine = 'google') => {
+  sendSmartMessage: async (message, searchEngine = 'google', imageFilenames = []) => {
     const response = await apiClient.post('/smart-chat', {
       message,
       search_engine: searchEngine,
+      image_filenames: imageFilenames,
     });
     return response.data;
   },
