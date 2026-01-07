@@ -8,8 +8,9 @@ import VisionFeature from './components/VisionFeature';
 import LocalLLMFeature from './components/LocalLLMFeature';
 import ASRFeature from './components/ASRFeature';
 import ImageGenerationFeature from './components/ImageGenerationFeature';
+import VideoGenerationFeature from './components/VideoGenerationFeature';
 import AnimatedBackground from './components/AnimatedBackground';
-import { Sparkles, Search, Calculator, BarChart3, Bot, Zap, Eye, Cpu, Mic, Wand2 } from 'lucide-react';
+import { Sparkles, Search, Calculator, BarChart3, Bot, Zap, Eye, Cpu, Mic, Wand2, Video } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -32,6 +33,7 @@ function App() {
     { id: 'data', name: 'Phân Tích Dữ Liệu', icon: BarChart3, component: DataAnalysisFeature, color: '#43e97b' },
     { id: 'vision', name: 'Vision AI', icon: Eye, component: VisionFeature, color: '#fa709a' },
     { id: 'image-gen', name: 'Text to Image', icon: Wand2, component: ImageGenerationFeature, color: '#ff6b9d' },
+    { id: 'video-gen', name: 'Video Generation (Veo 3.1)', icon: Video, component: VideoGenerationFeature, color: '#8b5cf6' },
     { id: 'local-llm', name: 'Local LLM hoặc API LLM ( Có thể tạo Slide thuyết trình )', icon: Cpu, component: LocalLLMFeature, color: '#30cfd0' },
     { id: 'asr', name: 'Speech Recognition (Whisper)', icon: Mic, component: ASRFeature, color: '#a78bfa' }
   ];

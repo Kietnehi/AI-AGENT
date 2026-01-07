@@ -21,6 +21,7 @@ from tools.summarization_tool import get_summarization_tool
 from tools.speech_to_text import get_speech_tool
 from tools.asr_tool import get_asr_tool
 from tools.image_generation import get_image_generation_tool
+from tools.video_generation import get_video_generation_tool
 from config import Config
 
 # For TTS
@@ -150,6 +151,28 @@ class TextToImageRequest(BaseModel):
     prompt: str
     width: int = 1024
     height: int = 1024
+
+
+class TextToVideoRequest(BaseModel):
+    prompt: str
+    max_wait_time: int = 300  # Maximum wait time in seconds
+
+
+class ImageToVideoRequest(BaseModel):
+    image_filename: str
+    prompt: Optional[str] = None
+    max_wait_time: int = 300  # Maximum wait time in seconds
+
+
+class ReferenceImagesToVideoRequest(BaseModel):
+    image_filenames: List[str]  # List of uploaded image filenames
+    prompt: str  # Required for reference mode
+    max_wait_time: int = 300  # Maximum wait time in seconds
+
+
+class PromptToImageToVideoRequest(BaseModel):
+    prompt: str  # Prompt to generate image and video
+    max_wait_time: int = 300  # Maximum wait time in seconds
 
 
 @app.get("/")
@@ -952,6 +975,170 @@ async def text_to_image(request: TextToImageRequest):
         raise
     except Exception as e:
         error_msg = f"Text-to-Image error: {str(e)}"
+        print(f"❌ Error: {error_msg}")
+        raise HTTPException(status_code=500, detail=error_msg)
+
+
+# ==================== VIDEO GENERATION ENDPOINT ====================
+
+@app.post("/text-to-video")
+async def text_to_video(request: TextToVideoRequest):
+    """
+    Generate video from text prompt using Google Veo 3.1
+    """
+    try:
+        print(f"🎬 Text-to-Video request - Prompt: {request.prompt}")
+        
+        # Get video generation tool
+        video_tool = get_video_generation_tool(Config.GEMINI_API_KEY)
+        
+        # Generate video
+        result = video_tool.text_to_video(
+            prompt=request.prompt,
+            max_wait_time=request.max_wait_time
+        )
+        
+        if result["status"] == "success":
+            print(f"✅ Video generated: {result['video_path']}")
+            return {
+                "status": "success",
+                "message": result["message"],
+                "video_url": f"/output/{Path(result['video_path']).name}",
+                "generation_time": result.get("generation_time", 0)
+            }
+        else:
+            raise HTTPException(status_code=400, detail=result["message"])
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        error_msg = f"Text-to-Video error: {str(e)}"
+        print(f"❌ Error: {error_msg}")
+        raise HTTPException(status_code=500, detail=error_msg)
+
+
+@app.post("/image-to-video")
+async def image_to_video(request: ImageToVideoRequest):
+    """
+    Generate video from image using Google Veo 3.1
+    """
+    try:
+        print(f"🎬 Image-to-Video request - Image: {request.image_filename}")
+        
+        # Construct image path
+        image_path = UPLOAD_DIR / request.image_filename
+        
+        if not image_path.exists():
+            raise HTTPException(status_code=404, detail=f"Image not found: {request.image_filename}")
+        
+        # Get video generation tool
+        video_tool = get_video_generation_tool(Config.GEMINI_API_KEY)
+        
+        # Generate video
+        result = video_tool.image_to_video(
+            image_path=str(image_path),
+            prompt=request.prompt,
+            max_wait_time=request.max_wait_time,
+            mode="single"
+        )
+        
+        if result["status"] == "success":
+            print(f"✅ Video generated: {result['video_path']}")
+            return {
+                "status": "success",
+                "message": result["message"],
+                "video_url": f"/output/{Path(result['video_path']).name}",
+                "generation_time": result.get("generation_time", 0)
+            }
+        else:
+            raise HTTPException(status_code=400, detail=result["message"])
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        error_msg = f"Image-to-Video error: {str(e)}"
+        print(f"❌ Error: {error_msg}")
+        raise HTTPException(status_code=500, detail=error_msg)
+
+
+@app.post("/reference-images-to-video")
+async def reference_images_to_video(request: ReferenceImagesToVideoRequest):
+    """
+    Generate video from multiple reference images using Google Veo 3.1
+    """
+    try:
+        print(f"🎬 Reference Images-to-Video request - {len(request.image_filenames)} images")
+        
+        # Construct image paths
+        image_paths = []
+        for filename in request.image_filenames:
+            image_path = UPLOAD_DIR / filename
+            if not image_path.exists():
+                raise HTTPException(status_code=404, detail=f"Image not found: {filename}")
+            image_paths.append(str(image_path))
+        
+        # Get video generation tool
+        video_tool = get_video_generation_tool(Config.GEMINI_API_KEY)
+        
+        # Generate video with reference images
+        result = video_tool.reference_images_to_video(
+            image_paths=image_paths,
+            prompt=request.prompt,
+            max_wait_time=request.max_wait_time
+        )
+        
+        if result["status"] == "success":
+            print(f"✅ Video generated: {result['video_path']}")
+            return {
+                "status": "success",
+                "message": result["message"],
+                "video_url": f"/output/{Path(result['video_path']).name}",
+                "generation_time": result.get("generation_time", 0)
+            }
+        else:
+            raise HTTPException(status_code=400, detail=result["message"])
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        error_msg = f"Reference Images-to-Video error: {str(e)}"
+        print(f"❌ Error: {error_msg}")
+        raise HTTPException(status_code=500, detail=error_msg)
+
+
+@app.post("/prompt-to-image-to-video")
+async def prompt_to_image_to_video(request: PromptToImageToVideoRequest):
+    """
+    Generate image from prompt then generate video using Google Veo 3.1
+    """
+    try:
+        print(f"🎬 Prompt-to-Image-to-Video request - Prompt: {request.prompt}")
+        
+        # Get video generation tool
+        video_tool = get_video_generation_tool(Config.GEMINI_API_KEY)
+        
+        # Generate image then video from prompt
+        result = video_tool.prompt_to_image_to_video(
+            prompt=request.prompt,
+            max_wait_time=request.max_wait_time
+        )
+        
+        if result["status"] == "success":
+            print(f"✅ Video generated: {result['video_path']}")
+            return {
+                "status": "success",
+                "message": result["message"],
+                "video_url": f"/output/{Path(result['video_path']).name}",
+                "generated_image_url": f"/output/{Path(result['generated_image_path']).name}",
+                "generation_time": result.get("generation_time", 0)
+            }
+        else:
+            raise HTTPException(status_code=400, detail=result["message"])
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        error_msg = f"Prompt-to-Image-to-Video error: {str(e)}"
         print(f"❌ Error: {error_msg}")
         raise HTTPException(status_code=500, detail=error_msg)
 

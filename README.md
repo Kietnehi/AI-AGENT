@@ -799,6 +799,8 @@ SERPAPI_KEY=your_serpapi_key_here
 
 # Chọn công cụ tìm kiếm mặc định
 SEARCH_ENGINE=duckduckgo
+
+CLIPDROP_API_KEY=your_clipdrop_api_key
 ```
 
 ### 📝 Lấy API Keys

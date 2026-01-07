@@ -252,6 +252,59 @@ export const imageGenAPI = {
   },
 };
 
+// Video Generation API
+export const videoGenAPI = {
+  /**
+   * Generate video from text prompt using Google Veo 3.1
+   * @param {object} params - Generation parameters
+   * @param {string} params.prompt - Text description of the video
+   * @param {number} params.max_wait_time - Maximum wait time in seconds (default: 300)
+   * @returns {Promise} Response data with video URL
+   */
+  textToVideo: async (params) => {
+    const response = await apiClient.post('/text-to-video', params);
+    return response.data;
+  },
+
+  /**
+   * Generate video from image using Google Veo 3.1
+   * @param {object} params - Generation parameters
+   * @param {string} params.image_filename - Uploaded image filename
+   * @param {string} params.prompt - Optional text prompt to guide generation
+   * @param {number} params.max_wait_time - Maximum wait time in seconds (default: 300)
+   * @returns {Promise} Response data with video URL
+   */
+  imageToVideo: async (params) => {
+    const response = await apiClient.post('/image-to-video', params);
+    return response.data;
+  },
+
+  /**
+   * Generate video from multiple reference images using Google Veo 3.1
+   * @param {object} params - Generation parameters
+   * @param {string[]} params.image_filenames - Array of uploaded image filenames
+   * @param {string} params.prompt - Text prompt to guide generation (required)
+   * @param {number} params.max_wait_time - Maximum wait time in seconds (default: 300)
+   * @returns {Promise} Response data with video URL
+   */
+  referenceImagesToVideo: async (params) => {
+    const response = await apiClient.post('/reference-images-to-video', params);
+    return response.data;
+  },
+
+  /**
+   * Generate image from prompt then create video using Google Gemini 2.5 Flash Image + Veo 3.1
+   * @param {object} params - Generation parameters
+   * @param {string} params.prompt - Text prompt to generate image and video
+   * @param {number} params.max_wait_time - Maximum wait time in seconds (default: 300)
+   * @returns {Promise} Response data with generated image URL and video URL
+   */
+  promptToImageToVideo: async (params) => {
+    const response = await apiClient.post('/prompt-to-image-to-video', params);
+    return response.data;
+  },
+};
+
 // Unified API object
 export const api = {
   chat: chatAPI.sendMessage,
@@ -267,6 +320,10 @@ export const api = {
   speechToText: speechAPI.transcribe,
   asrTranscribe: asrAPI.transcribe,
   textToImage: imageGenAPI.textToImage,
+  textToVideo: videoGenAPI.textToVideo,
+  imageToVideo: videoGenAPI.imageToVideo,
+  referenceImagesToVideo: videoGenAPI.referenceImagesToVideo,
+  promptToImageToVideo: videoGenAPI.promptToImageToVideo,
 };
 
 // Export default API client for custom requests

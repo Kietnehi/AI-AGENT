@@ -1,3 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: #1e293b; /* Màu chữ đen xám, không dùng đen tuyền #000 */
+  line-height: 1.6;
+}
 /* Global Styles */
 * {
   box-sizing: border-box;
