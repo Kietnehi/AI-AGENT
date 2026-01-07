@@ -22,6 +22,7 @@ from tools.speech_to_text import get_speech_tool
 from tools.asr_tool import get_asr_tool
 from tools.image_generation import get_image_generation_tool
 from tools.video_generation import get_video_generation_tool
+from tools.translation_tool import get_translation_tool
 from config import Config
 
 # For TTS
@@ -174,6 +175,13 @@ class ReferenceImagesToVideoRequest(BaseModel):
 class PromptToImageToVideoRequest(BaseModel):
     prompt: str  # Prompt to generate image and video
     max_wait_time: int = 300  # Maximum wait time in seconds
+
+
+class TranslationRequest(BaseModel):
+    text: str
+    source_lang: str = "auto"  # 'auto' for auto-detection
+    target_lang: str = "en"
+
 
 
 @app.get("/")
@@ -1181,6 +1189,91 @@ async def prompt_to_image_to_video(request: PromptToImageToVideoRequest):
         error_msg = f"Prompt-to-Image-to-Video error: {str(e)}"
         print(f"❌ Error: {error_msg}")
         raise HTTPException(status_code=500, detail=error_msg)
+
+
+@app.post("/translate")
+async def translate_text(request: TranslationRequest):
+    """
+    Translate text using Google Translate
+    Supports auto language detection and all Google Translate languages
+    """
+    try:
+        tool = get_translation_tool()
+        result = await tool.translate_async(
+            text=request.text,
+            source_lang=request.source_lang,
+            target_lang=request.target_lang
+        )
+        
+        if result["success"]:
+            return {
+                "original_text": result["original_text"],
+                "translated_text": result["translated_text"],
+                "source_language": {
+                    "code": result["source_language_code"],
+                    "name": result["source_language_name"]
+                },
+                "target_language": {
+                    "code": result["target_language_code"],
+                    "name": result["target_language_name"]
+                },
+                "pronunciation": result.get("pronunciation"),
+                "status": "success"
+            }
+        else:
+            raise HTTPException(status_code=500, detail=result.get("error", "Translation failed"))
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        error_msg = f"Translation error: {str(e)}"
+        print(f"❌ Error: {error_msg}")
+        raise HTTPException(status_code=500, detail=error_msg)
+
+
+@app.get("/translation/languages")
+async def get_supported_languages():
+    """
+    Get all supported languages for translation
+    """
+    try:
+        tool = get_translation_tool()
+        result = tool.get_supported_languages()
+        
+        if result["success"]:
+            return {
+                "languages": result["languages"],
+                "count": result["count"],
+                "status": "success"
+            }
+        else:
+            raise HTTPException(status_code=500, detail="Failed to get languages")
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/translation/detect")
+async def detect_language(text: str = Form(...)):
+    """
+    Detect language of given text
+    """
+    try:
+        tool = get_translation_tool()
+        result = await tool.detect_language_async(text)
+        
+        if result["success"]:
+            return {
+                "language_code": result["language_code"],
+                "language_name": result["language_name"],
+                "confidence": result["confidence"],
+                "status": "success"
+            }
+        else:
+            raise HTTPException(status_code=500, detail=result.get("error", "Detection failed"))
+            
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 if __name__ == "__main__":

@@ -46,3 +46,6 @@ paddleocr
 paddlex[ocr]
 easyocr==1.7.2
 datasets[audio]
+
+# Translate 
+googletrans==4.0.2

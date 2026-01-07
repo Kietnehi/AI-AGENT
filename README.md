@@ -716,6 +716,45 @@ for line in result[0]:
   - Để có kết quả tốt, ảnh đầu vào nên có độ phân giải cao, rõ nét
   - Hỗ trợ xử lý batch để OCR nhiều ảnh cùng lúc
   - Có thể tùy chỉnh threshold confidence để lọc kết quả
+
+---
+
+## 🌍 Google Translator
+
+### 📌 Giới thiệu
+Tính năng **Google Translator** cho phép dịch văn bản giữa 100+ ngôn ngữ một cách nhanh chóng và chính xác. Sử dụng thư viện **googletrans** - một thư viện Python miễn phí triển khai Google Translate API.
+
+\u003cdiv align=\"center\"\u003e
+
+![Google Translator](./image/translatetext.png)
+*Giao diện Google Translator với khả năng tự động phát hiện ngôn ngữ và dịch ngay lập tức*
+
+\u003c/div\u003e
+
+### ✨ Tính năng chính
+- **Tự động phát hiện ngôn ngữ**: Tự động nhận diện ngôn ngữ nguồn
+- **100+ ngôn ngữ**: Hỗ trợ dịch giữa hơn 100 ngôn ngữ
+- **Giao diện thân thiện**: Searchable language selector với cờ quốc gia
+- **Text-to-Speech**: Nghe phát âm văn bản đã dịch
+- **Voice Input**: Nhập văn bản bằng giọng nói
+- **Swap Languages**: Đổi nhanh ngôn ngữ nguồn và đích
+
+### 🔧 Công nghệ
+- **Backend**: Sử dụng thư viện `googletrans` (Python) - một wrapper miễn phí cho Google Translate API
+- **Frontend**: React với UI components hiện đại, searchable language dropdown
+
+### 📝 Cách sử dụng
+1. Chọn ngôn ngữ nguồn (hoặc để "Auto Detect")
+2. Chọn ngôn ngữ đích
+3. Nhập hoặc nói văn bản cần dịch
+4. Nhấn "Translate" để xem kết quả
+5. Sử dụng nút "Nghe" để nghe bản dịch
+
+### 💡 Lưu ý
+- Thư viện `googletrans` hoạt động bằng cách gọi API Google Translate miễn phí
+- Không cần API key, phù hợp cho mục đích học tập và thử nghiệm
+- Đối với production, khuyến nghị sử dụng Google Cloud Translation API chính thức
+
 ---
 
 ## 🖼️ Text to Image (Clipdrop API)
