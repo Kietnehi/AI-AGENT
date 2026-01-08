@@ -567,42 +567,7 @@ model = WhisperModel("base", device="cuda")
 
 </div>
 
-<div align="center" style="max-width:900px; margin: 24px auto 12px;">
-  <h3 style="margin-top:20px; margin-bottom:8px;">Slide Generation From Multiple Document (Have Image)</h3>
-  <p style="color:#555; max-width:820px; margin:0 auto 12px;">Tự động tạo slide thuyết trình từ nhiều tài liệu: hệ thống phân tích nội dung và ảnh, tóm tắt điểm chính và chèn hình phù hợp vào từng slide. Kết quả là một tệp PowerPoint (.pptx) chuyên nghiệp, sẵn sàng trình chiếu.</p>
 
-  <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
-
-  <!-- Tài liệu có hình ảnh -->
-  <div style="flex:1 1 100%; max-width:420px; box-shadow:0 6px 18px rgba(0,0,0,0.08); border-radius:8px; overflow:hidden; background:#fff;">
-    <img src="./image/slidegeneration_document_image.png" 
-         style="width:100%; height:auto; display:block;" 
-         alt="Slide được tạo từ tài liệu có hình ảnh" />
-    <div style="padding:12px;">
-      <strong>Tài liệu có hình ảnh</strong>
-      <div style="font-size:13px; color:#666; margin-top:4px;">
-        Hệ thống trích xuất ảnh và nội dung chính từ tài liệu.
-      </div>
-    </div>
-  </div>
-
-  <!-- Kết quả PowerPoint -->
-  <div style="flex:1 1 100%; max-width:420px; box-shadow:0 6px 18px rgba(0,0,0,0.08); border-radius:8px; overflow:hidden; background:#fff;">
-    <img src="./image/slidegeneration_powerpoint.png" 
-         style="width:100%; height:auto; display:block;" 
-         alt="Slide được tạo tự động từ nhiều tài liệu" />
-    <div style="padding:12px;">
-      <strong>2. Kết quả: PowerPoint</strong>
-      <div style="font-size:13px; color:#666; margin-top:4px;">
-        Tệp .pptx hoàn chỉnh, sẵn sàng trình chiếu và chỉnh sửa.
-      </div>
-    </div>
-  </div>
-
-</div>
-  </div>
-
-</div>
 
 - **Technical & performance notes:**
   - `QWEN 1.5B` requires significant RAM/VRAM to load; without a strong GPU, CPU mode can be used but will be slow.
@@ -611,7 +576,48 @@ model = WhisperModel("base", device="cuda")
 
 - **Suggested integration locations:** Add a FastAPI endpoint in `backend/` to call the local model, and create a corresponding frontend feature in `frontend/src/components/LocalLLMFeature.js`.
 
-### 7. 👁️ Visual Question Answering (VQA)
+### 9. 📄 Tạo Slide Từ Nhiều Tài Liệu Với GEMINI API
+
+<div align="center" style="max-width:900px; margin: 24px auto 12px;">
+  <h3 style="margin-top:20px; margin-bottom:8px;">Tạo Slide Từ Nhiều Tài Liệu Với GEMINI API</h3>
+  <p style="color:#555; max-width:820px; margin:0 auto 12px;">
+    Dùng GEMINI API để tự động tạo slide thuyết trình từ nhiều file <strong>.docx</strong> hoặc <strong>.pdf</strong>. 
+    Người dùng có thể chọn số lượng slide muốn tạo, hệ thống sẽ phân tích nội dung và hình ảnh trong tài liệu, 
+    sau đó tạo ra một tệp PowerPoint (.pptx) hoàn chỉnh kèm hình ảnh tương ứng.
+  </p>
+
+  <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+
+    <!-- Upload tài liệu -->
+    <div style="flex:1 1 100%; max-width:420px; box-shadow:0 6px 18px rgba(0,0,0,0.08); border-radius:8px; overflow:hidden; background:#fff;">
+      <img src="./image/slidegeneration_document_image.png" 
+           style="width:100%; height:auto; display:block;" 
+           alt="Upload tài liệu có hình ảnh" />
+      <div style="padding:12px;">
+        <strong>Upload nhiều tài liệu</strong>
+        <div style="font-size:13px; color:#666; margin-top:4px;">
+          Cho phép người dùng tải lên file .docx hoặc .pdf, hệ thống trích xuất nội dung và hình ảnh.
+        </div>
+      </div>
+    </div>
+
+    <!-- Kết quả PowerPoint -->
+    <div style="flex:1 1 100%; max-width:420px; box-shadow:0 6px 18px rgba(0,0,0,0.08); border-radius:8px; overflow:hidden; background:#fff;">
+      <img src="./image/slidegeneration_powerpoint.png" 
+           style="width:100%; height:auto; display:block;" 
+           alt="Slide PowerPoint tạo tự động" />
+      <div style="padding:12px;">
+        <strong>Kết quả: PowerPoint + Hình ảnh</strong>
+        <div style="font-size:13px; color:#666; margin-top:4px;">
+          Tệp .pptx hoàn chỉnh được tạo tự động với số slide do người dùng chọn, kèm hình ảnh từ file upload.
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+### 10. 👁️ Visual Question Answering (VQA)
 
 - **Overview:** The AI Agent supports Visual Question Answering — the ability to answer questions based on image content. Using Salesforce’s BLIP (Bootstrapping Language-Image Pre-training) model, the system can understand and analyze images to provide accurate answers to user questions.
 
@@ -673,7 +679,7 @@ print(f"Answer: {answer}")
   - Model size: ~990MB, downloaded on first use
   - Supports batch processing for multiple images
 
-### 8. 📷 Image to Text — OCR (Optical Character Recognition)
+### 11. 📷 Image to Text — OCR (Optical Character Recognition)
 
 - **Overview:** The AI Agent integrates two powerful OCR technologies to extract text from images: **EasyOCR** and **PaddleOCR**. This feature converts text in images into editable text and supports many languages including Vietnamese, English, and dozens more.
 
@@ -768,7 +774,7 @@ for line in result[0]:
   - Confidence threshold can be adjusted to filter results
 
 ---
-## 🌍 Google Translator
+## 12.🌍 Google Translator
 
 ### 📌 Overview
 **Google Translator** is a powerful text translation tool supporting 100+ languages, enabling fast and accurate translation. The project uses **googletrans**, a free Python library that wraps the Google Translate API.
@@ -806,7 +812,7 @@ for line in result[0]:
 
 ---
 
-## 🖼️ Text to Image (Clipdrop API)
+## 13.🖼️ Text to Image (Clipdrop API)
 
 ### 📌 Overview
 The **Text to Image** feature generates images from textual descriptions using the **Clipdrop API**.  
