@@ -52,7 +52,43 @@ A powerful AI Agent with web search, mathematical computation, and data analysis
   - **Search & Knowledge:** DuckDuckGo, SerpAPI, WolframAlpha
   - **Data Analysis:** Pandas, NumPy, Matplotlib, Plotly
   - **Multimedia Generation:** Text-to-Image (Clipdrop), Text-to-Video, Slide/Presentation generator
+---
 
+## 🗺️ Features Overview
+
+This section provides a comprehensive look at the AI Agent's multi-tasking capabilities, ranging from advanced language processing and computer vision to deep data analysis.
+
+<div align="center">
+  <img src="./image/function.png" alt="AI Agent Function Overview" style="width:100%; max-width:900px;" />
+  <p><em>Central control interface featuring 13 core functional modules</em></p>
+</div>
+
+### 🚀 Core Functional Pillars:
+
+* **🧠 Intelligence & Reasoning:**
+    * **Smart Chat**: Intelligent messaging that automatically analyzes intent and triggers the appropriate tools.
+    * **Local/API LLM**: Flexible switching between local models (Qwen) and cloud APIs (Gemini) for content and slide generation.
+    * **Text Summarization**: Efficiently condenses long documents and complex texts into concise summaries.
+
+* **👁️ Computer Vision & OCR:**
+    * **Vision AI**: Analyzes image context to perform object recognition and Visual Question Answering (VQA).
+    * **LaTeX OCR (Image to LaTeX)**: Specialized tool for converting mathematical formulas in images into precise LaTeX code.
+
+* **🔍 Search & Computation:**
+    * **Web Search**: Real-time information retrieval powered by DuckDuckGo and SerpAPI.
+    * **Computation**: Solves complex mathematical problems and renders function plots via WolframAlpha.
+
+* **📊 Analysis & Multimedia Creation:**
+    * **Data Analysis**: Processes CSV/Excel files with automated statistical analysis and data visualization.
+    * **Text to Image**: Generates high-quality artistic images from text prompts using the Clipdrop API.
+    * **Video Generation (Veo 3.1)**: Creates cinematic short videos based on user descriptions.
+
+* **🌐 Language & Audio:**
+    * **Google Translator**: High-accuracy translation across 100+ languages.
+    * **Speech Recognition (Whisper)**: High-precision Speech-to-Text conversion using OpenAI Whisper.
+    * **Slide Generation (Auto)**: Automatically creates professional PowerPoint presentations from input documents.
+
+---
 ## 🐳 Installation & Running with Docker
 
 > **💡 Recommendation:** Use Docker for fast deployment and to avoid environment and dependency issues!
@@ -760,7 +796,76 @@ for line in result[0]:
   - Confidence threshold can be adjusted to filter results
 
 ---
-## 12.🌍 Google Translator
+
+## 12. 📐 LaTeX OCR (Image to LaTeX Code)
+
+### 📌 Overview
+**LaTeX OCR** is an advanced feature that converts mathematical formulas and equations from images into LaTeX code automatically. Using the powerful **pix2tex** Docker container, the system can recognize handwritten or printed mathematical expressions and convert them into clean, editable LaTeX markup.
+
+<div align="center">
+
+![LaTeX OCR](./image/latexocr.png)
+*LaTeX OCR interface - Convert mathematical images to LaTeX code instantly*
+
+</div>
+
+### ✨ Key features
+- **Automatic LaTeX conversion** from images containing mathematical formulas
+- **Docker-based processing** using pix2tex API (runs only when needed)
+- **Real-time preview** with KaTeX rendering
+- **Clipboard paste support** - paste images directly with Ctrl+V
+- **Drag & drop** image upload
+- **Copy to clipboard** functionality for LaTeX code
+- **Service management** - start/stop pix2tex container as needed
+
+### 🔧 Technology
+- **Backend:** Custom LaTeX OCR tool with Docker container management
+- **Frontend:** React component with KaTeX for math rendering
+- **Docker:** lukasblecher/pix2tex:api container (auto-managed)
+- **Libraries:** requests, subprocess, PIL for image handling
+
+### 📝 How to use
+1. **Start the service:** Click "Khởi động Service" (starts pix2tex container)
+2. **Upload image:**
+   - Click to select file, or
+   - Drag & drop image, or
+   - **Paste from clipboard** (Ctrl+V after screenshot)
+3. **Convert:** Click "Upload Ảnh" then "Chuyển đổi sang LaTeX"
+4. **View results:** See LaTeX code and rendered preview
+5. **Copy code:** Click "Copy Code" to copy LaTeX markup
+
+### 💡 Quick workflow
+```
+Win+Shift+S (Screenshot) → Ctrl+V (Paste) → Upload → Convert → Copy LaTeX
+```
+
+### 🎯 Use cases
+- **Students & researchers:** Convert handwritten notes to digital format
+- **Teachers:** Create LaTeX equations from drawn formulas
+- **Publishers:** Digitize mathematical content
+- **Developers:** Generate LaTeX code for documentation
+
+### 📍 Code locations
+- **Backend tool:** [backend/tools/latex_ocr_tool.py](backend/tools/latex_ocr_tool.py)
+- **Backend endpoint:** [backend/main.py](backend/main.py) — `/latex-ocr`
+- **Frontend component:** [frontend/src/components/LatexOCRFeature.js](frontend/src/components/LatexOCRFeature.js)
+
+### ⚙️ Technical notes
+- **Container management:** pix2tex runs in Docker, started/stopped on demand
+- **Resource efficient:** Only runs when LaTeX OCR feature is used
+- **Image formats:** Supports all common image formats (PNG, JPG, JPEG, etc.)
+- **Math rendering:** Uses KaTeX for client-side LaTeX rendering
+- **Error handling:** Graceful fallbacks and user-friendly error messages
+
+### 🚀 Performance tips
+- **Clear images:** Higher quality images yield better results
+- **Simple backgrounds:** White background works best
+- **Proper cropping:** Focus on the mathematical expression only
+- **Supported notations:** Most common mathematical symbols and operators
+
+---
+
+## 13.🌍 Google Translator
 
 ### 📌 Overview
 **Google Translator** is a powerful text translation tool supporting 100+ languages, enabling fast and accurate translation. The project uses **googletrans**, a free Python library that wraps the Google Translate API.
@@ -798,7 +903,7 @@ for line in result[0]:
 
 ---
 
-## 13.🖼️ Text to Image (Clipdrop API)
+## 14.🖼️ Text to Image (Clipdrop API)
 
 ### 📌 Overview
 The **Text to Image** feature generates images from textual descriptions using the **Clipdrop API**.  

@@ -24,6 +24,7 @@ from tools.image_generation import get_image_generation_tool
 from tools.video_generation import get_video_generation_tool
 from tools.translation_tool import get_translation_tool
 from tools.slide_generation_tool import get_slide_generation_tool
+from tools.latex_ocr_tool import get_latex_ocr_tool
 from config import Config
 
 # For TTS
@@ -193,6 +194,10 @@ class SlideGenerationRequest(BaseModel):
     num_slides: int = 10
     filenames: List[str]  # List of uploaded document filenames
 
+
+class LatexOCRRequest(BaseModel):
+    image_filename: str
+    action: str = "convert"  # "convert", "start_service", "stop_service", "health_check"
 
 
 @app.get("/")
@@ -1413,6 +1418,67 @@ async def download_presentation(filename: str):
         filename=filename,
         media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation"
     )
+
+
+@app.post("/latex-ocr")
+async def latex_ocr_convert(request: LatexOCRRequest):
+    """
+    LaTeX OCR: Convert image to LaTeX code
+    Supports actions: convert, start_service, stop_service, health_check
+    """
+    try:
+        latex_tool = get_latex_ocr_tool()
+        
+        if request.action == "health_check":
+            # Check service health
+            health = latex_tool.health_check()
+            return {
+                "status": "success",
+                "health": health
+            }
+        
+        elif request.action == "start_service":
+            # Start the pix2tex container
+            result = latex_tool.start_container()
+            return result
+        
+        elif request.action == "stop_service":
+            # Stop the pix2tex container
+            result = latex_tool.stop_container()
+            return result
+        
+        elif request.action == "convert":
+            # Convert image to LaTeX
+            image_path = UPLOAD_DIR / request.image_filename
+            
+            if not image_path.exists():
+                raise HTTPException(status_code=404, detail="Image not found")
+            
+            result = latex_tool.get_latex_from_image(str(image_path))
+            
+            if result["status"] == "success":
+                return {
+                    "latex_code": result["latex_code"],
+                    "message": result["message"],
+                    "status": "success"
+                }
+            else:
+                raise HTTPException(status_code=500, detail=result["message"])
+        
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail="Invalid action. Use 'convert', 'start_service', 'stop_service', or 'health_check'"
+            )
+    
+    except HTTPException:
+        raise
+    except Exception as e:
+        error_msg = f"LaTeX OCR error: {str(e)}"
+        print(f"❌ Error: {error_msg}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=error_msg)
 
 
 if __name__ == "__main__":

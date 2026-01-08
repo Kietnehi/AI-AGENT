@@ -12,8 +12,9 @@ import VideoGenerationFeature from './components/VideoGenerationFeature';
 import SummarizationFeature from './components/SummarizationFeature';
 import TranslationFeature from './components/TranslationFeature';
 import SlideGenerationFeature from './components/SlideGenerationFeature';
+import LatexOCRFeature from './components/LatexOCRFeature';
 import AnimatedBackground from './components/AnimatedBackground';
-import { Sparkles, Search, Calculator, BarChart3, Bot, Zap, Eye, Cpu, Mic, Wand2, Video, FileText, Languages, Presentation } from 'lucide-react';
+import { Sparkles, Search, Calculator, BarChart3, Bot, Zap, Eye, Cpu, Mic, Wand2, Video, FileText, Languages, Presentation, Superscript } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -35,6 +36,7 @@ function App() {
     { id: 'math', name: 'Tính Toán', icon: Calculator, component: MathFeature, color: '#4facfe' },
     { id: 'data', name: 'Phân Tích Dữ Liệu', icon: BarChart3, component: DataAnalysisFeature, color: '#43e97b' },
     { id: 'vision', name: 'Vision AI', icon: Eye, component: VisionFeature, color: '#fa709a' },
+    { id: 'latex-ocr', name: 'LaTeX OCR (Image to LaTeX)', icon: Superscript, component: LatexOCRFeature, color: '#9775fa' },
     { id: 'summarization', name: 'Text Summarization', icon: FileText, component: SummarizationFeature, color: '#ec4899' },
     { id: 'translation', name: 'Google Translator', icon: Languages, component: TranslationFeature, color: '#667eea' },
     { id: 'slide-gen', name: 'Slide Generation (Auto)', icon: Presentation, component: SlideGenerationFeature, color: '#8b5cf6' },
