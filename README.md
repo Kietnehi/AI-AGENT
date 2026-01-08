@@ -568,7 +568,6 @@ model = WhisperModel("base", device="cuda")
 </div>
 
 
-
 - **Technical & performance notes:**
   - `QWEN 1.5B` requires significant RAM/VRAM to load; without a strong GPU, CPU mode can be used but will be slow.
   - For better performance, consider using `bitsandbytes` with `8-bit`/`4-bit` quantization or deploying on a GPU-enabled machine.
@@ -586,34 +585,21 @@ model = WhisperModel("base", device="cuda")
     sau đó tạo ra một tệp PowerPoint (.pptx) hoàn chỉnh kèm hình ảnh tương ứng.
   </p>
 
-  <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
-
-    <!-- Upload tài liệu -->
-    <div style="flex:1 1 100%; max-width:420px; box-shadow:0 6px 18px rgba(0,0,0,0.08); border-radius:8px; overflow:hidden; background:#fff;">
-      <img src="./image/slidegeneration_document_image.png" 
-           style="width:100%; height:auto; display:block;" 
-           alt="Upload tài liệu có hình ảnh" />
-      <div style="padding:12px;">
-        <strong>Upload nhiều tài liệu</strong>
-        <div style="font-size:13px; color:#666; margin-top:4px;">
-          Cho phép người dùng tải lên file .docx hoặc .pdf, hệ thống trích xuất nội dung và hình ảnh.
-        </div>
-      </div>
-    </div>
-
-    <!-- Kết quả PowerPoint -->
-    <div style="flex:1 1 100%; max-width:420px; box-shadow:0 6px 18px rgba(0,0,0,0.08); border-radius:8px; overflow:hidden; background:#fff;">
-      <img src="./image/slidegeneration_powerpoint.png" 
-           style="width:100%; height:auto; display:block;" 
-           alt="Slide PowerPoint tạo tự động" />
-      <div style="padding:12px;">
-        <strong>Kết quả: PowerPoint + Hình ảnh</strong>
-        <div style="font-size:13px; color:#666; margin-top:4px;">
-          Tệp .pptx hoàn chỉnh được tạo tự động với số slide do người dùng chọn, kèm hình ảnh từ file upload.
-        </div>
-      </div>
-    </div>
-
+  <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+<div style="flex: 1 1 300px; max-width: 400px; box-shadow: 0 6px 18px rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; background: #fff; border: 1px solid #eee; text-align: left;">
+<img src="./image/slidegeneration_document_image.png" style="width: 100%; height: auto; display: block;" alt="Upload">
+<div style="padding: 16px;">
+<strong style="font-size: 16px; color: #222;">Upload nhiều tài liệu</strong>
+<p style="font-size: 13px; color: #666; margin-top: 6px; line-height: 1.4;">Cho phép tải lên file .docx hoặc .pdf, hệ thống trích xuất nội dung và hình ảnh.</p>
+</div>
+</div>
+<div style="flex: 1 1 300px; max-width: 400px; box-shadow: 0 6px 18px rgba(0,0,0,0.1); border-radius: 10px; overflow: hidden; background: #fff; border: 1px solid #eee; text-align: left;">
+<img src="./image/slidegeneration_powerpoint.png" style="width: 100%; height: auto; display: block;" alt="Result">
+<div style="padding: 16px;">
+<strong style="font-size: 16px; color: #222;">Kết quả: PowerPoint + Hình ảnh</strong>
+<p style="font-size: 13px; color: #666; margin-top: 6px; line-height: 1.4;">Tệp .pptx được tạo tự động với số slide tùy chọn kèm hình ảnh tương ứng.</p>
+</div>
+</div>
   </div>
 </div>
 
