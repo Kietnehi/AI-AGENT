@@ -802,11 +802,11 @@ for line in result[0]:
 ### 📌 Overview
 **LaTeX OCR** is an advanced feature that converts mathematical formulas and equations from images into LaTeX code automatically. Using the powerful **pix2tex** Docker container, the system can recognize handwritten or printed mathematical expressions and convert them into clean, editable LaTeX markup.
 
-<div align="center">
-
-![LaTeX OCR](./image/latexocr.png)
-*LaTeX OCR interface - Convert mathematical images to LaTeX code instantly*
-
+<div align="center" style="margin: 20px 0;">
+  <img src="./image/latexocr.png" alt="LaTeX OCR Interface" style="border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.15); width: 85%; max-width: 800px; border: 1px solid #eee;" />
+  <p style="margin-top: 10px; font-style: italic; color: #555;">
+     <b>LaTeX OCR Interface</b> - Convert complex mathematical images to LaTeX code instantly
+  </p>
 </div>
 
 ### ✨ Key features
