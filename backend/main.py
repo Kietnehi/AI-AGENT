@@ -23,6 +23,7 @@ from tools.asr_tool import get_asr_tool
 from tools.image_generation import get_image_generation_tool
 from tools.video_generation import get_video_generation_tool
 from tools.translation_tool import get_translation_tool
+from tools.slide_generation_tool import get_slide_generation_tool
 from config import Config
 
 # For TTS
@@ -52,14 +53,19 @@ data_tool = DataAnalysisTool()
 UPLOAD_DIR = Path("uploads")
 CHARTS_DIR = Path("charts")
 OUTPUT_DIR = Path("output")
+SLIDES_DIR = Path("slides")
+SLIDES_IMAGES_DIR = Path("slides/images")
 UPLOAD_DIR.mkdir(exist_ok=True)
 CHARTS_DIR.mkdir(exist_ok=True)
 OUTPUT_DIR.mkdir(exist_ok=True)
+SLIDES_DIR.mkdir(exist_ok=True)
+SLIDES_IMAGES_DIR.mkdir(exist_ok=True)
 
 # Mount static file directories
 app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
 app.mount("/charts", StaticFiles(directory="charts"), name="charts")
 app.mount("/output", StaticFiles(directory="output"), name="output")
+app.mount("/slides", StaticFiles(directory="slides"), name="slides")
 
 
 # Request/Response Models
@@ -181,6 +187,11 @@ class TranslationRequest(BaseModel):
     text: str
     source_lang: str = "auto"  # 'auto' for auto-detection
     target_lang: str = "en"
+
+
+class SlideGenerationRequest(BaseModel):
+    num_slides: int = 10
+    filenames: List[str]  # List of uploaded document filenames
 
 
 
@@ -1274,6 +1285,134 @@ async def detect_language(text: str = Form(...)):
             
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/upload-file")
+async def upload_file(file: UploadFile = File(...)):
+    """
+    Upload a file (document, image, etc.) for processing
+    Supports: PDF, DOCX, TXT, PNG, JPG, JPEG, GIF
+    """
+    try:
+        # Validate file extension
+        allowed_extensions = {'.pdf', '.doc', '.docx', '.txt', '.png', '.jpg', '.jpeg', '.gif', '.bmp'}
+        file_ext = Path(file.filename).suffix.lower()
+        
+        if file_ext not in allowed_extensions:
+            raise HTTPException(
+                status_code=400,
+                detail=f"File type {file_ext} not supported. Allowed: {', '.join(allowed_extensions)}"
+            )
+        
+        # Save uploaded file
+        file_path = UPLOAD_DIR / file.filename
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
+        
+        return {
+            "message": "File uploaded successfully",
+            "filename": file.filename,
+            "size": file_path.stat().st_size,
+            "type": file_ext,
+            "status": "success"
+        }
+        
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Upload error: {str(e)}")
+
+
+@app.post("/generate-slides")
+async def generate_slides_from_documents(request: SlideGenerationRequest):
+    """
+    Generate presentation slides from multiple uploaded documents
+    
+    This endpoint:
+    1. Accepts multiple document files (PDF, DOCX, TXT, images)
+    2. Extracts text and images from all documents
+    3. Uses Gemini AI to analyze content and create a structured outline
+    4. Generates a professional PowerPoint presentation
+    5. Returns the presentation file for download
+    """
+    try:
+        # Validate that files exist
+        file_paths = []
+        for filename in request.filenames:
+            file_path = UPLOAD_DIR / filename
+            if not file_path.exists():
+                raise HTTPException(
+                    status_code=404, 
+                    detail=f"File not found: {filename}"
+                )
+            file_paths.append(str(file_path))
+        
+        if not file_paths:
+            raise HTTPException(
+                status_code=400,
+                detail="No valid files provided"
+            )
+        
+        # Create unique filename for output
+        import time
+        timestamp = int(time.time())
+        output_filename = f"presentation_{timestamp}.pptx"
+        output_path = str(SLIDES_DIR / output_filename)
+        images_dir = str(SLIDES_IMAGES_DIR)
+        
+        # Initialize slide generation tool
+        slide_tool = get_slide_generation_tool(api_key=Config.GEMINI_API_KEY)
+        
+        # Generate slides
+        print(f"🎨 Generating presentation from {len(file_paths)} document(s)...")
+        result = slide_tool.generate_slides_from_documents(
+            file_paths=file_paths,
+            output_path=output_path,
+            num_slides=request.num_slides,
+            images_dir=images_dir
+        )
+        
+        if result["success"]:
+            return {
+                "success": True,
+                "message": "Presentation generated successfully",
+                "presentation_url": f"/slides/{output_filename}",
+                "filename": output_filename,
+                "num_slides": result["num_slides"],
+                "num_images": result["num_images"],
+                "title": result["title"],
+                "status": "success"
+            }
+        else:
+            raise HTTPException(
+                status_code=500,
+                detail=result.get("error", "Failed to generate presentation")
+            )
+            
+    except HTTPException:
+        raise
+    except Exception as e:
+        error_msg = f"Slide generation error: {str(e)}"
+        print(f"❌ Error: {error_msg}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(status_code=500, detail=error_msg)
+
+
+@app.get("/slides/{filename}")
+async def download_presentation(filename: str):
+    """
+    Download generated presentation file
+    """
+    file_path = SLIDES_DIR / filename
+    if not file_path.exists():
+        raise HTTPException(status_code=404, detail="Presentation not found")
+    
+    return FileResponse(
+        path=file_path,
+        filename=filename,
+        media_type="application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    )
 
 
 if __name__ == "__main__":

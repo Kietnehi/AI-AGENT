@@ -11,8 +11,9 @@ import ImageGenerationFeature from './components/ImageGenerationFeature';
 import VideoGenerationFeature from './components/VideoGenerationFeature';
 import SummarizationFeature from './components/SummarizationFeature';
 import TranslationFeature from './components/TranslationFeature';
+import SlideGenerationFeature from './components/SlideGenerationFeature';
 import AnimatedBackground from './components/AnimatedBackground';
-import { Sparkles, Search, Calculator, BarChart3, Bot, Zap, Eye, Cpu, Mic, Wand2, Video, FileText, Languages } from 'lucide-react';
+import { Sparkles, Search, Calculator, BarChart3, Bot, Zap, Eye, Cpu, Mic, Wand2, Video, FileText, Languages, Presentation } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
@@ -36,6 +37,7 @@ function App() {
     { id: 'vision', name: 'Vision AI', icon: Eye, component: VisionFeature, color: '#fa709a' },
     { id: 'summarization', name: 'Text Summarization', icon: FileText, component: SummarizationFeature, color: '#ec4899' },
     { id: 'translation', name: 'Google Translator', icon: Languages, component: TranslationFeature, color: '#667eea' },
+    { id: 'slide-gen', name: 'Slide Generation (Auto)', icon: Presentation, component: SlideGenerationFeature, color: '#8b5cf6' },
     { id: 'image-gen', name: 'Text to Image', icon: Wand2, component: ImageGenerationFeature, color: '#ff6b9d' },
     { id: 'video-gen', name: 'Video Generation (Veo 3.1)', icon: Video, component: VideoGenerationFeature, color: '#8b5cf6' },
     { id: 'local-llm', name: 'Local LLM hoặc API LLM ( Có thể tạo Slide thuyết trình )', icon: Cpu, component: LocalLLMFeature, color: '#30cfd0' },

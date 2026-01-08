@@ -307,6 +307,53 @@ export const videoGenAPI = {
   },
 };
 
+// Slide Generation API
+export const slideGenAPI = {
+  /**
+   * Generate presentation slides from multiple documents
+   * @param {File[]} files - Array of document files to upload
+   * @param {number} numSlides - Number of slides to generate (default: 10)
+   * @returns {Promise} Response data with presentation URL
+   */
+  generateSlides: async (files, numSlides = 10) => {
+    // First, upload all files
+    const formData = new FormData();
+    const filenames = [];
+    
+    for (const file of files) {
+      formData.append('file', file);
+      
+      // Upload each file
+      const uploadResponse = await apiClient.post('/upload-file', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      
+      filenames.push(uploadResponse.data.filename);
+      formData.delete('file'); // Clear for next file
+    }
+    
+    // Then generate slides from uploaded files
+    const response = await apiClient.post('/generate-slides', {
+      filenames: filenames,
+      num_slides: numSlides,
+    });
+    
+    return response.data;
+  },
+};
+
+// Helper function for slide generation
+export const generateSlidesFromDocuments = async (files, numSlides = 10) => {
+  try {
+    return await slideGenAPI.generateSlides(files, numSlides);
+  } catch (error) {
+    console.error('Error generating slides:', error);
+    throw error;
+  }
+};
+
 // Unified API object
 export const api = {
   chat: chatAPI.sendMessage,
@@ -326,6 +373,7 @@ export const api = {
   imageToVideo: videoGenAPI.imageToVideo,
   referenceImagesToVideo: videoGenAPI.referenceImagesToVideo,
   promptToImageToVideo: videoGenAPI.promptToImageToVideo,
+  generateSlides: slideGenAPI.generateSlides,
 };
 
 // Export default API client for custom requests

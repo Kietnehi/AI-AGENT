@@ -567,6 +567,43 @@ model = WhisperModel("base", device="cuda")
 
 </div>
 
+<div align="center" style="max-width:900px; margin: 24px auto 12px;">
+  <h3 style="margin-top:20px; margin-bottom:8px;">Slide Generation From Multiple Document (Have Image)</h3>
+  <p style="color:#555; max-width:820px; margin:0 auto 12px;">Tự động tạo slide thuyết trình từ nhiều tài liệu: hệ thống phân tích nội dung và ảnh, tóm tắt điểm chính và chèn hình phù hợp vào từng slide. Kết quả là một tệp PowerPoint (.pptx) chuyên nghiệp, sẵn sàng trình chiếu.</p>
+
+  <div style="display:flex; gap:16px; justify-content:center; flex-wrap:wrap;">
+
+  <!-- Tài liệu có hình ảnh -->
+  <div style="flex:1 1 100%; max-width:420px; box-shadow:0 6px 18px rgba(0,0,0,0.08); border-radius:8px; overflow:hidden; background:#fff;">
+    <img src="./image/slidegeneration_document_image.png" 
+         style="width:100%; height:auto; display:block;" 
+         alt="Slide được tạo từ tài liệu có hình ảnh" />
+    <div style="padding:12px;">
+      <strong>Tài liệu có hình ảnh</strong>
+      <div style="font-size:13px; color:#666; margin-top:4px;">
+        Hệ thống trích xuất ảnh và nội dung chính từ tài liệu.
+      </div>
+    </div>
+  </div>
+
+  <!-- Kết quả PowerPoint -->
+  <div style="flex:1 1 100%; max-width:420px; box-shadow:0 6px 18px rgba(0,0,0,0.08); border-radius:8px; overflow:hidden; background:#fff;">
+    <img src="./image/slidegeneration_powerpoint.png" 
+         style="width:100%; height:auto; display:block;" 
+         alt="Slide được tạo tự động từ nhiều tài liệu" />
+    <div style="padding:12px;">
+      <strong>2. Kết quả: PowerPoint</strong>
+      <div style="font-size:13px; color:#666; margin-top:4px;">
+        Tệp .pptx hoàn chỉnh, sẵn sàng trình chiếu và chỉnh sửa.
+      </div>
+    </div>
+  </div>
+
+</div>
+  </div>
+
+</div>
+
 - **Technical & performance notes:**
   - `QWEN 1.5B` requires significant RAM/VRAM to load; without a strong GPU, CPU mode can be used but will be slow.
   - For better performance, consider using `bitsandbytes` with `8-bit`/`4-bit` quantization or deploying on a GPU-enabled machine.
