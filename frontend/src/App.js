@@ -36,7 +36,7 @@ function App() {
     { id: 'math', name: 'Tính Toán', icon: Calculator, component: MathFeature, color: '#4facfe' },
     { id: 'data', name: 'Phân Tích Dữ Liệu', icon: BarChart3, component: DataAnalysisFeature, color: '#43e97b' },
     { id: 'vision', name: 'Vision AI', icon: Eye, component: VisionFeature, color: '#fa709a' },
-    { id: 'latex-ocr', name: 'LaTeX OCR (Image to LaTeX)', icon: Superscript, component: LatexOCRFeature, color: '#9775fa' },
+    { id: 'latex-ocr', name: 'LaTeX OCR (Formulas Math Image to LaTeX)', icon: Superscript, component: LatexOCRFeature, color: '#9775fa' },
     { id: 'summarization', name: 'Text Summarization', icon: FileText, component: SummarizationFeature, color: '#ec4899' },
     { id: 'translation', name: 'Google Translator', icon: Languages, component: TranslationFeature, color: '#667eea' },
     { id: 'slide-gen', name: 'Slide Generation (Auto)', icon: Presentation, component: SlideGenerationFeature, color: '#8b5cf6' },
