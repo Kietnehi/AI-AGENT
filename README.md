@@ -32,6 +32,15 @@
 [![Follow GitHub](https://img.shields.io/github/followers/Kietnehi?label=Follow%20Me&style=social)](https://github.com/Kietnehi)
 [![Star Repo](https://img.shields.io/github/stars/Kietnehi/AI-AGENT?style=social)](https://github.com/Kietnehi/AI-AGENT)
 [![Fork Repo](https://img.shields.io/github/forks/Kietnehi/AI-AGENT?style=social)](https://github.com/Kietnehi/AI-AGENT/fork)
+<div align="center">
+
+## 🌟 AI Agent - Project Overview
+
+<img src="./image/poster.jpg" alt="AI Agent Project Poster" style="width:100%; max-width:900px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);" />
+
+<p><i>This poster provides a comprehensive overview of the core features and technologies of the AI ​​Agent project.</i></p>
+
+</div>
 
 </div>
 <div align="center">
@@ -50,7 +59,7 @@
   <img src="./image/readme/duckduckgo.png" width="200" alt="DuckDuckGo"/>
   <img src="./image/readme/langchain.jpg" width="200" alt="LangChain"/>
 </p>
----
+
 
 # 🤖 AI Agent - Multi-purpose Intelligent Assistant
 
