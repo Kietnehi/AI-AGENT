@@ -6,10 +6,6 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/Kietnehi/AI-AGENT?style=for-the-badge&color=brightgreen)
 ![GitHub license](https://img.shields.io/github/license/Kietnehi/AI-AGENT?style=for-the-badge&color=blue)
 ![GitHub issues](https://img.shields.io/github/issues/Kietnehi/AI-AGENT?style=for-the-badge&color=red)
-
----
-
-### 🚀 Core Stack & Deployment
 ![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
 ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
 ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
@@ -17,21 +13,15 @@
 ![LangChain](https://img.shields.io/badge/LangChain-1C3C3C?style=for-the-badge&logo=langchain&logoColor=white)
 ![Ngrok](https://img.shields.io/badge/Ngrok-1F1E37?style=for-the-badge&logo=ngrok&logoColor=white)
 ![Cloudflare](https://img.shields.io/badge/Cloudflare-F38020?style=for-the-badge&logo=cloudflare&logoColor=white)
-
-### 🧠 LLM & AI Models
 ![Google Gemini](https://img.shields.io/badge/Google_Gemini-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white)
 ![Meta Llama](https://img.shields.io/badge/Meta_Llama-0467DF?style=for-the-badge&logo=meta&logoColor=white)
 ![Microsoft Phi](https://img.shields.io/badge/Microsoft_Phi-0078D4?style=for-the-badge&logo=microsoft&logoColor=white)
 ![Alibaba Qwen](https://img.shields.io/badge/Alibaba_Qwen-525CB0?style=for-the-badge&logo=alibabacloud&logoColor=white)
 ![HuggingFace](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-FFD21E?style=for-the-badge&color=gray)
-
-### 👁️ Vision & OCR & Audio
 ![OpenCV](https://img.shields.io/badge/OpenCV-5C3EE8?style=for-the-badge&logo=opencv&logoColor=white)
 ![PaddleOCR](https://img.shields.io/badge/PaddleOCR-2932E1?style=for-the-badge)
 ![Whisper](https://img.shields.io/badge/OpenAI_Whisper-412991?style=for-the-badge&logo=openai&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)
-
-### 📊 Data Science & Tools
 ![Pandas](https://img.shields.io/badge/Pandas-150458?style=for-the-badge&logo=pandas&logoColor=white)
 ![NumPy](https://img.shields.io/badge/NumPy-013243?style=for-the-badge&logo=numpy&logoColor=white)
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-ffffff?style=for-the-badge&logo=matplotlib&logoColor=black)
