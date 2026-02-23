@@ -152,15 +152,3 @@ Trong khi chờ implement, user có thể sử dụng các service sau:
 
 ---
 **Note:** Video generation thường tốn kém hơn image generation và cần thời gian xử lý lâu hơn (30s - 2 phút per video).
-
-```mermaid
-sequenceDiagram
-    participant User
-    participant Server
-    participant Database
-
-    User->>Server: Gửi request
-    Server->>Database: Query dữ liệu
-    Database-->>Server: Trả dữ liệu
-    Server-->>User: Response
-```
