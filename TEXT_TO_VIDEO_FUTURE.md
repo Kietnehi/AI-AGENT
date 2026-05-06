@@ -11,7 +11,7 @@ Dưới đây là các lựa chọn API để implement trong tương lai.
 **Features:**
 - Image-to-video generation
 - High quality results
-- Good for short clips
+- Good for short clips.
 
 **Pricing:** Pay per generation
 
